@@ -480,7 +480,7 @@ public class Home extends javax.swing.JFrame {
     	
     	if(c!=null) {
     		
-    		borrar = temp.recuperarEquiposPorCampeonato(c, 100);
+    		borrar = temp.recuperarEquiposPorCampeonato(c, 200);
     		System.out.print("NOMBRE: " +borrar.getNombre());
     		System.out.print("NUM A: " +borrar.getNumA());
     		System.out.print("NUM B: " +borrar.getNumB());
