@@ -41,5 +41,5 @@ public class marca {
 	public String toString() {
 		return "marca [idMarca=" + idMarca + ", codBarMarca=" + codBarMarca + ", nombreMarca=" + nombreMarca + "]";
 	}
-	
+
 }

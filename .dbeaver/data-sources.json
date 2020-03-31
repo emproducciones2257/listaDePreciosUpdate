@@ -1,0 +1,38 @@
+{
+	"folders": {},
+	"connections": {
+		"sqlite_jdbc-171184a0718-1d2ea5a9cc026a9f": {
+			"provider": "generic",
+			"driver": "sqlite_jdbc",
+			"name": "SQLite - dbPrecios.db",
+			"save-password": true,
+			"read-only": false,
+			"configuration": {
+				"database": "C:\\sqlite\\db\\dbPrecios.db",
+				"url": "jdbc:sqlite:C:\\sqlite\\db\\dbPrecios.db",
+				"type": "dev"
+			}
+		}
+	},
+	"virtual-models": {
+		"sqlite_jdbc-171184a0718-1d2ea5a9cc026a9f": {
+			":marca": {
+				"properties": {
+					"erd.diagram.state": {
+						"serialized": "<diagram version=\"1\" name=\"marca\" time=\"202003262139\"><entities><data-source id=\"sqlite_jdbc-171184a0718-1d2ea5a9cc026a9f\"><entity id=\"1\" name=\"marca\" fq-name=\"marca\" order=\"0\" color-bg=\"255,128,64\" x=\"305\" y=\"106\"/><entity id=\"2\" name=\"color\" fq-name=\"color\" order=\"1\" x=\"160\" y=\"20\"/><entity id=\"3\" name=\"producto\" fq-name=\"producto\" order=\"2\" x=\"20\" y=\"58\"/></data-source></entities><relations><relation name=\"FK_color_marca\" fq-name=\"color.FK_color_marca\" type=\"fk\" pk-ref=\"1\" fk-ref=\"2\"/><relation name=\"FK_producto_marca\" fq-name=\"producto.FK_producto_marca\" type=\"fk\" pk-ref=\"1\" fk-ref=\"3\"/><relation name=\"FK_producto_color\" fq-name=\"producto.FK_producto_color\" type=\"fk\" pk-ref=\"2\" fk-ref=\"3\"/></relations></diagram>"
+					}
+				}
+			}
+		}
+	},
+	"connection-types": {
+		"dev": {
+			"name": "Development",
+			"color": "255,255,255",
+			"description": "Regular development database",
+			"auto-commit": true,
+			"confirm-execute": false,
+			"confirm-data-change": false
+		}
+	}
+}

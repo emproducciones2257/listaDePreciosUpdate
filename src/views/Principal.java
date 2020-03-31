@@ -1,48 +1,34 @@
-package dsbswing;
+package views;
 
 import java.awt.Color;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.sql.Connection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import javax.swing.JButton;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import conexionBD.coneCone;
-import conexionBD.prueba;
-import modelo.paraBorrar;
-import modelo.producto;
+
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.GroupLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
-import java.awt.SystemColor;
 import java.awt.Font;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTextPane;
-import javax.swing.JTextArea;
-import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.JComboBox;
 
-
-public class Home extends javax.swing.JFrame {
+public class Principal extends javax.swing.JFrame {
 
     /**
      * Creates new form Home
      */
-    public Home() {
+    public Principal() {
         initComponents();
         JButton[] btns = {jButton1,jButton2,jButton3,jButton4,jButton5,jButton6};
         
@@ -52,6 +38,14 @@ public class Home extends javax.swing.JFrame {
             btn.addMouseListener(new MouseListener() {
                 @Override
                 public void mouseClicked(MouseEvent e) {
+                	
+                	
+                	if(pnCCenter.isShowing()) {
+                		pnlCenter.setVisible(false);
+                	}else {
+                		pnlCenter.setVisible(true);
+					}
+                	
                 }
 
                 @Override
@@ -77,15 +71,7 @@ public class Home extends javax.swing.JFrame {
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-    	
-        produ = new producto();
-        marcaClave = new HashMap<>();
-        marcaClave.put(4111, "FABER CASTELL");
-        marcaClave.put(1153, "ACRILEX");
-        marcaClave.put(8159, "PLAYCOLOR");
-        
-        
+    private void initComponents() {        
         
         pnlRoot = new javax.swing.JPanel();
         pnlSlide = new javax.swing.JPanel();
@@ -219,205 +205,14 @@ public class Home extends javax.swing.JFrame {
         caed1.add(pnCCenter, java.awt.BorderLayout.CENTER);
         pnCCenter.setLayout(null);
         
-        JPanel pnelRegistrarMarca = new JPanel();
-        pnelRegistrarMarca.setBackground(new java.awt.Color(34, 40, 44));
-        pnelRegistrarMarca.setBounds(10, 11, 251, 182);
-        TitledBorder tituloPanelMarca = new TitledBorder("Marca");
-        tituloPanelMarca.setTitleColor((Color.WHITE));
-        tituloPanelMarca.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-        pnelRegistrarMarca.setBorder(tituloPanelMarca);
+        pnelRegistrarMarca = new pnlRegistraMarca();
         pnCCenter.add(pnelRegistrarMarca);
-        pnelRegistrarMarca.setLayout(null);
         
-        JLabel lblCodigoMarca = new JLabel("Codigo Marca");
-        lblCodigoMarca.setForeground(Color.WHITE);
-        lblCodigoMarca.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblCodigoMarca.setBounds(10, 25, 82, 19);
-        pnelRegistrarMarca.add(lblCodigoMarca);
-        
-        txtScaner = new JTextField();
-        txtScaner.setBounds(102, 25, 113, 30);
-        pnelRegistrarMarca.add(txtScaner);
-        txtScaner.setColumns(10);
-        
-        JLabel lblNombre = new JLabel("Nombre");
-        lblNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNombre.setForeground(Color.WHITE);
-        lblNombre.setBackground(Color.WHITE);
-        lblNombre.setBounds(10, 73, 66, 25);
-        pnelRegistrarMarca.add(lblNombre);
-        
-        textField = new JTextField();
-        textField.setBounds(102, 71, 113, 30);
-        pnelRegistrarMarca.add(textField);
-        textField.setColumns(10);
-        
-        JButton btnRegistrarMarca = new JButton("Registrar Marca");
-        btnRegistrarMarca.setBounds(67, 148, 146, 23);
-        pnelRegistrarMarca.add(btnRegistrarMarca);
-        
-        pnelRegistraColor = new JPanel();
-        pnelRegistraColor.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-        pnelRegistraColor.setBackground(new Color(34, 40, 44));
-        pnelRegistraColor.setBounds(316, 11, 251, 182);
-        TitledBorder tituloPanelColor = new TitledBorder("Color");
-        tituloPanelColor.setTitleColor((Color.WHITE));
-        tituloPanelColor.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-        pnelRegistraColor.setBorder(tituloPanelColor);
+        pnelRegistraColor = new pnlRegistrarColor();
         pnCCenter.add(pnelRegistraColor);
-        pnelRegistraColor.setLayout(null);
         
-        lblMarca = new JLabel("Marca");
-        lblMarca.setBounds(27, 27, 44, 19);
-        lblMarca.setForeground(Color.WHITE);
-        lblMarca.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        pnelRegistraColor.add(lblMarca);
-        
-        lblNombreColor = new JLabel("Color");
-        lblNombreColor.setBounds(27, 57, 49, 25);
-        lblNombreColor.setForeground(Color.WHITE);
-        lblNombreColor.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNombreColor.setBackground(Color.WHITE);
-        pnelRegistraColor.add(lblNombreColor);
-        
-        textField_2 = new JTextField();
-        textField_2.setBounds(102, 63, 113, 30);
-        textField_2.setColumns(10);
-        pnelRegistraColor.add(textField_2);
-        
-        btnRegistrarMarca_1 = new JButton("Registrar Color");
-        btnRegistrarMarca_1.setBounds(69, 148, 146, 23);
-        pnelRegistraColor.add(btnRegistrarMarca_1);
-        
-        JLabel lblCodigo = new JLabel("Codigo");
-        lblCodigo.setForeground(Color.WHITE);
-        lblCodigo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblCodigo.setBounds(25, 106, 46, 14);
-        pnelRegistraColor.add(lblCodigo);
-        
-        textField_1 = new JTextField();
-        textField_1.setBounds(102, 99, 113, 30);
-        pnelRegistraColor.add(textField_1);
-        textField_1.setColumns(10);
-        
-        txtMarcaColor = new JTextField();
-        txtMarcaColor.setBounds(102, 27, 113, 30);
-        pnelRegistraColor.add(txtMarcaColor);
-        txtMarcaColor.setColumns(10);
-        
-        JPanel pnelCargarProducto = new JPanel();
-        pnelCargarProducto.setLayout(null);
-        pnelCargarProducto.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-        pnelCargarProducto.setBackground(new Color(34, 40, 44));
-        pnelCargarProducto.setBounds(20, 207, 839, 182);
-        TitledBorder tituloPanelCargaProducto = new TitledBorder("Producto");
-        tituloPanelCargaProducto.setTitleColor((Color.WHITE));
-        tituloPanelCargaProducto.setBorder(new LineBorder(new Color(0, 0, 0), 1, true));
-        pnelCargarProducto.setBorder(tituloPanelCargaProducto);
+        pnelCargarProducto = new pnlRegistrarProducto();
         pnCCenter.add(pnelCargarProducto);
-        
-        JLabel lblMarca_1 = new JLabel("Marca");
-        lblMarca_1.setForeground(Color.WHITE);
-        lblMarca_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblMarca_1.setBounds(27, 27, 44, 19);
-        pnelCargarProducto.add(lblMarca_1);
-        
-        JLabel lblNombreColor_1 = new JLabel("Color");
-        lblNombreColor_1.setForeground(Color.WHITE);
-        lblNombreColor_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNombreColor_1.setBackground(Color.WHITE);
-        lblNombreColor_1.setBounds(27, 57, 49, 25);
-        pnelCargarProducto.add(lblNombreColor_1);
-        
-        textField_3 = new JTextField();
-        textField_3.setColumns(10);
-        textField_3.setBounds(102, 63, 113, 30);
-        pnelCargarProducto.add(textField_3);
-        
-        JButton btnRegistrarMarca_1_1 = new JButton("Registrar Producto");
-        btnRegistrarMarca_1_1.setBounds(69, 148, 146, 23);
-        pnelCargarProducto.add(btnRegistrarMarca_1_1);
-        
-        JLabel lblCodigo_1 = new JLabel("Codigo");
-        lblCodigo_1.setForeground(Color.WHITE);
-        lblCodigo_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblCodigo_1.setBounds(25, 106, 46, 14);
-        pnelCargarProducto.add(lblCodigo_1);
-        
-        textField_4 = new JTextField();
-        textField_4.setColumns(10);
-        textField_4.setBounds(102, 104, 113, 30);
-        pnelCargarProducto.add(textField_4);
-        
-        txtProdMarca = new JTextField();
-        txtProdMarca.setBounds(102, 22, 113, 30);
-        pnelCargarProducto.add(txtProdMarca);
-        txtProdMarca.setColumns(10);
-        
-        JScrollPane scrollPane = new JScrollPane();
-        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setBounds(323, 24, 208, 110);
-        pnelCargarProducto.add(scrollPane);
-        
-        JTextArea txtDescripcionProducto = new JTextArea();
-        scrollPane.setViewportView(txtDescripcionProducto);
-        
-        lblDescripcion = new JLabel("Descripcion");
-        lblDescripcion.setForeground(Color.WHITE);
-        lblDescripcion.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblDescripcion.setBounds(238, 29, 75, 14);
-        pnelCargarProducto.add(lblDescripcion);
-        
-        txtScaner.addKeyListener(new KeyListener() {
-			
-			@Override
-			public void keyTyped(KeyEvent e) {
-
-				codigo = codigo + String.valueOf(e.getKeyChar());
-				
-				if (codigo.length()==14) {
-					String sacado = codigo.substring(3, 7);
-					verificarCodigoMarcar(Integer.parseInt(sacado));
-				}
-				
-			}
-			
-			@Override
-			public void keyReleased(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public void keyPressed(KeyEvent e) {
-				// TODO Auto-generated method stub
-				
-					
-			}
-
-			private void verificarCodigoMarcar(int parseInt) {
-				// TODO Auto-generated method stub
-					Iterator it = marcaClave.keySet().iterator();
-					Boolean estado = true;
-					
-					while (it.hasNext()) {
-						Integer key = (Integer) it.next();
-						if (key == parseInt) {
-							System.out.println("MARCA: " + marcaClave.get(parseInt));
-							estado = false;
-						}
-						
-					}
-					
-					if (estado==true) {
-						System.out.println("CODIGO NO REGISTRADO EN LA BASE");
-					}
-					
-					codigo="";
-					txtScaner.setText("");
-			}
-		});
 
         pnlCBooton.setBackground(new java.awt.Color(34, 40, 44));
         pnlCBooton.setPreferredSize(new java.awt.Dimension(0, 100));
@@ -440,12 +235,19 @@ public class Home extends javax.swing.JFrame {
         pnlRoot.add(pnlCenter, java.awt.BorderLayout.CENTER);
 
         getContentPane().add(pnlRoot, java.awt.BorderLayout.CENTER);
-
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
 
     public static void main(String args[]) {
+    	
+    	try {
+			coneCone.connect();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
     	
     	
         try {
@@ -456,54 +258,22 @@ public class Home extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Home.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Principal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Home().setVisible(true);
+                new Principal().setVisible(true);
             }
         });
-        
-        prueba temp = new prueba();
-    	paraBorrar borrar = new paraBorrar();
-    	
-    	Connection c = coneCone.connect();
-    	
-    	if(c!=null) {
-    		
-    		borrar = temp.recuperarEquiposPorCampeonato(c, 200);
-    		System.out.print("NOMBRE: " +borrar.getNombre());
-    		System.out.print("NUM A: " +borrar.getNumA());
-    		System.out.print("NUM B: " +borrar.getNumB());
-    		System.out.print("NUM C: " +borrar.getNumC());
-    		System.out.println("");
-        }else System.out.print("CAPAZ NO CHE");
-    	
-    	
-    	Connection c2 = coneCone.connect();
-    	
-    	if(c!=null) {
-
-    		
-    		borrar = temp.recuperarEquiposPorCampeonato(c2, 385);
-    		System.out.print("NOMBRE: " +borrar.getNombre());
-    		System.out.print("NUM A: " +borrar.getNumA());
-    		System.out.print("NUM B: " +borrar.getNumB());
-    		System.out.print("NUM C: " +borrar.getNumC());
-    		
-        }else System.out.print("CAPAZ NO CHE");
-    	
-    	
-        
     }
         
 
@@ -523,23 +293,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel pnlCTop;
     private javax.swing.JPanel pnlCenter;
     private javax.swing.JPanel pnlRoot;
-    private javax.swing.JPanel pnlSlide;
-    private producto produ;
-    
-    private String codigo="";
-    
-    private Map<Integer, String> marcaClave;
-    private static JTextField txtScaner;
-    private JTextField textField;
+    private javax.swing.JPanel pnlSlide; 
     private JPanel pnelRegistraColor;
-    private JLabel lblMarca;
-    private JLabel lblNombreColor;
-    private JTextField textField_2;
-    private JButton btnRegistrarMarca_1;
-    private JTextField textField_1;
-    private JTextField textField_3;
-    private JTextField textField_4;
-    private JTextField txtMarcaColor;
-    private JTextField txtProdMarca;
-    private JLabel lblDescripcion;
+    private JPanel pnelRegistrarMarca;
+    private JPanel pnelCargarProducto;
 }

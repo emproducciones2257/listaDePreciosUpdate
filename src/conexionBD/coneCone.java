@@ -8,9 +8,9 @@ import java.sql.SQLException;
 public class coneCone {
 
 	
-	public static Connection connect() {
+	public static Connection connect() throws SQLException {
         Connection conn = null;
-        String url = "C:/sqlite/db/papiLoto.db";
+        String url = "C:/sqlite/db/dbPrecios.db";
         File file = new File(url);
         
         if(file.exists()) {
@@ -23,6 +23,12 @@ public class coneCone {
              }
         }else {
         	System.out.println("NO ESTA LA BASE, ACA SE PODRIA CREAR");
+        	
+        	conn = DriverManager.getConnection("jdbc:sqlite:"+url);
+        	
+        	crearBD crear = new crearBD();
+        	
+        	crear.ejecutarScript();
 		}
 		return conn; 
     }		
