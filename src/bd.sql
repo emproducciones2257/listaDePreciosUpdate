@@ -1,9 +1,6 @@
 DROP TABLE IF EXISTS 'color'
 ;
 
-DROP TABLE IF EXISTS 'deArt'
-;
-
 DROP TABLE IF EXISTS 'marca'
 ;
 
@@ -23,14 +20,6 @@ CREATE TABLE 'color'
 )
 ;
 
-CREATE TABLE 'deArt'
-(
-	'idDeArt' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-	'codDesc' INTEGER NOT NULL,
-	'descripcion' TEXT NOT NULL
-)
-;
-
 CREATE TABLE 'marca'
 (
 	'idMarca' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
@@ -42,8 +31,9 @@ CREATE TABLE 'marca'
 CREATE TABLE 'preciosServidor'
 (
 	'idPreSer' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	'codigoPoducto' INTEGER NOT NULL,
 	'descArt' TEXT NOT NULL,
-	'precio' NUMERIC NOT NULL
+	'precio' DOUBLE NOT NULL
 )
 ;
 
@@ -57,6 +47,7 @@ CREATE TABLE 'producto'
 	'idColor' INTEGER NULL,
 	'unidadVenta' INTEGER NOT NULL DEFAULT 0,
 	'medida' INTEGER NULL,
+	'codBarProducto' INTEGER NOT NULL,
 	CONSTRAINT 'FK_producto_color' FOREIGN KEY ('idColor') REFERENCES 'color' ('idColor') ON DELETE No Action ON UPDATE No Action,
 	CONSTRAINT 'FK_producto_marca' FOREIGN KEY ('idMarca') REFERENCES 'marca' ('idMarca') ON DELETE No Action ON UPDATE No Action,
 	CONSTRAINT 'FK_producto_preciosServidor' FOREIGN KEY ('idPreSer') REFERENCES 'preciosServidor' ('idPreSer') ON DELETE No Action ON UPDATE No Action

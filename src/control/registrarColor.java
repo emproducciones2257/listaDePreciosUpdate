@@ -1,15 +1,10 @@
 package control;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-
-import conexionBD.DBColor;
-import conexionBD.DBMarca;
-import modelo.color;
-import modelo.marca;
+import java.awt.event.*;
+import conexionBD.*;
+import modelo.*;
 import views.pnlRegistrarColor;
+import views.ventanasAvisos;
 
 public class registrarColor implements ActionListener, KeyListener{
 	
@@ -18,26 +13,33 @@ public class registrarColor implements ActionListener, KeyListener{
 	private int cantidad = 0;
 	private String codigo ="";
 	public marca mar;
+	private ventanasAvisos aviso;
 	
 	public registrarColor(pnlRegistrarColor pnlColor) {
 		
 		this.pnlColor=pnlColor;
 		BDmarca = new DBMarca();
-		
+		aviso = new ventanasAvisos(pnlColor);
 		pnlColor.gettxtScaner().addKeyListener(this);
-		
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent e) { 
+	public void actionPerformed(ActionEvent e) {
 		
-		
-		if (!pnlColor.gettxtScaner().getText().equals("REGISTRAR MARCA")) {
-		
+		if ((pnlColor.gettxtScaner().getText().isEmpty()) || (pnlColor.getTxtNombreColor().getText().isEmpty())) {
+			
+			aviso.faltanDatos(ventanasAvisos.FALTAN_DATOS);
+			
+			cantidad = 0;
+			codigo ="";
+			pnlColor.limpiarElementos();
+			
+		} else {
 			color colTemp = new color();
 			
 			colTemp.setMarca(mar);
 			colTemp.setNombreColor(pnlColor.getTxtNombreColor().getText());
+			
 			if (pnlColor.gettxtCodigoColor().getText().isEmpty()) {
 				colTemp.setNroColor(0);
 			}else {colTemp.setNroColor(Integer.valueOf(pnlColor.gettxtCodigoColor().getText()));}
@@ -46,18 +48,8 @@ public class registrarColor implements ActionListener, KeyListener{
 			
 			BDcolor.registrarColor(colTemp);
 			
-			pnlColor.gettxtScaner().setText("");
-			pnlColor.gettxtCodigoColor().setText("");
-			pnlColor.getTxtNombreColor().setText("");
-			
-		}else {
-			
-			pnlColor.gettxtScaner().setText("");
-			pnlColor.gettxtCodigoColor().setText("");
-			pnlColor.getTxtNombreColor().setText("");
-			System.out.print("NO SE PUDO REGISTRAR, REGISTRAR MARCA");
+			pnlColor.limpiarElementos();
 		}
-
 	}
 		
 	marca obtenerMarca(int codigo){
@@ -85,13 +77,15 @@ public class registrarColor implements ActionListener, KeyListener{
 				
 			}else {
 				
-				pnlColor.gettxtScaner().setText("REGISTRAR MARCA");
+				aviso.faltanDatos(ventanasAvisos.REGISTRAR_MARCA);
+				pnlColor.limpiarElementos();
+				cantidad = 0;
+				codigo ="";
 			}
 			
 			 cantidad = 0;
 			 codigo ="";
 		}
-		
 	}
 
 	@Override
@@ -100,11 +94,9 @@ public class registrarColor implements ActionListener, KeyListener{
 		
 	}
 
-
 	@Override
 	public void keyTyped(KeyEvent e) {
 		// TODO Auto-generated method stub
 		
 	};
-
 }

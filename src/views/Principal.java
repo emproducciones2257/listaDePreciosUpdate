@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.plaf.basic.BasicButtonUI;
 
 import conexionBD.coneCone;
+import control.controlBtnPrincipal;
 
 import javax.swing.JTextField;
 import javax.swing.GroupLayout.Alignment;
@@ -22,51 +23,14 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JComboBox;
+import java.awt.BorderLayout;
+import java.awt.Panel;
 
 public class Principal extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Home
-     */
+
     public Principal() {
         initComponents();
-        JButton[] btns = {jButton1,jButton2,jButton3,jButton4,jButton5,jButton6};
-        
-        for (JButton btn : btns) {
-            btn.setBackground(new Color(21,25,28));
-            btn.setUI(new BasicButtonUI());
-            btn.addMouseListener(new MouseListener() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                	
-                	
-                	if(pnCCenter.isShowing()) {
-                		pnlCenter.setVisible(false);
-                	}else {
-                		pnlCenter.setVisible(true);
-					}
-                	
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    btn.setBackground(new Color(54,81,207));
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    btn.setBackground(new Color(21,25,28));
-                }
-            });
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -76,12 +40,10 @@ public class Principal extends javax.swing.JFrame {
         pnlRoot = new javax.swing.JPanel();
         pnlSlide = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jButton6 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnAlPedo = new javax.swing.JButton();
+        btnRegistro = new javax.swing.JButton();
+        btnGestionPrecios = new javax.swing.JButton();
+        btnConsultas = new javax.swing.JButton();
         pnlCenter = new javax.swing.JPanel();
         caed1 = new javax.swing.JPanel();
         pnlCTop = new javax.swing.JPanel();
@@ -103,49 +65,36 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(50, 150));
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 40));
 
-        jButton6.setBackground(new java.awt.Color(34, 40, 44));
-        jButton6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_trampoline_park_16px.png"))); // NOI18N
-        jButton6.setMaximumSize(new java.awt.Dimension(40, 40));
-        jButton6.setMinimumSize(new java.awt.Dimension(40, 40));
-        jButton6.setPreferredSize(new java.awt.Dimension(40, 40));
-        jPanel1.add(jButton6);
+        btnAlPedo.setBackground(new java.awt.Color(34, 40, 44));
+        btnAlPedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_trampoline_park_16px.png"))); // NOI18N
+        btnAlPedo.setMaximumSize(new java.awt.Dimension(40, 40));
+        btnAlPedo.setMinimumSize(new java.awt.Dimension(40, 40));
+        btnAlPedo.setPreferredSize(new java.awt.Dimension(40, 40));
+        btnAlPedo.addMouseListener(new controlBtnPrincipal(this));
+        jPanel1.add(btnAlPedo);
 
         pnlSlide.add(jPanel1);
 
-        jButton1.setBackground(new java.awt.Color(34, 40, 44));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_home_26px.png"))); // NOI18N
-        jButton1.setMaximumSize(new java.awt.Dimension(40, 40));
-        jButton1.setMinimumSize(new java.awt.Dimension(40, 40));
-        jButton1.setPreferredSize(new java.awt.Dimension(40, 40));
-        pnlSlide.add(jButton1);
+        btnRegistro.setBackground(new java.awt.Color(34, 40, 44));
+        btnRegistro.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_home_26px.png"))); // NOI18N
+        btnRegistro.setMaximumSize(new java.awt.Dimension(40, 40));
+        btnRegistro.setMinimumSize(new java.awt.Dimension(40, 40));
+        btnRegistro.setPreferredSize(new java.awt.Dimension(40, 40));
+        pnlSlide.add(btnRegistro);
 
-        jButton2.setBackground(new java.awt.Color(34, 40, 44));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_circled_24px.png"))); // NOI18N
-        jButton2.setMaximumSize(new java.awt.Dimension(40, 40));
-        jButton2.setMinimumSize(new java.awt.Dimension(40, 40));
-        jButton2.setPreferredSize(new java.awt.Dimension(40, 40));
-        pnlSlide.add(jButton2);
+        btnGestionPrecios.setBackground(new java.awt.Color(34, 40, 44));
+        btnGestionPrecios.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_circled_24px.png"))); // NOI18N
+        btnGestionPrecios.setMaximumSize(new java.awt.Dimension(40, 40));
+        btnGestionPrecios.setMinimumSize(new java.awt.Dimension(40, 40));
+        btnGestionPrecios.setPreferredSize(new java.awt.Dimension(40, 40));
+        pnlSlide.add(btnGestionPrecios);
 
-        jButton3.setBackground(new java.awt.Color(34, 40, 44));
-        jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_document_32px.png"))); // NOI18N
-        jButton3.setMaximumSize(new java.awt.Dimension(40, 40));
-        jButton3.setMinimumSize(new java.awt.Dimension(40, 40));
-        jButton3.setPreferredSize(new java.awt.Dimension(40, 40));
-        pnlSlide.add(jButton3);
-
-        jButton4.setBackground(new java.awt.Color(34, 40, 44));
-        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_define_location_26px.png"))); // NOI18N
-        jButton4.setMaximumSize(new java.awt.Dimension(40, 40));
-        jButton4.setMinimumSize(new java.awt.Dimension(40, 40));
-        jButton4.setPreferredSize(new java.awt.Dimension(40, 40));
-        pnlSlide.add(jButton4);
-
-        jButton5.setBackground(new java.awt.Color(34, 40, 44));
-        jButton5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_align_cell_content_left_50px.png"))); // NOI18N
-        jButton5.setMaximumSize(new java.awt.Dimension(40, 40));
-        jButton5.setMinimumSize(new java.awt.Dimension(40, 40));
-        jButton5.setPreferredSize(new java.awt.Dimension(40, 40));
-        pnlSlide.add(jButton5);
+        btnConsultas.setBackground(new java.awt.Color(34, 40, 44));
+        btnConsultas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_document_32px.png"))); // NOI18N
+        btnConsultas.setMaximumSize(new java.awt.Dimension(40, 40));
+        btnConsultas.setMinimumSize(new java.awt.Dimension(40, 40));
+        btnConsultas.setPreferredSize(new java.awt.Dimension(40, 40));
+        pnlSlide.add(btnConsultas);
 
         pnlRoot.add(pnlSlide, java.awt.BorderLayout.WEST);
 
@@ -204,15 +153,34 @@ public class Principal extends javax.swing.JFrame {
 
         caed1.add(pnCCenter, java.awt.BorderLayout.CENTER);
         pnCCenter.setLayout(null);
+                
+                pnlConsultaPrecios = new pnlConsultaPrecios();
+                pnCCenter.add(pnlConsultaPrecios);
+                pnlConsultaPrecios.setVisible(false);
+
+                pnlGestionCarga = new JPanel();
+                pnlGestionCarga.setBounds(10, 11, 849, 378);
+                pnlGestionCarga.setBackground(new java.awt.Color(34, 40, 44));
+                pnCCenter.add(pnlGestionCarga);
+                pnlGestionCarga.setLayout(null);
+                pnlGestionCarga.setVisible(false);
+                
+                 
+                 pnelRegistrarMarca = new pnlRegistraMarca();
+                 pnelRegistrarMarca.setBounds(0, 0, 251, 182);
+                 pnlGestionCarga.add(pnelRegistrarMarca);
+                 
+                 pnelRegistraColor = new pnlRegistrarColor();
+                 pnelRegistraColor.setBounds(306, 0, 251, 182);
+                 pnlGestionCarga.add(pnelRegistraColor);
+                 
+                 pnelCargarProducto = new pnlRegistrarProducto();
+                 pnelCargarProducto.setBounds(10, 185, 839, 193);
+                 pnlGestionCarga.add(pnelCargarProducto);
         
-        pnelRegistrarMarca = new pnlRegistraMarca();
-        pnCCenter.add(pnelRegistrarMarca);
-        
-        pnelRegistraColor = new pnlRegistrarColor();
-        pnCCenter.add(pnelRegistraColor);
-        
-        pnelCargarProducto = new pnlRegistrarProducto();
-        pnCCenter.add(pnelCargarProducto);
+        pnlGestionPrecios = new pnlGestionPrecios();
+        pnlGestionPrecios.setVisible(false);
+        pnCCenter.add(pnlGestionPrecios);
 
         pnlCBooton.setBackground(new java.awt.Color(34, 40, 44));
         pnlCBooton.setPreferredSize(new java.awt.Dimension(0, 100));
@@ -241,14 +209,13 @@ public class Principal extends javax.swing.JFrame {
 
 
     public static void main(String args[]) {
-    	
+
     	try {
 			coneCone.connect();
 			
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-    	
     	
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -275,16 +242,13 @@ public class Principal extends javax.swing.JFrame {
             }
         });
     }
-        
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel caed1;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
+    private javax.swing.JButton btnRegistro;
+    private javax.swing.JButton btnGestionPrecios;
+    private javax.swing.JButton btnConsultas;
+    private javax.swing.JButton btnAlPedo;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
@@ -296,5 +260,38 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel pnlSlide; 
     private JPanel pnelRegistraColor;
     private JPanel pnelRegistrarMarca;
-    private JPanel pnelCargarProducto;
+    private pnlRegistrarProducto pnelCargarProducto;
+    private JPanel pnlGestionCarga;
+    private JPanel pnlGestionPrecios;
+    private JPanel pnlConsultaPrecios;
+	
+    // geter y seterrrrr
+    
+    public javax.swing.JButton getBtnRegistro() {
+		return btnRegistro;
+	}
+
+	public javax.swing.JButton getBtnGestionPrecios() {
+		return btnGestionPrecios;
+	}
+
+	public javax.swing.JButton getBtnConsultas() {
+		return btnConsultas;
+	}
+
+	public javax.swing.JButton getBtnAlPedo() {
+		return btnAlPedo;
+	}
+
+	public JPanel getPnlGestionCarga() {
+		return pnlGestionCarga;
+	}
+
+	public JPanel getPnlGestionPrecios() {
+		return pnlGestionPrecios;
+	}
+
+	public JPanel getPnlConsultaPrecios() {
+		return pnlConsultaPrecios;
+	}
 }

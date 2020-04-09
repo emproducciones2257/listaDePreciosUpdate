@@ -1,0 +1,1 @@
+SELECT * from preciosServidor where "codigoPoducto"=963

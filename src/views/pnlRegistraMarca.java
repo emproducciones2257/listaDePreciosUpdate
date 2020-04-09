@@ -3,21 +3,12 @@ package views;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Label;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-
-import javax.swing.Action;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
-
-import control.controlFormatoCodBarr;
 import control.registrarMarca;
 
 public class pnlRegistraMarca extends JPanel {
@@ -54,7 +45,6 @@ public class pnlRegistraMarca extends JPanel {
 		add(txtNombreMarca);
 		add(btnRegistrarMarca);
 		
-		txtScaner.addKeyListener(new controlFormatoCodBarr(this));
 		btnRegistrarMarca.addActionListener(new registrarMarca(this));
 	}
 	
@@ -92,6 +82,9 @@ public class pnlRegistraMarca extends JPanel {
 	public JTextField getTxtNombreMarca() {
 		return txtNombreMarca;
 	}
-
 	
+	public void limpiarElementos() {
+		getTxtScaner().setText("");
+		getTxtNombreMarca().setText("");
+	}
 }

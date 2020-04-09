@@ -98,5 +98,11 @@ public class pnlRegistrarColor extends JPanel{
 	public JTextField gettxtScaner() {
 		return txtScaner;
 	}
+	
+	public void limpiarElementos() {
+		gettxtScaner().setText("");
+		gettxtCodigoColor().setText("");
+		getTxtNombreColor().setText("");
+	}
 
 }

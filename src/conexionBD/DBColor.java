@@ -1,21 +1,21 @@
 package conexionBD;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.ArrayList;
-
 import modelo.color;
+import views.ventanasAvisos;
 
 public class DBColor {
 	
 	 private PreparedStatement pre;
 	 private ResultSet resu;
+	 private ventanasAvisos avisos;
+	 
+	 public DBColor() {
+		 avisos = new ventanasAvisos(null);
+	 }
 	 
 	 public void registrarColor(color color) {
-		 
-		 System.out.println(color.getMarca().getIdMarca());
-         System.out.println(color.getNroColor());
-         System.out.println(color.getNombreColor());
 			
 	        try {
 	            pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionRegistrarColor);
@@ -23,11 +23,12 @@ public class DBColor {
 	            pre.setInt(2, color.getNroColor());
 	            pre.setString(3, color.getNombreColor());
 	            pre.execute();
-	            System.out.println("cargar COLOR");
+	            avisos.cargaCorrecta(ventanasAvisos.CARGA_OK);
+	            pre.close();
+	            resu.close();
 	            coneCone.connect().close();
-	            
 	        } catch (Exception e) {
-	        	System.out.println("No se pudo cargar COLOR" + e.getCause());
+	        	avisos.cargaFallida(ventanasAvisos.CARGA_ERROR,e.getMessage());
 	        }
 	    }
 
@@ -47,11 +48,12 @@ public class DBColor {
 				cTemp.setNombreColor(resu.getString("nombreColor"));
 				coloresMarca.add(cTemp);
 			}
-
-			
+			  pre.close();
+	           resu.close();
+	           coneCone.connect().close();
 		} catch (Exception e) {
 			// TODO: handle exception
-			System.out.println("No pude conseguir los colores" + e.getMessage());
+			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA,e.getMessage());
 		}
 
 		return coloresMarca;

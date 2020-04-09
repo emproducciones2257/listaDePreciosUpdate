@@ -3,42 +3,81 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import conexionBD.DBMarca;
-import conexionBD.coneCone;
 import modelo.marca;
 import views.pnlRegistraMarca;
+import views.ventanasAvisos;
 
-public class registrarMarca implements ActionListener{
+public class registrarMarca implements ActionListener, KeyListener{
 	
 	private pnlRegistraMarca pnl;
 	private DBMarca BDmarca;
+	private ventanasAvisos avisos;
+	private int cantidad = 0;
+	private String codigo ="";
 	
 	public registrarMarca(pnlRegistraMarca pnl) {
 		this.pnl=pnl;
 		BDmarca = new DBMarca();
+		avisos = new ventanasAvisos(pnl);
+		pnl.getTxtScaner().addKeyListener((this));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 			marca marTemp = new modelo.marca();
 			
-			if(!verificarExisteCodigo(Integer.valueOf(pnl.getTxtScaner().getText()))) {
-				marTemp.setCodBarMarca(Integer.valueOf(pnl.getTxtScaner().getText()));
-				marTemp.setNombreMarca(pnl.getTxtNombreMarca().getText());
+			if((pnl.getTxtScaner().getText().isEmpty()) || (pnl.getTxtNombreMarca().getText().isEmpty())) {
 				
-				BDmarca.registrarMarca(marTemp);
+				avisos.faltanDatos(ventanasAvisos.FALTAN_DATOS);
 				
-				pnl.getTxtNombreMarca().setText("");
-				pnl.getTxtScaner().setText("");
+				pnl.limpiarElementos();
+				cantidad = 0;
+				codigo ="";
 				
 			}else {
-				System.out.println("CODIGO DE MARCA EXISTENTE");
-				pnl.getTxtScaner().setText("");
-			}
-			
+				
+				if(!verificarExisteCodigo(Integer.valueOf(pnl.getTxtScaner().getText()))) {
+					marTemp.setCodBarMarca(Integer.valueOf(pnl.getTxtScaner().getText()));
+					marTemp.setNombreMarca(pnl.getTxtNombreMarca().getText());
+					
+					BDmarca.registrarMarca(marTemp);
+					
+					pnl.limpiarElementos();		
+					
+				}else {
+					
+					avisos.datoExistente(ventanasAvisos.MARCA_REGISTRADA);					
+					pnl.limpiarElementos();
+				}
+		}	
 	}
 	
-	boolean verificarExisteCodigo(int codigo){return BDmarca.verificarCodigo(codigo);};
+	boolean verificarExisteCodigo(int codigo){return BDmarca.verificarCodigo(codigo);}
 
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		codigo = String.valueOf(pnl.getTxtScaner().getText());
+		cantidad++;
+		
+		if (cantidad==14) {
+			System.out.print(codigo);
+			pnl.getTxtScaner().setText(codigo.substring(3,8));
+			 cantidad = 0;
+			 codigo ="";
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub	
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+	};
 }

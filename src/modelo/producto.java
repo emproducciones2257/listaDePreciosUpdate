@@ -3,13 +3,14 @@ package modelo;
 public class producto {
 	
 	private int idProducto;
-	private descripcionArticulo descripcion;
 	private int cantidad;
-	private color color;
-	private int idPrecio;//enlace a los datos de los precios
-	private marca marca;
+	private int idColor;
+	private int idPrecio;
+	private int idMarca;
 	private int medida;
 	private int unidadDeVenta = 0;
+	private String dtosExtras;
+	private int codBarr;
 	
 	
 	public int getIdProducto() {
@@ -18,23 +19,17 @@ public class producto {
 	public void setIdProducto(int idProducto) {
 		this.idProducto = idProducto;
 	}
-	public descripcionArticulo getDescripcion() {
-		return descripcion;
-	}
-	public void setDescripcion(descripcionArticulo descripcion) {
-		this.descripcion = descripcion;
-	}
 	public int getCantidad() {
 		return cantidad;
 	}
 	public void setCantidad(int cantidad) {
 		this.cantidad = cantidad;
 	}
-	public color getColor() {
-		return color;
+	public int getColor() {
+		return idColor;
 	}
-	public void setColor(color color) {
-		this.color = color;
+	public void setColor(int color) {
+		this.idColor = color;
 	}
 	public int getIdPrecio() {
 		return idPrecio;
@@ -42,11 +37,11 @@ public class producto {
 	public void setIdPrecio(int idPrecio) {
 		this.idPrecio = idPrecio;
 	}
-	public marca getMarca() {
-		return marca;
+	public int getMarca() {
+		return idMarca;
 	}
-	public void setMarca(marca marca) {
-		this.marca = marca;
+	public void setMarca(int marca) {
+		this.idMarca = marca;
 	}
 	public int getMedida() {
 		return medida;
@@ -60,11 +55,23 @@ public class producto {
 	public void setUnidadDeVenta(int unidadDeVenta) {
 		this.unidadDeVenta = unidadDeVenta;
 	}
-	
+	public String getDtosExtras() {
+		return dtosExtras;
+	}
+	public void setDtosExtras(String dtosExtras) {
+		this.dtosExtras = dtosExtras;
+	}
+
+	public int getCodBarr() {
+		return codBarr;
+	}
+	public void setCodBarr(int codBarr) {
+		this.codBarr = codBarr;
+	}
 	@Override
 	public String toString() {
-		return "producto [idProducto=" + idProducto + ", descripcion=" + descripcion + ", cantidad=" + cantidad
-				+ ", color=" + color + ", idPrecio=" + idPrecio + ", marca=" + marca + ", medida=" + medida
-				+ ", unidadDeVenta=" + unidadDeVenta + "]";
+		return "producto [idProducto=" + idProducto + ", cantidad=" + cantidad + ", idColor=" + idColor + ", idPrecio="
+				+ idPrecio + ", idMarca=" + idMarca + ", medida=" + medida + ", unidadDeVenta=" + unidadDeVenta
+				+ ", dtosExtras=" + dtosExtras + "]";
 	}
 }

@@ -1,0 +1,1 @@
+ SELECT * FROM producto WHERE codBarProducto = 1 AND idMarca = 50

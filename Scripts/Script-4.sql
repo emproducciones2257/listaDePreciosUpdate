@@ -1,0 +1,1 @@
+SELECT * FROM preciosServidor ps WHERE descArt LIKE '%REPUE%'

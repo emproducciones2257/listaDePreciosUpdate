@@ -1,23 +1,13 @@
 package views;
 
-import java.awt.Color;
-import java.awt.Font;
-
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
+import java.awt.*;
+import java.util.List;
+import javax.swing.*;
+import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
-
+import conexionBD.dbGestionPrecios;
 import control.controlRegistrarProducto;
-import modelo.color;
+import modelo.preciosDocumento;
 
 public class pnlRegistrarProducto extends JPanel {
 	
@@ -30,6 +20,7 @@ public class pnlRegistrarProducto extends JPanel {
     private JTextField txtCodProducto;
     private JTextField txtCodMarca;
     private JScrollPane scpDescripcion;
+    private JScrollPane pnlBD;
     private JTextArea txtDescripcionProducto;
     private JLabel lblDescripcion;
     private JTextField txtBusquedPrecio;
@@ -37,11 +28,17 @@ public class pnlRegistrarProducto extends JPanel {
     private JTextField txtUVenta;
     private JLabel lblNewLabel_1;
     private JTable visorDatosPrecios;
-	
+    private DefaultTableModel aModel;
+    private dbGestionPrecios DBGP;
+    
+    private String [] nombreColumnas = {"Descripcion","Precio"};
 	
 	public pnlRegistrarProducto() {
 		
+		DBGP = new dbGestionPrecios();
+		
 		crearComponentes();
+		modeloTabla(DBGP.obtenerListadoProductosPrecios());
 		
 		//propiedades Titulo
 		tituloPanelCargaProducto.setTitleColor((Color.WHITE));
@@ -62,18 +59,16 @@ public class pnlRegistrarProducto extends JPanel {
 		 add(lblCodigo_1);
 		 add(txtCodProducto);
 		 add(txtCodMarca);
-		 add(scpDescripcion);
+		 add(scpDescripcion);		 
 		 add(lblDescripcion);
 		 add(txtBusquedPrecio);
 		 add(lblNewLabel);
 		 add(txtUVenta);
 		 add(lblNewLabel_1);
-		 add(visorDatosPrecios);		 
+		 add(pnlBD);		 
 		 
-		 btnRegistrarProd.addActionListener(new controlRegistrarProducto(this));
-		 
+		 btnRegistrarProd.addActionListener(new controlRegistrarProducto(this)); 
 	}
-	
 
 	private void crearComponentes() {
 
@@ -102,6 +97,7 @@ public class pnlRegistrarProducto extends JPanel {
         txtCodProducto = new JTextField();
         txtCodProducto.setColumns(10);
         txtCodProducto.setBounds(102, 104, 113, 30);
+        txtCodProducto.setEditable(false);
         
         txtCodMarca = new JTextField();
         txtCodMarca.setBounds(102, 22, 113, 30);
@@ -111,7 +107,7 @@ public class pnlRegistrarProducto extends JPanel {
         scpDescripcion.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         scpDescripcion.setBounds(601, 57, 208, 77);
         
-        JTextArea txtDescripcionProducto = new JTextArea();
+        txtDescripcionProducto = new JTextArea();
         scpDescripcion.setViewportView(txtDescripcionProducto);
         
         lblDescripcion = new JLabel("Descripcion");
@@ -120,7 +116,7 @@ public class pnlRegistrarProducto extends JPanel {
         lblDescripcion.setBounds(675, 29, 75, 14);
         
         txtBusquedPrecio = new JTextField();
-        txtBusquedPrecio.setBounds(251, 55, 314, 30);
+        txtBusquedPrecio.setBounds(277, 22, 314, 30);
         
         lblNewLabel = new JLabel("U. Venta");
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -129,34 +125,58 @@ public class pnlRegistrarProducto extends JPanel {
         
         txtUVenta = new JTextField();
         txtUVenta.setBounds(102, 155, 113, 30);        
+        txtUVenta.setText("0");
         
-        lblNewLabel_1 = new JLabel("Buscar Precio");
+        lblNewLabel_1 = new JLabel("Buscar");
         lblNewLabel_1.setForeground(Color.WHITE);
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNewLabel_1.setBounds(351, 29, 113, 14);
+        lblNewLabel_1.setBounds(225, 29, 49, 14);
         
         visorDatosPrecios = new JTable();
-        
-        visorDatosPrecios.setModel(new DefaultTableModel(
-        	new Object[][] {
-        	},
-        	new String[] {
-        		"Producto", "Producto"
-        	}
-        ) {
-        	Class[] columnTypes = new Class[] {
-        		Integer.class, String.class
-        	};
-        	public Class getColumnClass(int columnIndex) {
-        		return columnTypes[columnIndex];
-        	}
-        });
-        visorDatosPrecios.setColumnSelectionAllowed(true);
-        visorDatosPrecios.setCellSelectionEnabled(true);
-        visorDatosPrecios.setBounds(251, 107, 314, 57);
+   
+        pnlBD = new JScrollPane(visorDatosPrecios);
+        pnlBD.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        pnlBD.setBounds(225, 57, 366, 125);
+	}
+	
+	
+	public void modeloTabla(List<preciosDocumento> lista) {
 		
+		Object O[]=null;
+		
+		 aModel = new DefaultTableModel();
+		 aModel = (DefaultTableModel) visorDatosPrecios.getModel();
+	     aModel.setColumnIdentifiers(nombreColumnas);
+
+	     
+	     if(!lista.isEmpty()) {
+	    	 for (int i = 0; i < lista.size(); i++) {
+	    		 aModel.addRow(O);
+	    		 aModel.setValueAt(lista.get(i).getProd(), i, 0);
+	    		 aModel.setValueAt(lista.get(i).getPrecio(), i, 1); 
+			}
+	     }
+	    
+	     visorDatosPrecios.setModel(aModel);
+	}
+	
+	public void resetearComponentes() {
+		getTxtCodMarca().setText("");
+		getJcbColor().removeAllItems();
+		getTxtCodMarca().setText("");
+		getTxtDescripcionProducto().setText("");
+		getTxtBusquedPrecio().setText("");
+		getTxtCodProducto().setText("");
+		limpiarTabla();
 	}
 
+	 public void limpiarTabla() {
+		// TODO Auto-generated method stub
+		int a = getaModel().getRowCount()-1;
+		for(int i=a; i>=0;i--){
+			getaModel().removeRow(i);
+		}
+	}
 
 	public TitledBorder getTituloPanelCargaProducto() {
 		return tituloPanelCargaProducto;
@@ -205,6 +225,16 @@ public class pnlRegistrarProducto extends JPanel {
 
 	public JTable getVisorDatosPrecios() {
 		return visorDatosPrecios;
+	}
+
+
+	public DefaultTableModel getaModel() {
+		return aModel;
+	}
+
+
+	public void setaModel(DefaultTableModel aModel) {
+		this.aModel = aModel;
 	}
 
 }

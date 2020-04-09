@@ -1,0 +1,1 @@
+SELECT * FROM producto WHERE codBarProducto = 3801; idMarca = 1
