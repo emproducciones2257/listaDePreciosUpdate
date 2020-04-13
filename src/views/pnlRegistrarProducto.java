@@ -167,6 +167,7 @@ public class pnlRegistrarProducto extends JPanel {
 		getTxtDescripcionProducto().setText("");
 		getTxtBusquedPrecio().setText("");
 		getTxtCodProducto().setText("");
+		getTxtUVenta().setText("0");
 		limpiarTabla();
 	}
 

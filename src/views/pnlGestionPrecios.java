@@ -15,7 +15,7 @@ public class pnlGestionPrecios extends JPanel{
 	private JLabel lblNewLabel;
     private JLabel lblNewLabel_1;
     private JLabel lblNewLabel_2;
-    private JTextField textField;
+    private JTextField txtPorcentaje;
     private JLabel lblNewLabel_3;
     private JButton btnProcesar;
     private JTable tblListadoPrecios;
@@ -46,7 +46,7 @@ public class pnlGestionPrecios extends JPanel{
 		add(lblNewLabel);
 		add(lblNewLabel_1);
 		add(lblNewLabel_2);
-		add(textField);
+		add(txtPorcentaje);
 		add(lblNewLabel_3);
 		add(btnProcesar);
 		add(pnlTabla);
@@ -87,9 +87,9 @@ public class pnlGestionPrecios extends JPanel{
         lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNewLabel_2.setBounds(307, 4, 85, 14);
         
-        textField = new JTextField();
-        textField.setBounds(296, 30, 113, 30);
-        textField.setColumns(10);
+        txtPorcentaje = new JTextField();
+        txtPorcentaje.setBounds(296, 30, 113, 30);
+        txtPorcentaje.setColumns(10);
         
         lblNewLabel_3 = new JLabel("Procesar");
         lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -162,8 +162,8 @@ public class pnlGestionPrecios extends JPanel{
 		return lblEstadoArchivo;
 	}
 
-	public JTextField getTextField() {
-		return textField;
+	public JTextField getTxtPorcentaje() {
+		return txtPorcentaje;
 	}
 
 	public JButton getBtnProcesar() {

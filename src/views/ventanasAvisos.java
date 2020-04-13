@@ -90,4 +90,9 @@ public class ventanasAvisos {
 		JOptionPane.showMessageDialog(vista, productoNReg, "No Registrado", JOptionPane.WARNING_MESSAGE);
 	}
 
+	public void errorCargaDtos(String cargaError, String message) {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(vista, cargaError + " " + message, "Error carga fecha y porcentaje", JOptionPane.ERROR_MESSAGE);
+	}
+
 }

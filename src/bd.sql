@@ -4,6 +4,9 @@ DROP TABLE IF EXISTS 'color'
 DROP TABLE IF EXISTS 'marca'
 ;
 
+DROP TABLE IF EXISTS 'dtosNecesarios'
+;
+
 DROP TABLE IF EXISTS 'preciosServidor'
 ;
 
@@ -17,6 +20,14 @@ CREATE TABLE 'color'
 	'codColor' INTEGER NULL,
 	'nombreColor' TEXT NOT NULL,
 	CONSTRAINT 'FK_color_marca' FOREIGN KEY ('idMarca') REFERENCES 'marca' ('idMarca') ON DELETE No Action ON UPDATE No Action
+)
+;
+
+CREATE TABLE 'dtosNecesarios'
+(
+	'idDtos' INTEGER NOT NULL PRIMARY KEY,
+	'fechaBD' TEXT NOT NULL,
+	'porcenta' NUMERIC NOT NULL
 )
 ;
 

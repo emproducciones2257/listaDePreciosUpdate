@@ -22,10 +22,12 @@ public class instruccionesSQL {
 	
 	//instrucciones tabla productos
 	public static String instruccionRegistrarProducto="INSERT INTO producto VALUES (NULL,?,?,?,?,?,?,?,?)";
-	public static String instruccionConsultarPrecio = "SELECT producto.dtosExtras, preciosServidor.precio FROM producto INNER JOIN preciosServidor ON producto.idPreSer = preciosServidor.idPreSer WHERE codBarProducto = ? AND idMarca = ?";
+	public static String instruccionConsultarPrecio = "SELECT producto.dtosExtras, producto.unidadVenta, preciosServidor.precio FROM producto INNER JOIN preciosServidor ON producto.idPreSer = preciosServidor.idPreSer WHERE codBarProducto = ? AND idMarca = ?";
 	
-	
-	
-	
+	//instrucciones tabla dtosnecesarios
+	public static String instruccionObtenerRegistrosDtos="SELECT * FROM dtosNecesarios";
+	public static String instruccionRegistroInicialDtos = "INSERT INTO dtosNecesarios VALUES (NULL,?,?)";
+	public static String instruccionUpdateDtosNece = "UPDATE dtosNecesarios SET fechaBD = ? , porcenta = ? WHERE idDtos = ?";
 
+	
 }

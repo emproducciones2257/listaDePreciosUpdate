@@ -1,19 +1,24 @@
 package views;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import control.controlConsultaPrecios;
+import modelo.produConPreci;
 
 public class pnlConsultaPrecios extends JPanel{
 	
     private JTextField txtBuscarCB;
     private JLabel lblPrecio;
     private JLabel lblTotalParcial;
-    private JTextArea txtDescripcion;
+    private JLabel lblDescripcion;
     private JScrollPane jSPTabla;
     private JTable tblProductosVendidos;
     private JButton btnNuevaVta;
+    private TablaOtraclase tablaArtenativa;
+    
+    private String [] nombreColumnas = {"ID","Descripcion","Precio","Cantidad","SumRes","Borrar"};
 
 	public pnlConsultaPrecios() {
 		// TODO Auto-generated constructor stub
@@ -30,18 +35,19 @@ public class pnlConsultaPrecios extends JPanel{
         add(txtBuscarCB);
         add(lblPrecio);
         add(lblTotalParcial);
-        add(txtDescripcion);
+        add(lblDescripcion);
         add(jSPTabla);
         add(btnNuevaVta);   
         
         btnNuevaVta.addActionListener(new controlConsultaPrecios(this));
+        tablaArtenativa = new TablaOtraclase();
 	}
 
 	private void crearComponentes() {
 		// TODO Auto-generated method stub
 		
 		txtBuscarCB = new JTextField();
-        txtBuscarCB.setBounds(668, 21, 146, 30);
+        txtBuscarCB.setBounds(641, 21, 146, 30);
         txtBuscarCB.setColumns(10);
         
         lblPrecio = new JLabel("$ 0");
@@ -54,27 +60,49 @@ public class pnlConsultaPrecios extends JPanel{
         lblTotalParcial.setForeground(Color.GREEN);
         lblTotalParcial.setFont(new Font("Tahoma", Font.PLAIN, 34));
         lblTotalParcial.setBackground(Color.WHITE);
-        lblTotalParcial.setBounds(406, 311, 178, 56);
+        lblTotalParcial.setBounds(296, 311, 288, 56);
         
-        txtDescripcion = new JTextArea();
-        txtDescripcion.setBounds(668, 94, 146, 90);
+        lblDescripcion = new JLabel();
+        lblDescripcion.setForeground(Color.WHITE);
+        lblDescripcion.setBounds(597, 94, 242, 120);
         
         tblProductosVendidos = new JTable();
-        
+
         jSPTabla = new JScrollPane();
         jSPTabla.setBounds(24, 21, 563, 285);
         jSPTabla.setViewportView(tblProductosVendidos);
         
         btnNuevaVta = new JButton("NUEVA VENTA");
-        btnNuevaVta.setBounds(683, 334, 131, 23);
+        btnNuevaVta.setBounds(668, 338, 131, 23);
 	}
-
-	public JTextArea getTxtDescripcion() {
-		return txtDescripcion;
+	
+	public void modeloTabla(ArrayList<produConPreci> art) {
+		
+		if(art.size()>1) {
+			limpiarTabla();
+		}
+		tablaArtenativa.ver_tabla(tblProductosVendidos, art);
 	}
-
-	public void setTxtDescripcion(JTextArea txtDescripcion) {
-		this.txtDescripcion = txtDescripcion;
+	
+	public void limpiarComponenetes () {
+		getTxtBuscarCB().setText("");
+		getLblPrecio().setText("$ "+0);
+		getLblDescripcion().setText("");
+		getLblTotalParcial().setText("Total: $ 0");
+		getTxtBuscarCB().setFocusable(true);
+	}
+	
+	public void limpiarTabla() {
+		// TODO Auto-generated method stub
+			DefaultTableModel aModel = (DefaultTableModel) tblProductosVendidos.getModel();
+			int a = aModel.getRowCount()-1;
+			for(int i=a; i>=0;i--){
+				aModel.removeRow(i);
+		}
+	}
+	
+	public JLabel getLblDescripcion() {
+		return lblDescripcion;
 	}
 
 	public JTextField getTxtBuscarCB() {

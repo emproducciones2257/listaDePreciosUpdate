@@ -1,0 +1,1 @@
+SELECT producto.dtosExtras, preciosServidor.precio FROM producto INNER JOIN preciosServidor ON producto.idPreSer = preciosServidor.idPreSer WHERE codBarProducto = 8856 AND idMarca = 2

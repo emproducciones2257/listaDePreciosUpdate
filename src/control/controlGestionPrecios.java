@@ -13,8 +13,10 @@ import javax.swing.table.TableColumn;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
+import conexionBD.DBDtos;
 import conexionBD.dbGestionPrecios;
 import modelo.preciosDocumento;
+import views.Principal;
 import views.pnlGestionPrecios;
 import views.ventanasAvisos;
 
@@ -24,8 +26,8 @@ public class controlGestionPrecios implements ActionListener{
 	private File archivo = new File("");
 	private ArrayList<preciosDocumento> precios;
 	private dbGestionPrecios DBGP;
+	private DBDtos DBDT;
 	private ventanasAvisos avisos;
-
 	
 	public controlGestionPrecios(pnlGestionPrecios pnlPrecios) {
 		// TODO Auto-generated constructor stub
@@ -34,6 +36,7 @@ public class controlGestionPrecios implements ActionListener{
 		pnlPrecios.getBtnProcesar().addActionListener(this);
 		precios = new ArrayList<preciosDocumento>();
 		DBGP = new dbGestionPrecios();
+		DBDT = new DBDtos();
 		avisos = new ventanasAvisos(pnlPrecios);
 	}
 
@@ -45,8 +48,18 @@ public class controlGestionPrecios implements ActionListener{
 			obtenerArchivo();		}
 		
 		if (e.getSource().equals(pnlPrecios.getBtnProcesar())) {
+			
 			extraerTextoPdf(archivo);
 			DBGP.cargarADB(precios);
+			
+			if(!pnlPrecios.getTxtPorcentaje().getText().isEmpty()) {
+				int por = Integer.parseInt(pnlPrecios.getTxtPorcentaje().getText());
+				DBDT.actualiazarDtos("FECHA",por);
+				Principal.refrescarDatos();
+			}else {
+				DBDT.actualiazarDtos("FECHA 3",0);
+				Principal.refrescarDatos();
+			}
 		}
 	}
 	
@@ -64,7 +77,6 @@ public class controlGestionPrecios implements ActionListener{
 	            archivo = b.getSelectedFile().getAbsoluteFile();
 	            pnlPrecios.getLblEstadoArchivo().setText("Archivo cargado correctamente");
 	     }else {
-			System.out.println("archivo erroneo");
 			avisos.CargaErronea(ventanasAvisos.ERROR_CARGA_ARCHIVO);
 		}
 	}

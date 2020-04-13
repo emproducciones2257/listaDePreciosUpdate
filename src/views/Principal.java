@@ -1,42 +1,44 @@
 package views;
 
 import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import javax.swing.JButton;
-import javax.swing.plaf.basic.BasicButtonUI;
 
+import conexionBD.DBDtos;
 import conexionBD.coneCone;
 import control.controlBtnPrincipal;
-
-import javax.swing.JTextField;
+import modelo.dtosNecesarios;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
-import java.awt.Font;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JTable;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.JComboBox;
-import java.awt.BorderLayout;
-import java.awt.Panel;
+
 
 public class Principal extends javax.swing.JFrame {
 
 
     public Principal() {
+    	
         initComponents();
+        
+        try {
+			coneCone.connect();
+			refrescarDatos();
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+    }
+    
+    public static void refrescarDatos() {
+    	dtos = DBDtos.obtenerRegistro();
+    	if(dtos != null) {
+			lblFechaBD.setText("Fecha Base: " + dtos.getFechaDB());
+		}
     }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {        
-        
+
         pnlRoot = new javax.swing.JPanel();
         pnlSlide = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
@@ -114,7 +116,7 @@ public class Principal extends javax.swing.JFrame {
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Listado de Precios");
         
-        JLabel lblFechaBD = new JLabel("Fecha Base de datos:");
+        lblFechaBD = new JLabel("Fecha Base de datos:");
         lblFechaBD.setForeground(Color.WHITE);
 
         javax.swing.GroupLayout pnlCTopLayout = new javax.swing.GroupLayout(pnlCTop);
@@ -165,7 +167,6 @@ public class Principal extends javax.swing.JFrame {
                 pnlGestionCarga.setLayout(null);
                 pnlGestionCarga.setVisible(false);
                 
-                 
                  pnelRegistrarMarca = new pnlRegistraMarca();
                  pnelRegistrarMarca.setBounds(0, 0, 251, 182);
                  pnlGestionCarga.add(pnelRegistrarMarca);
@@ -204,18 +205,13 @@ public class Principal extends javax.swing.JFrame {
 
         getContentPane().add(pnlRoot, java.awt.BorderLayout.CENTER);
         
+        DBDtos = new DBDtos();
+        
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-
+    
     public static void main(String args[]) {
-
-    	try {
-			coneCone.connect();
-			
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
     	
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
@@ -264,6 +260,9 @@ public class Principal extends javax.swing.JFrame {
     private JPanel pnlGestionCarga;
     private JPanel pnlGestionPrecios;
     private JPanel pnlConsultaPrecios;
+    private static JLabel lblFechaBD;
+    private static DBDtos DBDtos;
+    public static dtosNecesarios dtos;
 	
     // geter y seterrrrr
     
@@ -294,4 +293,9 @@ public class Principal extends javax.swing.JFrame {
 	public JPanel getPnlConsultaPrecios() {
 		return pnlConsultaPrecios;
 	}
+
+	public static dtosNecesarios getDtos() {
+		return dtos;
+	}
+	
 }
