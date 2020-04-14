@@ -1,18 +1,13 @@
 package control;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.TableColumn;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
-
 import conexionBD.DBDtos;
 import conexionBD.dbGestionPrecios;
 import modelo.preciosDocumento;
@@ -28,6 +23,7 @@ public class controlGestionPrecios implements ActionListener{
 	private dbGestionPrecios DBGP;
 	private DBDtos DBDT;
 	private ventanasAvisos avisos;
+	private String fecha;
 	
 	public controlGestionPrecios(pnlGestionPrecios pnlPrecios) {
 		// TODO Auto-generated constructor stub
@@ -45,20 +41,35 @@ public class controlGestionPrecios implements ActionListener{
 		// TODO Auto-generated method stub
 		
 		if (e.getSource().equals(pnlPrecios.getBtnBuscarArchivo())) {
-			obtenerArchivo();		}
+			obtenerArchivo();		
+		}
 		
 		if (e.getSource().equals(pnlPrecios.getBtnProcesar())) {
 			
-			extraerTextoPdf(archivo);
-			DBGP.cargarADB(precios);
+			if((!archivo.isFile())&&(pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
+				avisos.faltanDatos(ventanasAvisos.FALTAN_DATOS);
+			}
 			
-			if(!pnlPrecios.getTxtPorcentaje().getText().isEmpty()) {
-				int por = Integer.parseInt(pnlPrecios.getTxtPorcentaje().getText());
-				DBDT.actualiazarDtos("FECHA",por);
+			if((archivo.isFile())&&(pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
+				extraerTextoPdf(archivo);
+				DBGP.cargarADB(precios);
+				archivo = new File("");
+				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
+			}
+			
+			if((!archivo.isFile())&&(!pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
+				DBDT.actualiazarPorcentaje(Integer.parseInt(pnlPrecios.getTxtPorcentaje().getText()));
+				
+			}
+			
+			if((archivo.isFile())&&(!pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
+				extraerTextoPdf(archivo);
+				DBDT.actualiazarDtos(
+						fecha,
+						Integer.parseInt(pnlPrecios.getTxtPorcentaje().getText()));
 				Principal.refrescarDatos();
-			}else {
-				DBDT.actualiazarDtos("FECHA 3",0);
-				Principal.refrescarDatos();
+				archivo = new File("");
+				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
 			}
 		}
 	}
@@ -94,7 +105,9 @@ public class controlGestionPrecios implements ActionListener{
             String textoRecuperado = extraccion.getText(documento);
 			
             documento.close();
-                        
+            
+            fecha = obtenerFechaDocumento(textoRecuperado);
+            
             String temp = quitarEncabezado(textoRecuperado);
         
             pruebaDelimitador(temp); 
@@ -105,7 +118,20 @@ public class controlGestionPrecios implements ActionListener{
             }	
 	}
         
-    private String quitarEncabezado(String t){
+    private String obtenerFechaDocumento(String textoRecuperado) {
+    	
+    	Scanner escaner = new Scanner(textoRecuperado);
+    	String deco;
+    	
+    	for (int i = 0; i < 3; i++) {
+			escaner.nextLine();
+		}
+    	deco = escaner.nextLine().replace("CASA CENTRAL: LARREA 174  TEL/FAX: 4952-3908 4954-5827 4951-8033 ", "");
+		escaner.close();
+		return deco;
+	}
+
+	private String quitarEncabezado(String t){
             String textoListo="";
             
             String temp;
@@ -127,6 +153,7 @@ public class controlGestionPrecios implements ActionListener{
                         textoListo= textoListo+temp +"\n"; 
                     }
                 }
+                escaner.close();
         return textoListo; 
         }
         
