@@ -53,13 +53,14 @@ public class controlGestionPrecios implements ActionListener{
 			if((archivo.isFile())&&(pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
 				extraerTextoPdf(archivo);
 				DBGP.cargarADB(precios);
+				DBDT.cargaInicialDtos(fecha,0);
+				Principal.refrescarDatos();
 				archivo = new File("");
 				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
 			}
 			
 			if((!archivo.isFile())&&(!pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
 				DBDT.actualiazarPorcentaje(Integer.parseInt(pnlPrecios.getTxtPorcentaje().getText()));
-				
 			}
 			
 			if((archivo.isFile())&&(!pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
