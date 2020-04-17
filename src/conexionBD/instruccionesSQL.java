@@ -18,6 +18,7 @@ public class instruccionesSQL {
 	public static String instruccionCargaProductoPrecio="INSERT INTO preciosServidor VALUES (NULL,?,?,?)";
 	public static String instruccionActualizarProductoPrecio="UPDATE preciosServidor SET precio = ? WHERE codigoPoducto =?";
 	public static String instruccionRecuperarProductosFiltrados="SELECT  * FROM preciosServidor WHERE \"descArt\" LIKE ";
+	public static String instruccionActualizarProducto = "UPDATE preciosServidor SET descArt=?, precio=?, codigoPoducto=? WHERE idPreSer=?";
 	
 	
 	//instrucciones tabla productos
@@ -29,5 +30,6 @@ public class instruccionesSQL {
 	public static String instruccionRegistroInicialDtos = "INSERT INTO dtosNecesarios VALUES (NULL,?,?)";
 	public static String instruccionUpdateDtosNece = "UPDATE dtosNecesarios SET fechaBD = ? , porcenta = ? WHERE idDtos = ?";
 	public static String instruccionUpdatePorcentaje = "UPDATE dtosNecesarios SET porcenta = ? WHERE idDtos = ?";
+
 	
 }

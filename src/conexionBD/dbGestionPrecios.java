@@ -3,6 +3,7 @@ package conexionBD;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import modelo.preciosDocumento;
@@ -18,7 +19,6 @@ public class dbGestionPrecios {
 		// TODO Auto-generated constructor stub
     	avisos = new ventanasAvisos(null);
 	}
-    
     
     public List<preciosDocumento> obtenerListadoProductosPrecios() {
     	
@@ -125,5 +125,20 @@ public class dbGestionPrecios {
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
 		}
 		return temp;
+	}
+
+	public void actualizarRegistro(preciosDocumento productoActualizar) {
+		try {
+			pre = coneCone.connect().prepareStatement(instruccionesSQL.instruccionActualizarProducto);
+			pre.setString(1, productoActualizar.getProd());
+			pre.setDouble(2, productoActualizar.getPrecio());
+			pre.setInt(3, productoActualizar.getCodigo());
+			pre.setInt(4, productoActualizar.getIdPrecio());
+			pre.executeUpdate();
+			pre.close();
+			coneCone.connect().close();
+		} catch (SQLException e) {
+			avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
+		}
 	}	
 }

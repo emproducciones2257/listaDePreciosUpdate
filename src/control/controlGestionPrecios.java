@@ -15,7 +15,7 @@ import views.Principal;
 import views.pnlGestionPrecios;
 import views.ventanasAvisos;
 
-public class controlGestionPrecios implements ActionListener{
+public class controlGestionPrecios implements ActionListener, MouseListener, KeyListener{
 	
 	private pnlGestionPrecios pnlPrecios;
 	private File archivo = new File("");
@@ -24,12 +24,16 @@ public class controlGestionPrecios implements ActionListener{
 	private DBDtos DBDT;
 	private ventanasAvisos avisos;
 	private String fecha;
+	private preciosDocumento productoActualizar;
+	private List<preciosDocumento> prepre;
 	
 	public controlGestionPrecios(pnlGestionPrecios pnlPrecios) {
 		// TODO Auto-generated constructor stub
-		
 		this.pnlPrecios = pnlPrecios;
 		pnlPrecios.getBtnProcesar().addActionListener(this);
+		pnlPrecios.getTblListadoPrecios().addMouseListener(this);
+		pnlPrecios.getBtnRegistrarPrecio().addActionListener(this);
+		pnlPrecios.getTxtFiltrarProducto().addKeyListener(this);
 		precios = new ArrayList<preciosDocumento>();
 		DBGP = new dbGestionPrecios();
 		DBDT = new DBDtos();
@@ -72,6 +76,21 @@ public class controlGestionPrecios implements ActionListener{
 				archivo = new File("");
 				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
 			}
+		}
+		
+		if (e.getSource().equals(pnlPrecios.getBtnRegistrarPrecio())) {
+			
+			if(!pnlPrecios.getTxtPrecio().getText().isEmpty()) {
+				productoActualizar.setPrecio(Double.parseDouble(pnlPrecios.getTxtPrecio().getText()));
+			}
+			
+			if(!pnlPrecios.getTxtDescripcion().getText().isEmpty()) {
+				productoActualizar.setProd(pnlPrecios.getTxtDescripcion().getText());
+			}
+			
+			DBGP.actualizarRegistro(productoActualizar);
+			pnlPrecios.limpiarTabla();
+			pnlPrecios.modeloTabla();
 		}
 	}
 	
@@ -216,6 +235,64 @@ public class controlGestionPrecios implements ActionListener{
                 precio="";
                 Leido = "";
             } 
-        } 
+        }
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		productoActualizar = pnlPrecios.retornarElemento(pnlPrecios.getTblListadoPrecios().getSelectedRow());
+		pnlPrecios.getTxtIdProducto().setText(productoActualizar.getIdPrecio()+"");
+		pnlPrecios.getTxtDescripcion().setText(productoActualizar.getProd());
+		pnlPrecios.getTxtPrecio().setText(productoActualizar.getPrecio()+"");
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		
+		prepre = DBGP.obtenerListadoProductosPreciosFiltrados(pnlPrecios.getTxtFiltrarProducto().getText());
+		
+		if (!prepre.isEmpty()) {
+			pnlPrecios.limpiarTabla();
+			pnlPrecios.setLista(prepre);
+			pnlPrecios.modeloTabla();
+		}else {
+			pnlPrecios.limpiarTabla();
+		}	
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+		// TODO Auto-generated method stub
+		
+	} 
 
 }

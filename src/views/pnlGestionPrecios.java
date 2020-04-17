@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -21,7 +22,7 @@ public class pnlGestionPrecios extends JPanel{
     private JTable tblListadoPrecios;
 	private JLabel lblNewLabel_4;
     private JTextField txtIdProducto;
-    private JTextField txtDescripcion;
+    private JTextArea txtDescripcion;
     private JTextField txtPrecio;
     private JLabel lblNewLabel_5;
     private JLabel lblNewLabel_6;
@@ -30,6 +31,10 @@ public class pnlGestionPrecios extends JPanel{
     private JScrollPane pnlTabla;
     private dbGestionPrecios DBGP;
     private String [] nombreColumnas = {"ID","Descripcion","Precio"};
+    private JLabel lblNewLabel_7;
+    private JTextField txtFiltrarProducto;
+    private List<preciosDocumento> lista;
+    private JScrollPane scrollPane;
     
 	public pnlGestionPrecios() {
 		
@@ -53,94 +58,113 @@ public class pnlGestionPrecios extends JPanel{
 		add(lblNewLabel_4);
 		add(txtIdProducto);
 		add(lblNewLabel_5);
-		add(txtDescripcion);
 		add(lblNewLabel_6);
 		add(txtPrecio);
 		add(btnRegistrarPrecio);
+		add(txtFiltrarProducto);
+		add(lblNewLabel_7);
 		
 		btnBuscarArchivo.addActionListener(new controlGestionPrecios(this));
+		
+		
+		add(scrollPane);
+		
+		txtDescripcion = new JTextArea();
+		scrollPane.setViewportView(txtDescripcion);
+		
+		lista = new ArrayList<preciosDocumento>();
 	}
 	
 	private void crearComponentes() {
 		// TODO Auto-generated method stub
 		
 		btnBuscarArchivo = new JButton("PDF");
-	    btnBuscarArchivo.setBounds(33, 29, 64, 23);
+		btnBuscarArchivo.setBounds(10, 28, 86, 23);
 	        
 	    lblEstadoArchivo = new JLabel("Sin Archivo");
+	    lblEstadoArchivo.setBounds(175, 31, 92, 15);
 	    lblEstadoArchivo.setForeground(Color.WHITE);
 	    lblEstadoArchivo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-	    lblEstadoArchivo.setBounds(168, 32, 85, 14);
 	    
 	    lblNewLabel = new JLabel("Buscar Archivo");
+	    lblNewLabel.setBounds(17, 9, 79, 15);
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNewLabel.setForeground(Color.WHITE);
-        lblNewLabel.setBounds(23, 4, 85, 14);
         
         lblNewLabel_1 = new JLabel("Estado Archivo");
+        lblNewLabel_1.setBounds(165, 9, 81, 15);
         lblNewLabel_1.setForeground(Color.WHITE);
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNewLabel_1.setBounds(158, 4, 85, 14);
         
         lblNewLabel_2 = new JLabel("Porcentaje");
+        lblNewLabel_2.setBounds(360, 9, 59, 15);
         lblNewLabel_2.setForeground(Color.WHITE);
         lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNewLabel_2.setBounds(307, 4, 85, 14);
         
         txtPorcentaje = new JTextField();
-        txtPorcentaje.setBounds(296, 30, 113, 30);
+        txtPorcentaje.setBounds(348, 29, 86, 20);
         txtPorcentaje.setColumns(10);
         
         lblNewLabel_3 = new JLabel("Procesar");
+        lblNewLabel_3.setBounds(629, 9, 46, 15);
         lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNewLabel_3.setForeground(Color.WHITE);
-        lblNewLabel_3.setBounds(492, 4, 46, 14);
         
         btnProcesar = new JButton("Procesar Archivo");
-        btnProcesar.setBounds(461, 29, 119, 23);
+        btnProcesar.setBounds(599, 28, 113, 23);
         
         tblListadoPrecios = new JTable();
         
         pnlTabla = new JScrollPane(tblListadoPrecios);
-        pnlTabla.setBounds(23, 79, 794, 191);
+        pnlTabla.setBounds(10, 62, 829, 217);
         pnlTabla.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         
         lblNewLabel_4 = new JLabel("ID");
+        lblNewLabel_4.setBounds(17, 297, 12, 15);
         lblNewLabel_4.setForeground(Color.WHITE);
         lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNewLabel_4.setBounds(23, 294, 34, 14);
         
         txtIdProducto = new JTextField();
-        txtIdProducto.setBounds(53, 292, 86, 30);
+        txtIdProducto.setBounds(58, 290, 86, 30);
+        txtIdProducto.setEditable(false);
         
         lblNewLabel_5 = new JLabel("Descripcion");
+        lblNewLabel_5.setBounds(541, 278, 61, 15);
         lblNewLabel_5.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNewLabel_5.setForeground(Color.WHITE);
-        lblNewLabel_5.setBounds(212, 295, 72, 14);
-        
-        txtDescripcion = new JTextField();
-        txtDescripcion.setBounds(307, 292, 435, 30);
         
         lblNewLabel_6 = new JLabel("Precio");
+        lblNewLabel_6.setBounds(10, 344, 33, 15);
         lblNewLabel_6.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNewLabel_6.setForeground(Color.WHITE);
-        lblNewLabel_6.setBounds(23, 338, 46, 14);
+        
+        lblNewLabel_7 = new JLabel("Buscar");
+		lblNewLabel_7.setBounds(158, 298, 32, 14);
+		lblNewLabel_7.setForeground(Color.WHITE);
+		
+		scrollPane = new JScrollPane();
+		scrollPane.setBounds(466, 293, 227, 74);
         
         txtPrecio = new JTextField();
-        txtPrecio.setBounds(67, 336, 86, 30);
+        txtPrecio.setBounds(58, 337, 86, 30);
         
         btnRegistrarPrecio = new JButton("REGISTRAR PRECIO");
-        btnRegistrarPrecio.setBounds(491, 335, 174, 23);
+        btnRegistrarPrecio.setBounds(708, 341, 131, 23);
+        
+        txtFiltrarProducto = new JTextField();
+        txtFiltrarProducto.setBounds(198, 290, 221, 30);
 	}
 
 	public void modeloTabla() {
 		
+		if(lista==null) {
+			lista = DBGP.obtenerListadoProductosPrecios();
+		}
+		
 		Object O[]=null;
-		List<preciosDocumento> lista;
 		 aModel = new DefaultTableModel();
 		 aModel = (DefaultTableModel) tblListadoPrecios.getModel();
 	     aModel.setColumnIdentifiers(nombreColumnas);
-	     lista = DBGP.obtenerListadoProductosPrecios();
 	     
 	     if(!lista.isEmpty()) {
 	    	 for (int i = 0; i < lista.size(); i++) {
@@ -150,8 +174,15 @@ public class pnlGestionPrecios extends JPanel{
 	    		 aModel.setValueAt(lista.get(i).getPrecio(), i, 2); 
 			}
 	     }
-	    
 	     tblListadoPrecios.setModel(aModel);
+	}
+	
+	public void limpiarTabla() {
+		
+		int a = aModel.getRowCount()-1;
+		for(int i=a; i>=0;i--){
+			aModel.removeRow(i);
+		}
 	}
 
 	public JButton getBtnBuscarArchivo() {
@@ -178,7 +209,7 @@ public class pnlGestionPrecios extends JPanel{
 		return txtIdProducto;
 	}
 
-	public JTextField getTxtDescripcion() {
+	public JTextArea getTxtDescripcion() {
 		return txtDescripcion;
 	}
 
@@ -190,4 +221,13 @@ public class pnlGestionPrecios extends JPanel{
 		return btnRegistrarPrecio;
 	}
 
+	public JTextField getTxtFiltrarProducto() {
+		return txtFiltrarProducto;
+	}
+	
+	public void setLista(List<preciosDocumento> lista) {
+		this.lista = lista;
+	}
+
+	public preciosDocumento retornarElemento(int selectedRow){return lista.get(selectedRow);}
 }

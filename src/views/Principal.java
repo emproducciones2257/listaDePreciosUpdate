@@ -157,6 +157,7 @@ public class Principal extends javax.swing.JFrame {
         pnCCenter.setLayout(null);
                 
                 pnlConsultaPrecios = new pnlConsultaPrecios();
+                pnlConsultaPrecios.setLocation(10, 11);
                 pnCCenter.add(pnlConsultaPrecios);
                 pnlConsultaPrecios.setVisible(false);
 
