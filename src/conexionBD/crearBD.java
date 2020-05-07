@@ -2,6 +2,8 @@ package conexionBD;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -29,12 +31,11 @@ public class crearBD {
     	String temp ="";
     	
 		try {
-
-			URL fileLocation = getClass().getClassLoader().getResource("bd.sql");
 			
-			FileReader plantillaSQL = new FileReader(fileLocation.getFile());
+			InputStream input = getClass().getResourceAsStream("/res/bd.sql");
 			
-			BufferedReader leer = new BufferedReader(plantillaSQL);
+			@SuppressWarnings("resource")
+			BufferedReader leer = new BufferedReader(new InputStreamReader(input));
 			
 			while (leer.ready()) {
 				

@@ -73,6 +73,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 						fecha,
 						Integer.parseInt(pnlPrecios.getTxtPorcentaje().getText()));
 				Principal.refrescarDatos();
+				DBGP.cargarADB(precios);
 				archivo = new File("");
 				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
 			}

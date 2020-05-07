@@ -1,14 +1,15 @@
 package conexionBD;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.WriteResult;
+import modelo.produCloud;
 import modelo.producto;
 
 public class DBGestionProductos {
 	
 	 private PreparedStatement pre;
-	
 
 	public void registrarProducto(producto proTemp) {
 		
@@ -29,5 +30,21 @@ public class DBGestionProductos {
 	        }
 
 	}
+
+
+	public void registrarCloud(produCloud produCloud) {
+		// TODO Auto-generated method stub
+    	
+    	DocumentReference docRef = conectFirebase.getFirestore().collection("productos").document();
+
+    	ApiFuture<WriteResult> result = docRef.create(produCloud);
+    	
+    	try {
+			System.out.println("Update time : " + result.get().getUpdateTime());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+		} 
 
 }

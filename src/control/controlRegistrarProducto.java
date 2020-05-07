@@ -16,10 +16,7 @@ import conexionBD.DBColor;
 import conexionBD.DBGestionProductos;
 import conexionBD.DBMarca;
 import conexionBD.dbGestionPrecios;
-import modelo.color;
-import modelo.marca;
-import modelo.preciosDocumento;
-import modelo.producto;
+import modelo.*;
 import views.pnlRegistrarProducto;
 import views.ventanasAvisos;
 
@@ -27,8 +24,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 	
 	private pnlRegistrarProducto pnl;
 	private int cantidad = 0;
-	private String codigoMarca ="";
-	private String codigoProducto ="";
+	private String codigoMarca ="",codigoProducto ="";
 	public marca mar;
 	private DBMarca BDmarca;
 	private DBColor BDcolor;
@@ -38,6 +34,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
     private dbGestionPrecios DBGP;   
     private producto proTemp;
     private ventanasAvisos avisos;
+    private produCloud produCloud;
 
 
 	public controlRegistrarProducto(pnlRegistrarProducto pnl) {
@@ -48,6 +45,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		BDmarca = new DBMarca();
 		BDcolor = new DBColor();
 		proTemp = new producto();
+		produCloud = new produCloud();
 		DBGProdu = new DBGestionProductos();
 		pnl.getTxtCodMarca().addKeyListener(this);
 		pnl.getTxtBusquedPrecio().addKeyListener(this);
@@ -72,6 +70,8 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 			
 			proTemp.setMarca(mar.getIdMarca());
 			
+			produCloud.setCodMarc(mar.getCodBarMarca());
+			
 			if(pnl.getJcbColor().getSelectedIndex()==0) {
 				proTemp.setColor(0);
 			}else { proTemp.setColor(coloresMarca.get(pnl.getJcbColor().getSelectedIndex()-1).getIdColor());}
@@ -80,11 +80,19 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 			
 			proTemp.setUnidadDeVenta(Integer.valueOf(pnl.getTxtUVenta().getText()));
 			
+			produCloud.setUnidadDeVenta(proTemp.getUnidadDeVenta());
+			
 			proTemp.setDtosExtras(pnl.getTxtDescripcionProducto().getText().toString());
+			
+			produCloud.setDtosExtras(proTemp.getDtosExtras());
 			
 			proTemp.setCodBarr(Integer.valueOf(pnl.getTxtCodProducto().getText()));
 			
+			produCloud.setCodProd(proTemp.getCodBarr());
+			
 			DBGProdu.registrarProducto(proTemp);
+			
+			DBGProdu.registrarCloud(produCloud);
 			
 			pnl.resetearComponentes();
 		}	
@@ -180,6 +188,8 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		pnl.getTxtDescripcionProducto().setText(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getProd());
 		
 		proTemp.setIdPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getIdPrecio());
+		
+		produCloud.setPrecio(proTemp.getIdPrecio());
 	}
 
 	@Override

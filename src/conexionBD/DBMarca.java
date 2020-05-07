@@ -2,6 +2,13 @@ package conexionBD;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
+import javax.print.attribute.DocAttribute;
+
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.WriteResult;
+
 import modelo.marca;
 import views.ventanasAvisos;
 

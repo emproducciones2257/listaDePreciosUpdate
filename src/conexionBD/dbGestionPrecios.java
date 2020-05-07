@@ -5,8 +5,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.CollectionReference;
+import com.google.cloud.firestore.DocumentReference;
+import com.google.cloud.firestore.DocumentSnapshot;
+import com.google.cloud.firestore.Query;
+import com.google.cloud.firestore.QuerySnapshot;
+import com.google.cloud.firestore.WriteResult;
+
+import modelo.preciosCloud;
 import modelo.preciosDocumento;
+import modelo.produCloud;
 import views.ventanasAvisos;
 
 public class dbGestionPrecios {
@@ -14,10 +27,12 @@ public class dbGestionPrecios {
 	private PreparedStatement pre;
     private ResultSet resu; 
     private ventanasAvisos avisos;
+    private DocumentReference docRef;
+    private CollectionReference colecPrecios;
     
     public dbGestionPrecios() {
 		// TODO Auto-generated constructor stub
-    	avisos = new ventanasAvisos(null);
+    	avisos = new ventanasAvisos(null);	
 	}
     
     public List<preciosDocumento> obtenerListadoProductosPrecios() {
@@ -52,17 +67,28 @@ public class dbGestionPrecios {
 
 	public void cargarADB(List<preciosDocumento> preciosNuevos) {
 		
+		obtenerNube();
+		
 		List<preciosDocumento> listaPreciosBase = obtenerListadoProductosPrecios();
+		preciosCloud preCloud = new preciosCloud();
 		
 		//Cargo los productos por primera vez
 		
 		if(listaPreciosBase.isEmpty()) {
+
 			try {
 	            pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionCargaProductoPrecio);
 	            for (int i = 0; i < preciosNuevos.size(); i++) {
-	            	pre.setInt(1, preciosNuevos.get(i).getCodigo());
-	            	pre.setString(2, preciosNuevos.get(i).getProd());
-	            	pre.setDouble(3, preciosNuevos.get(i).getPrecio());
+	            	
+	            	preciosDocumento temp = preciosNuevos.get(i);
+	            	preCloud.setIdPrecioBDLocal(temp.getCodigo());
+	            	preCloud.setPrecio(temp.getPrecio());
+	            	
+	            	pre.setInt(1, temp.getCodigo());
+	            	pre.setString(2, temp.getProd());
+	            	pre.setDouble(3, temp.getPrecio());
+	            	
+	            	registrarCloud(preCloud);
 	            	pre.execute();
 				}
 	            
@@ -76,6 +102,8 @@ public class dbGestionPrecios {
 		}else {
 			// actualizo los productos
 			
+			colecPrecios = conectFirebase.getFirestore().collection("precios");
+			
 			try {
 				pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionActualizarProductoPrecio);
 				
@@ -87,6 +115,7 @@ public class dbGestionPrecios {
 							pre.setDouble(1, nuevo.getPrecio());
 							pre.setInt(2, nuevo.getCodigo());
 							pre.executeUpdate();
+							updateCloud(nuevo.getPrecio(), nuevo.getCodigo());
 							break;
 						}
 					}
@@ -140,5 +169,109 @@ public class dbGestionPrecios {
 		} catch (SQLException e) {
 			avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
 		}
-	}	
+	}
+	
+	public void registrarCloud(preciosCloud preciCloud) {
+		// TODO Auto-generated method stub
+
+    	docRef = conectFirebase.getFirestore().collection("precios").document();
+		
+    	ApiFuture<WriteResult> result = docRef.create(preciCloud);
+    	
+    	try {
+			System.out.println("Update time : " + result.get().getUpdateTime());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
+	
+	/*private void updateCloud(Double preciCloud, int codigoBuscar) {
+		//obtengo la referencia al documento del precio
+		
+		Query query = colecPrecios.whereEqualTo("idPrecioBDLocal", codigoBuscar);
+		// retrieve  query results asynchronously using query.get()
+		ApiFuture<QuerySnapshot> respuestaDeConsulta = query.get();
+		
+		try {
+			for (DocumentSnapshot document : respuestaDeConsulta.get().getDocuments()) {
+				
+				docRef = conectFirebase.getFirestore().collection("precios").document(document.getId());
+				
+				docRef = conectFirebase.getFirestore().collection("precios").document();
+				
+				ApiFuture<WriteResult> future = docRef.update("precio", preciCloud);
+
+				WriteResult result = future.get();
+				System.out.println("Write result: " + result);
+
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}*/
+	
+	private void obtenerNube() {
+		List <preciosCloud> pre = new ArrayList<>();
+		preciosCloud temp = new preciosCloud();
+		
+		colecPrecios = conectFirebase.getFirestore().collection("precios");
+		
+		ApiFuture<QuerySnapshot> respuestaDeConsulta = colecPrecios.get();
+		
+		try {
+			for (DocumentSnapshot e : respuestaDeConsulta.get().getDocuments()) {
+				temp = e.toObject(preciosCloud.class);
+				temp.setIdPrecio(e.getId());
+				pre.add(temp);
+				temp = null;
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		for (preciosCloud p : pre) {
+			System.out.println(p.toString());
+		}
+	}
+	
+	private void updateCloud(Double preciCloud, int codigoBuscar) {
+		//obtengo la referencia al documento del precio
+		
+		Query query = colecPrecios.whereEqualTo("idPrecioBDLocal", codigoBuscar);
+		// retrieve  query results asynchronously using query.get()
+		ApiFuture<QuerySnapshot> respuestaDeConsulta = query.get();
+		
+		try {
+			for (DocumentSnapshot document : respuestaDeConsulta.get().getDocuments()) {
+				
+				docRef = conectFirebase.getFirestore().collection("precios").document(document.getId());
+				
+				docRef = conectFirebase.getFirestore().collection("precios").document();
+				
+				ApiFuture<WriteResult> future = docRef.update("precio", preciCloud);
+
+				WriteResult result = future.get();
+				System.out.println("Write result: " + result);
+
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
 }

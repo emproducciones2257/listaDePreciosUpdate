@@ -10,12 +10,25 @@ import com.google.firebase.FirebaseOptions;
 
 
 public class conectFirebase {
+	
+	public static Firestore firestore=null;
+	
+	private conectFirebase() {
+		firestore=initFirebase();
+	}
+	
+	public static Firestore getFirestore() {
+		if(firestore==null) {
+			firestore=initFirebase();
+		}
+		return firestore;
+	}
 
-	public Firestore initFirebase() {
+	public static Firestore initFirebase() {
 	
 		try {
 			FirebaseOptions options = new FirebaseOptions.Builder()
-						  .setCredentials(GoogleCredentials.fromStream(getClass().getResourceAsStream("listadeprecios-ef04d-firebase-adminsdk-3c7pi-4fa852a4bb.json")))
+						  .setCredentials(GoogleCredentials.fromStream(conectFirebase.class.getResourceAsStream("listadeprecios-ef04d-firebase-adminsdk-3c7pi-4fa852a4bb.json")))
 						  .setDatabaseUrl("https://listadeprecios-ef04d.firebaseio.com")
 						  .build();
 			FirebaseApp.initializeApp(options);

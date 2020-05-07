@@ -8,8 +8,7 @@ public class produConPreci {
 	private int cantidad;
 	private int uniVta;
 
-	
-	
+
 	public int getId() {
 		return id;
 	}
