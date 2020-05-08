@@ -6,7 +6,16 @@ public class dtosNecesarios {
 	private String fechaDB;
 	private int porcentaje;
 	
+	public dtosNecesarios() {
+		// TODO Auto-generated constructor stub
+	}
 	
+	public dtosNecesarios(String fechaDB, int porcentaje) {
+		super();
+		this.fechaDB = fechaDB;
+		this.porcentaje = porcentaje;
+	}
+
 	public int getIdDtos() {
 		return idDtos;
 	}

@@ -14,8 +14,6 @@ public class preciosDocumento {
          codigo=c;
          prod= p;
          precio=d;       
-         //precioPorcentaje=preCal;
-        
     } 
      
      public preciosDocumento (int c, String p, Double d, double preCal) {

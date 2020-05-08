@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -16,6 +17,7 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.Query;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
+import com.google.common.collect.Iterators;
 
 import modelo.preciosCloud;
 import modelo.preciosDocumento;
@@ -29,6 +31,8 @@ public class dbGestionPrecios {
     private ventanasAvisos avisos;
     private DocumentReference docRef;
     private CollectionReference colecPrecios;
+    private HashSet<preciosCloud> preNube;
+    private Iterator<preciosCloud> it;
     
     public dbGestionPrecios() {
 		// TODO Auto-generated constructor stub
@@ -67,8 +71,6 @@ public class dbGestionPrecios {
 
 	public void cargarADB(List<preciosDocumento> preciosNuevos) {
 		
-		obtenerNube();
-		
 		List<preciosDocumento> listaPreciosBase = obtenerListadoProductosPrecios();
 		preciosCloud preCloud = new preciosCloud();
 		
@@ -101,9 +103,7 @@ public class dbGestionPrecios {
 			
 		}else {
 			// actualizo los productos
-			
-			colecPrecios = conectFirebase.getFirestore().collection("precios");
-			
+			obtenerNube();
 			try {
 				pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionActualizarProductoPrecio);
 				
@@ -186,40 +186,9 @@ public class dbGestionPrecios {
 		} 
 	}
 	
-	/*private void updateCloud(Double preciCloud, int codigoBuscar) {
-		//obtengo la referencia al documento del precio
-		
-		Query query = colecPrecios.whereEqualTo("idPrecioBDLocal", codigoBuscar);
-		// retrieve  query results asynchronously using query.get()
-		ApiFuture<QuerySnapshot> respuestaDeConsulta = query.get();
-		
-		try {
-			for (DocumentSnapshot document : respuestaDeConsulta.get().getDocuments()) {
-				
-				docRef = conectFirebase.getFirestore().collection("precios").document(document.getId());
-				
-				docRef = conectFirebase.getFirestore().collection("precios").document();
-				
-				ApiFuture<WriteResult> future = docRef.update("precio", preciCloud);
-
-				WriteResult result = future.get();
-				System.out.println("Write result: " + result);
-
-			}
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-	}*/
-	
 	private void obtenerNube() {
-		List <preciosCloud> pre = new ArrayList<>();
 		preciosCloud temp = new preciosCloud();
-		
+		preNube = new HashSet<>();
 		colecPrecios = conectFirebase.getFirestore().collection("precios");
 		
 		ApiFuture<QuerySnapshot> respuestaDeConsulta = colecPrecios.get();
@@ -228,42 +197,36 @@ public class dbGestionPrecios {
 			for (DocumentSnapshot e : respuestaDeConsulta.get().getDocuments()) {
 				temp = e.toObject(preciosCloud.class);
 				temp.setIdPrecio(e.getId());
-				pre.add(temp);
+				preNube.add(temp);
 				temp = null;
 			}
+			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
-		for (preciosCloud p : pre) {
-			System.out.println(p.toString());
 		}
 	}
 	
 	private void updateCloud(Double preciCloud, int codigoBuscar) {
-		//obtengo la referencia al documento del precio
-		
-		Query query = colecPrecios.whereEqualTo("idPrecioBDLocal", codigoBuscar);
-		// retrieve  query results asynchronously using query.get()
-		ApiFuture<QuerySnapshot> respuestaDeConsulta = query.get();
 		
 		try {
-			for (DocumentSnapshot document : respuestaDeConsulta.get().getDocuments()) {
-				
-				docRef = conectFirebase.getFirestore().collection("precios").document(document.getId());
-				
-				docRef = conectFirebase.getFirestore().collection("precios").document();
-				
-				ApiFuture<WriteResult> future = docRef.update("precio", preciCloud);
+			//obtengo la referencia al documento del precio
+			
+			String idProdUpdate = obtenerIdProducto(codigoBuscar);
+			
+			docRef = conectFirebase.getFirestore().collection("precios").document(idProdUpdate);
+			
+			ApiFuture<WriteResult> future = docRef.update("precio", preciCloud);
 
-				WriteResult result = future.get();
-				System.out.println("Write result: " + result);
-
-			}
+			WriteResult result;
+			
+			result = future.get();
+			
+			System.out.println("ACTUALIZO CODIGO: "  + codigoBuscar + " idDocumento : " + idProdUpdate);
+			
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -271,7 +234,18 @@ public class dbGestionPrecios {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 
+	private String obtenerIdProducto(int codigoBuscar) {
+		// TODO Auto-generated method stub
+		preciosCloud comparar = null;
+		it = preNube.iterator();
+		while (it.hasNext()) {
+			comparar = it.next();
+			if (comparar.getIdPrecioBDLocal()==codigoBuscar) {
+				break;
+			}
+		}
+		return comparar.getIdPrecio();
+	}
 }
