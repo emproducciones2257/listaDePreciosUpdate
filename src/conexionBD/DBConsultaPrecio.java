@@ -19,14 +19,13 @@ public class DBConsultaPrecio {
     	avisos = new ventanasAvisos(null);
 	}
     
-	public produConPreci obtenerPrecio(int idMarca, int codigoProducto) {
+	public produConPreci obtenerPrecio(int idMarca, String codigoProducto) {
 		produConPreci produ = null;
 		
 		try {
 			
-			pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionConsultarPrecio);
-            pre.setInt(1, codigoProducto);
-            pre.setInt(2, idMarca);
+			pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionConsultarPrecio
+														+"'"+codigoProducto+"' AND idMarca =" + idMarca);
             pre.execute();
             resu = pre.executeQuery();
             

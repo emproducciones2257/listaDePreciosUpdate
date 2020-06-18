@@ -10,7 +10,7 @@ public class producto {
 	private int medida;
 	private int unidadDeVenta = 0;
 	private String dtosExtras;
-	private int codBarr;
+	private String codBarr;
 	
 	
 	public int getIdProducto() {
@@ -62,10 +62,10 @@ public class producto {
 		this.dtosExtras = dtosExtras;
 	}
 
-	public int getCodBarr() {
+	public String getCodBarr() {
 		return codBarr;
 	}
-	public void setCodBarr(int codBarr) {
+	public void setCodBarr(String codBarr) {
 		this.codBarr = codBarr;
 	}
 	@Override

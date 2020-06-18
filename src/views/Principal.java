@@ -2,12 +2,14 @@ package views;
 
 import java.awt.Color;
 
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+
 import conexionBD.DBDtos;
 import conexionBD.coneCone;
 import control.controlBtnPrincipal;
 import modelo.dtosNecesarios;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -31,7 +33,7 @@ public class Principal extends javax.swing.JFrame {
     public static void refrescarDatos() {
     	dtos = DBDtos.obtenerRegistro();
     	if(dtos != null) {
-			lblFechaBD.setText("Fecha Base: " + dtos.getFechaDB());
+			lblFechaBD.setText("Fecha Base: " + dtos.getFechaBD());
 		}
     }
 
@@ -68,7 +70,8 @@ public class Principal extends javax.swing.JFrame {
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 5, 40));
 
         btnAlPedo.setBackground(new java.awt.Color(34, 40, 44));
-        btnAlPedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_trampoline_park_16px.png"))); // NOI18N
+        btnAlPedo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/icons8_trampoline_park_16px.png")));
+
         btnAlPedo.setMaximumSize(new java.awt.Dimension(40, 40));
         btnAlPedo.setMinimumSize(new java.awt.Dimension(40, 40));
         btnAlPedo.setPreferredSize(new java.awt.Dimension(40, 40));

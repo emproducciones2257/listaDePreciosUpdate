@@ -1,6 +1,7 @@
 package control;
 
 import java.awt.event.*;
+
 import conexionBD.*;
 import modelo.*;
 import views.pnlRegistrarColor;
@@ -52,7 +53,7 @@ public class registrarColor implements ActionListener, KeyListener{
 		}
 	}
 		
-	marca obtenerMarca(int codigo){
+	marca obtenerMarca(String codigo){
 		return BDmarca.obtenerMarca(codigo);
 		}
 
@@ -69,7 +70,7 @@ public class registrarColor implements ActionListener, KeyListener{
 			System.out.print(codigo);
 			pnlColor.gettxtScaner().setText(codigo.substring(3,8));
 			
-			mar = obtenerMarca(Integer.valueOf(pnlColor.gettxtScaner().getText()));
+			mar = obtenerMarca(pnlColor.gettxtScaner().getText());
 					
 			if(mar!=null) {
 

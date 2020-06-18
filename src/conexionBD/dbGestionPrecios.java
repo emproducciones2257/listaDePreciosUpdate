@@ -1,6 +1,7 @@
 package conexionBD;
 
 
+import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -68,6 +69,7 @@ public class dbGestionPrecios {
     	
 		return temp;
 	}
+
 
 	public void cargarADB(List<preciosDocumento> preciosNuevos) {
 		
@@ -140,6 +142,7 @@ public class dbGestionPrecios {
     		while (resu.next()) {
 				preciosDocumento p = new preciosDocumento();
 				p.setIdPrecio(resu.getInt(1));
+				p.setCodigo(resu.getInt(2));
 				p.setProd(resu.getString(3));
 				p.setPrecio(resu.getDouble(4));
 				temp.add(p);	
@@ -247,5 +250,78 @@ public class dbGestionPrecios {
 			}
 		}
 		return comparar.getIdPrecio();
+	}
+	
+public preciosDocumento obtenerProductoXCodProd(int codProd, Connection con) {
+		preciosDocumento p = null;
+    	
+    	try {
+    		pre= con.prepareStatement(instruccionesSQL.instruccionRecuperarProductoXId);
+    		pre.setInt(1, codProd);
+    		resu = pre.executeQuery();
+    		
+    		while (resu.next()) {
+    			p = new preciosDocumento();
+    			p.setIdPrecio(resu.getInt("idPreSer"));
+    			p.setCodigo(resu.getInt("codigoPoducto"));
+    			p.setProd(resu.getString("descArt"));
+    			p.setPrecio(resu.getDouble("precio"));
+			}
+    		
+    		resu.close();
+    		pre.close();
+    		
+		} catch (Exception e) {
+			// TODO: handle exception
+			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
+		}
+    	
+		return p;
+	}
+	
+	public void procesarCoso(ArrayList<preciosDocumento> precios) {
+		Connection conecone = null;
+		try {
+			conecone = coneCone.connect();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
+		for (preciosDocumento e : precios) {
+			
+			preciosDocumento p = obtenerProductoXCodProd(e.getCodigo(),conecone);
+			
+			if (p==null) {
+				//TODO algoritmo para ingresar nuevo producto
+			}else if (p.getIdPrecio()!=e.getPrecio()) {
+				//TODO aca actualizo el precio del producto
+				actualizarPrecio(conecone,e);
+			}
+			
+		}
+		
+		try {
+			conecone.close();
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+	}
+
+	private void actualizarPrecio(Connection conecone, preciosDocumento e) {
+		
+		try {
+			pre= conecone.prepareStatement(instruccionesSQL.instruccionActualizarProductoPrecio);
+			pre.setDouble(1, e.getPrecio());
+			pre.setInt(2, e.getCodigo());
+			pre.executeUpdate();
+			updateCloud(e.getPrecio(), e.getCodigo());
+			
+		} catch (SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 	}
 }

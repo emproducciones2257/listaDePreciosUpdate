@@ -15,6 +15,7 @@ public class instruccionesSQL {
 	
 	//instrucciones tabla precios
 	public static String instruccionRecuperarTodosProductosPrecios="SELECT \"idPreSer\", \"codigoPoducto\" ,\"descArt\", \"precio\" FROM preciosServidor";
+	public static String instruccionRecuperarProductoXId="SELECT \"idPreSer\", \"codigoPoducto\" ,\"descArt\", \"precio\" FROM preciosServidor WHERE \"codigoPoducto\" = ?";
 	public static String instruccionCargaProductoPrecio="INSERT INTO preciosServidor VALUES (NULL,?,?,?)";
 	public static String instruccionActualizarProductoPrecio="UPDATE preciosServidor SET precio = ? WHERE codigoPoducto =?";
 	public static String instruccionRecuperarProductosFiltrados="SELECT  * FROM preciosServidor WHERE \"descArt\" LIKE ";
@@ -23,7 +24,8 @@ public class instruccionesSQL {
 	
 	//instrucciones tabla productos
 	public static String instruccionRegistrarProducto="INSERT INTO producto VALUES (NULL,?,?,?,?,?,?,?,?)";
-	public static String instruccionConsultarPrecio = "SELECT producto.dtosExtras, producto.unidadVenta, preciosServidor.precio FROM producto INNER JOIN preciosServidor ON producto.idPreSer = preciosServidor.idPreSer WHERE codBarProducto = ? AND idMarca = ?";
+	public static String instruccionConsultarPrecio = "SELECT producto.dtosExtras, producto.unidadVenta, preciosServidor.precio FROM producto INNER JOIN preciosServidor ON producto.idPreSer = preciosServidor.idPreSer WHERE codBarProducto =";
+
 	
 	//instrucciones tabla dtosnecesarios
 	public static String instruccionObtenerRegistrosDtos="SELECT * FROM dtosNecesarios";
