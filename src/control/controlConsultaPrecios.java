@@ -2,6 +2,7 @@ package control;
 
 import java.awt.event.*;
 import java.util.ArrayList;
+
 import conexionBD.*;
 import modelo.*;
 import views.Principal;
@@ -13,8 +14,7 @@ public class controlConsultaPrecios implements ActionListener, KeyListener, Mous
 	private pnlConsultaPrecios pnlPrecios;
 	private String codBarras="";
 	private int cantidad=0;
-	private int codigoMarca=0;
-	private int codigoProducto=0;
+	private String codigoMarca="", codigoProducto="";
 	private DBMarca DBMar;
 	private DBConsultaPrecio DBCPreio;
 	private ventanasAvisos avisos;
@@ -46,15 +46,15 @@ public class controlConsultaPrecios implements ActionListener, KeyListener, Mous
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		
-		codBarras = String.valueOf(pnlPrecios.getTxtBuscarCB().getText());
+		codBarras = pnlPrecios.getTxtBuscarCB().getText();
 		
 		cantidad++;
 		
 		if(cantidad==14) {
 			
-			codigoMarca = Integer.valueOf(codBarras.substring(3,8));
+			codigoMarca = codBarras.substring(3,8);
 			
-			codigoProducto = Integer.valueOf(codBarras.substring(8,12));
+			codigoProducto = codBarras.substring(8,12);
 			
 			marca marTemp = DBMar.obtenerMarca(codigoMarca);
 			

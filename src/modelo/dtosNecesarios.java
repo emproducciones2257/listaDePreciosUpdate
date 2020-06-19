@@ -3,16 +3,16 @@ package modelo;
 public class dtosNecesarios {
 	
 	private int idDtos;
-	private String fechaDB;
+	private String fechaBD;
 	private int porcentaje;
 	
 	public dtosNecesarios() {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public dtosNecesarios(String fechaDB, int porcentaje) {
+	public dtosNecesarios(String fechaBD, int porcentaje) {
 		super();
-		this.fechaDB = fechaDB;
+		this.fechaBD = fechaBD;
 		this.porcentaje = porcentaje;
 	}
 
@@ -22,11 +22,11 @@ public class dtosNecesarios {
 	public void setIdDtos(int idDtos) {
 		this.idDtos = idDtos;
 	}
-	public String getFechaDB() {
-		return fechaDB;
+	public String getFechaBD() {
+		return fechaBD;
 	}
-	public void setFechaDB(String fechaDB) {
-		this.fechaDB = fechaDB;
+	public void setFechaBD(String fechaBD) {
+		this.fechaBD = fechaBD;
 	}
 	public int getPorcentaje() {
 		return porcentaje;

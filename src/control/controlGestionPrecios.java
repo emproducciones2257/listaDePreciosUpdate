@@ -50,7 +50,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 		
 		if (e.getSource().equals(pnlPrecios.getBtnProcesar())) {
 			
-			if((!archivo.isFile())&&(pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
+			/*if((!archivo.isFile())&&(pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
 				avisos.faltanDatos(ventanasAvisos.FALTAN_DATOS);
 			}
 			
@@ -76,7 +76,13 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 				DBGP.cargarADB(precios);
 				archivo = new File("");
 				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
-			}
+			}*/
+			extraerTextoPdf(archivo);
+			DBGP.procesarCoso(precios);
+			archivo = new File("");
+			pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
+			
+			
 		}
 		
 		if (e.getSource().equals(pnlPrecios.getBtnRegistrarPrecio())) {

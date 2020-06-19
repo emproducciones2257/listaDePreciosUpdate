@@ -86,7 +86,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 			
 			produCloud.setDtosExtras(proTemp.getDtosExtras());
 			
-			proTemp.setCodBarr(Integer.valueOf(pnl.getTxtCodProducto().getText()));
+			proTemp.setCodBarr(pnl.getTxtCodProducto().getText());
 			
 			produCloud.setCodProd(proTemp.getCodBarr());
 			
@@ -104,7 +104,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		
 		if (e.getSource().equals(pnl.getTxtCodMarca())) {   
 			
-			codigoMarca = String.valueOf(pnl.getTxtCodMarca().getText());
+			codigoMarca = pnl.getTxtCodMarca().getText();
 			cantidad++;
 			
 			if (cantidad==14) {
@@ -115,7 +115,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 				
 				pnl.getTxtCodProducto().setText(codigoProducto);
 				
-				mar = obtenerMarca(Integer.valueOf(pnl.getTxtCodMarca().getText()));
+				mar = obtenerMarca(pnl.getTxtCodMarca().getText());
 						
 				if(mar!=null) {
 
@@ -177,7 +177,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		
 	}
 
-	marca obtenerMarca(int codigo){
+	marca obtenerMarca(String codigo){
 		return BDmarca.obtenerMarca(codigo);
 		}
 
@@ -189,7 +189,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		
 		proTemp.setIdPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getIdPrecio());
 		
-		produCloud.setPrecio(proTemp.getIdPrecio());
+		produCloud.setPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getCodigo());
 	}
 
 	@Override

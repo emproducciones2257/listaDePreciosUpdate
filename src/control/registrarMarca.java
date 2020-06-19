@@ -1,10 +1,10 @@
 package control;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import conexionBD.DBMarca;
 import modelo.marca;
 import views.pnlRegistraMarca;
@@ -27,7 +27,7 @@ public class registrarMarca implements ActionListener, KeyListener{
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-			marca marTemp = new modelo.marca();
+			marca marTemp = new marca();
 			
 			if((pnl.getTxtScaner().getText().isEmpty()) || (pnl.getTxtNombreMarca().getText().isEmpty())) {
 				
@@ -39,8 +39,8 @@ public class registrarMarca implements ActionListener, KeyListener{
 				
 			}else {
 				
-				if(!verificarExisteCodigo(Integer.valueOf(pnl.getTxtScaner().getText()))) {
-					marTemp.setCodBarMarca(Integer.valueOf(pnl.getTxtScaner().getText()));
+				if(!verificarExisteCodigo(pnl.getTxtScaner().getText())) {
+					marTemp.setCodBarMarca(pnl.getTxtScaner().getText());
 					marTemp.setNombreMarca(pnl.getTxtNombreMarca().getText());
 					
 					BDmarca.registrarMarca(marTemp);
@@ -55,7 +55,7 @@ public class registrarMarca implements ActionListener, KeyListener{
 		}	
 	}
 	
-	boolean verificarExisteCodigo(int codigo){return BDmarca.verificarCodigo(codigo);}
+	boolean verificarExisteCodigo(String codigo){return BDmarca.verificarCodigo(codigo);}
 
 	@Override
 	public void keyPressed(KeyEvent e) {

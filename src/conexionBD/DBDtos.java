@@ -14,6 +14,7 @@ import com.google.cloud.firestore.DocumentSnapshot;
 import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 
+import modelo.constantes;
 import modelo.dtosNecesarios;
 import modelo.preciosCloud;
 import views.ventanasAvisos;
@@ -42,7 +43,7 @@ public class DBDtos {
 			while (resu.next()) {
 				dtoTemp = new dtosNecesarios();
 				dtoTemp.setIdDtos(resu.getInt(1));
-				dtoTemp.setFechaDB(resu.getString(2));
+				dtoTemp.setFechaBD(resu.getString(2));
 				dtoTemp.setPorcentaje(resu.getInt(3));
 			}
 			pre.close();
@@ -84,21 +85,19 @@ public class DBDtos {
 		Map<String, Object> temporal = new HashMap<>();
 		temporal.put("fechaBD", fecha);
 		temporal.put("porcentaje", por);
-		docRef = conectFirebase.getFirestore().collection("dtosNecesario").document(idModificar);
+		docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_DTO_NEC).document(idModificar);
 		
-		if(!(registroFechaPor.getFechaDB().equals(fecha)) && !(registroFechaPor.getPorcentaje() == por)) {
+		if(!(registroFechaPor.getFechaBD().equals(fecha)) && !(registroFechaPor.getPorcentaje() == por)) {
 			
 			ApiFuture<WriteResult> writeResult = docRef.update(temporal);
 			
-		}else if (!(registroFechaPor.getFechaDB().equals(fecha)) && (registroFechaPor.getPorcentaje() == por)){
+		}else if (!(registroFechaPor.getFechaBD().equals(fecha)) && (registroFechaPor.getPorcentaje() == por)){
 			
-			ApiFuture<WriteResult> writeResult = docRef.update("fechaDB",fecha);
+			ApiFuture<WriteResult> writeResult = docRef.update(constantes.CAMPO_FECHA_DB,fecha);
 			
-		}else if ((registroFechaPor.getFechaDB().equals(fecha)) && !(registroFechaPor.getPorcentaje() == por)){
+		}else if ((registroFechaPor.getFechaBD().equals(fecha)) && !(registroFechaPor.getPorcentaje() == por)){
 			
-			ApiFuture<WriteResult> writeResult = docRef.update("porcentaje",por);
-		} else {
-			System.out.print("SOn iguales todos");
+			ApiFuture<WriteResult> writeResult = docRef.update(constantes.CAMPO_PORCEN,por);
 		}
 		
 	}
@@ -122,7 +121,7 @@ public class DBDtos {
 		
 			dtosNecesarios temp = new dtosNecesarios(fecha,por);
 			
-			docRef = conectFirebase.getFirestore().collection("dtosNecesario").document();
+			docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_DTO_NEC).document();
 			
 			ApiFuture<WriteResult> insertar = docRef.create(temp);
 			
@@ -155,16 +154,15 @@ public class DBDtos {
 		}else {
 			cargaInicialDtos("Fecha Base de datos: ", porcen);
 		}
-	
 	}
 
 	private void updatePorcenCloud(int porcen) {
 		// TODO Auto-generated method stub
 		if(registroFechaPor.getPorcentaje()!=porcen) {
 
-			docRef = conectFirebase.getFirestore().collection("dtosNecesario").document(idModificar);
+			docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_DTO_NEC).document(idModificar);
 			
-			ApiFuture<WriteResult> update = docRef.update("porcentaje",porcen);
+			ApiFuture<WriteResult> update = docRef.update(constantes.CAMPO_PORCEN,porcen);
 			
 			System.out.println("ACTUALIZO CODIGO: ");
 		}
@@ -172,7 +170,7 @@ public class DBDtos {
 
 	private void obtenerRegistroCloud() {
 		// TODO Auto-generated method stub
-		colecPrecios = conectFirebase.getFirestore().collection("dtosNecesario");
+		colecPrecios = conectFirebase.getFirestore().collection(constantes.COLECCION_DTO_NEC);
 		
 		ApiFuture<QuerySnapshot> response = colecPrecios.get();
 		

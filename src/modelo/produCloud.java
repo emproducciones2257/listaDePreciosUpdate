@@ -6,8 +6,8 @@ public class produCloud {
 	private int Precio;
 	private int unidadDeVenta = 0;
 	private String dtosExtras;
-	private int codProd;
-	private int codMarc;
+	private String codProd;
+	private String codMarc;
 	
 	public produCloud() {
 		// TODO Auto-generated constructor stub
@@ -45,19 +45,19 @@ public class produCloud {
 		this.dtosExtras = dtosExtras;
 	}
 
-	public int getCodProd() {
+	public String getCodProd() {
 		return codProd;
 	}
 
-	public void setCodProd(int codProd) {
+	public void setCodProd(String codProd) {
 		this.codProd = codProd;
 	}
 
-	public int getCodMarc() {
+	public String getCodMarc() {
 		return codMarc;
 	}
 
-	public void setCodMarc(int codMarc) {
+	public void setCodMarc(String codMarc) {
 		this.codMarc = codMarc;
 	}
 

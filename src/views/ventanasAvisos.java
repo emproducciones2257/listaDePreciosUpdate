@@ -95,4 +95,11 @@ public class ventanasAvisos {
 		JOptionPane.showMessageDialog(vista, cargaError + " " + message, "Error carga fecha y porcentaje", JOptionPane.ERROR_MESSAGE);
 	}
 
+	public void mostrarSiESta(String men) {
+		// TODO Auto-generated method stub
+		JOptionPane.showMessageDialog(vista, men, "No Registrado", JOptionPane.WARNING_MESSAGE);
+
+		
+	}
+
 }

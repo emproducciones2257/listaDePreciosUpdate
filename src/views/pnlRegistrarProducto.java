@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
+
 import conexionBD.dbGestionPrecios;
 import control.controlRegistrarProducto;
 import modelo.preciosDocumento;

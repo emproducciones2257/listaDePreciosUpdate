@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename field &apos;COLECCION_FECHA_DB&apos; in &apos;modelo.constantes&apos; to &apos;CAMPO_FECHA_DB&apos;&#x0D;&#x0A;- Original project: &apos;DSBSwing&apos;&#x0D;&#x0A;- Original element: &apos;modelo.constantes.COLECCION_FECHA_DB&apos;&#x0D;&#x0A;- Renamed element: &apos;modelo.constantes.CAMPO_FECHA_DB&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" delegate="false" deprecate="false" description="Rename field &apos;COLECCION_FECHA_DB&apos;" flags="589830" getter="false" id="org.eclipse.jdt.ui.rename.field" input="/src=/optional=/true=/=/maven.pomderived=/true=/&lt;modelo{constantes.java[constantes^COLECCION_FECHA_DB" name="CAMPO_FECHA_DB" references="true" setter="false" stamp="1591573798053" textual="false" version="1.0"/>
+</session>

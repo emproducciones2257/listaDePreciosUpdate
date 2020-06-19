@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
 import conexionBD.dbGestionPrecios;
 import control.controlGestionPrecios;
 import modelo.preciosDocumento;
