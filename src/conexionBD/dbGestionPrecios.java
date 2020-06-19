@@ -82,19 +82,8 @@ public class dbGestionPrecios {
 
 			try {
 	            pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionCargaProductoPrecio);
-	            for (int i = 0; i < preciosNuevos.size(); i++) {
-	            	
-	            	preciosDocumento temp = preciosNuevos.get(i);
-	            	preCloud.setIdPrecioBDLocal(temp.getCodigo());
-	            	preCloud.setPrecio(temp.getPrecio());
-	            	
-	            	pre.setInt(1, temp.getCodigo());
-	            	pre.setString(2, temp.getProd());
-	            	pre.setDouble(3, temp.getPrecio());
-	            	
-	            	registrarCloud(preCloud);
-	            	pre.execute();
-				}
+	            
+	            cargarArticulosNuevos(preciosNuevos, preCloud);
 	            
 	            pre.close();
 	            coneCone.connect().close();
@@ -129,6 +118,22 @@ public class dbGestionPrecios {
 				// TODO: handle exception
 				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
 			}
+		}
+	}
+
+	private void cargarArticulosNuevos(List<preciosDocumento> preciosNuevos, preciosCloud preCloud) throws SQLException {
+		for (int i = 0; i < preciosNuevos.size(); i++) {
+			
+			preciosDocumento temp = preciosNuevos.get(i);
+			preCloud.setIdPrecioBDLocal(temp.getCodigo());
+			preCloud.setPrecio(temp.getPrecio());
+			
+			pre.setInt(1, temp.getCodigo());
+			pre.setString(2, temp.getProd());
+			pre.setDouble(3, temp.getPrecio());
+			
+			registrarCloud(preCloud);
+			pre.execute();
 		}
 	}
 
@@ -322,6 +327,5 @@ public preciosDocumento obtenerProductoXCodProd(int codProd, Connection con) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
 	}
 }
