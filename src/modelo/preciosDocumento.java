@@ -1,6 +1,6 @@
 package modelo;
 
-public class preciosDocumento {
+public class preciosDocumento implements Comparable<preciosDocumento>{
 	
 	private int idPrecio;
 	private int codigo;
@@ -36,8 +36,6 @@ public class preciosDocumento {
 		this.idPrecio = idPrecio;
 	}
 
-
-
 	public int getCodigo() {
         return codigo;
     }
@@ -72,11 +70,22 @@ public class preciosDocumento {
         
     }
     
+    
+    
     @Override
     public String toString (){
         
         return "Codigo: " + codigo + " Descripcion: "+ prod + " Precio: " + precio + " Precio Porcentaje: "+ precioPorcentaje;
    
     }
+
+	@Override
+	public int compareTo(preciosDocumento o) {
+		if(this.codigo>o.codigo) 
+		return 1;
+		else {
+			return -1;
+		}
+	}
 
 }
