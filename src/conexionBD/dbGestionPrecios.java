@@ -84,10 +84,10 @@ public class dbGestionPrecios {
 			cargarArticulosNuevos(preciosNuevos);
 			
 		}else {
-			
+			int res;
 			// actualizo los productos
 			
-			//obtenerNube();
+			obtenerNube();
 			List<preciosDocumento> preciosNuevosParaCargar = new ArrayList<>();
 			
 			try {
@@ -97,17 +97,19 @@ public class dbGestionPrecios {
 					preciosDocumento p = obtenerProductoXCodProd(e.getCodigo(),conecone);
 					
 					if (p==null) {
+						
 						preciosNuevosParaCargar.add(e);
 
-					}else if (p.getIdPrecio()!=e.getPrecio()) {
+					}else {
+						res = Double.compare(e.getPrecio(), p.getPrecio());
 						
-						//DESACTIVE LA ACTUALIZACION A NUBE
-						
-						actualizarPrecio(conecone,e);
+						if (res!=0) {
+							
+							actualizarPrecio(conecone,e);	
+						}
 					}
 				}
 				
-				//DESACTIVE LA ACTUALIZACION A NUBE
 				if(!preciosNuevosParaCargar.isEmpty()) {
 					cargarArticulosNuevos(preciosNuevosParaCargar);
 				}
@@ -140,9 +142,8 @@ public class dbGestionPrecios {
 				pre.setString(2, temp.getProd());
 				pre.setDouble(3, temp.getPrecio());
 				
-				//registrarCloud(preCloud);
+				registrarCloud(preCloud);
 				pre.execute();
-				System.out.println("Cargue: " + temp.toString());
 			}
 			avisos.cargaCorrecta(ventanasAvisos.CARGA_OK);
 			co.close();
@@ -194,14 +195,13 @@ public class dbGestionPrecios {
 	}
 	
 	public void registrarCloud(preciosCloud preciCloud) {
-		// TODO Auto-generated method stub
 
     	docRef = conectFirebase.getFirestore().collection("precios").document();
 		
     	ApiFuture<WriteResult> result = docRef.create(preciCloud);
     	
     	try {
-			System.out.println("Update time : " + result.get().getUpdateTime());
+			System.out.println("CARGUE A LA BASE: " + result.get().getUpdateTime());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -281,10 +281,10 @@ public class dbGestionPrecios {
     		
     		while (resu.next()) {
     			p = new preciosDocumento();
-    			p.setIdPrecio(resu.getInt("idPreSer"));
-    			p.setCodigo(resu.getInt("codigoPoducto"));
-    			p.setProd(resu.getString("descArt"));
-    			p.setPrecio(resu.getDouble("precio"));
+    			p.setIdPrecio(resu.getInt(1));
+    			p.setCodigo(resu.getInt(2));
+    			p.setProd(resu.getString(3));
+    			p.setPrecio(resu.getDouble(4));
 			}
     		
 		} catch (Exception e) {
@@ -304,7 +304,7 @@ public class dbGestionPrecios {
 			pre.setInt(2, e.getCodigo());
 			pre.executeUpdate();
 
-			//updateCloud(e.getPrecio(), e.getCodigo());
+			updateCloud(e.getPrecio(), e.getCodigo());
 			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
