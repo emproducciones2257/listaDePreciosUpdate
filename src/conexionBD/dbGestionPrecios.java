@@ -97,8 +97,8 @@ public class dbGestionPrecios {
 					preciosDocumento p = obtenerProductoXCodProd(e.getCodigo(),conecone);
 					
 					if (p==null) {
-						//TODO CHUPALA GATO SUCIOOOOOO
-						System.out.print(true);
+						//TODO YA NO GATOOOOO
+
 						preciosNuevosParaCargar.add(e);
 
 					}else {
