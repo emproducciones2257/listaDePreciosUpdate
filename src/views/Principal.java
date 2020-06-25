@@ -18,6 +18,8 @@ public class Principal extends javax.swing.JFrame {
 
 
     public Principal() {
+    	setTitle("Lista De Precios - Algun Lugar Castilla");
+    	setResizable(false);
     	
         initComponents();
         
@@ -58,7 +60,7 @@ public class Principal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        pnlRoot.setPreferredSize(new java.awt.Dimension(960, 600));
+        pnlRoot.setPreferredSize(new java.awt.Dimension(960, 650));
         pnlRoot.setRequestFocusEnabled(false);
         pnlRoot.setLayout(new java.awt.BorderLayout());
 
@@ -165,7 +167,7 @@ public class Principal extends javax.swing.JFrame {
                 pnlConsultaPrecios.setVisible(false);
 
                 pnlGestionCarga = new JPanel();
-                pnlGestionCarga.setBounds(10, 11, 849, 378);
+                pnlGestionCarga.setBounds(10, 11, 849, 428);
                 pnlGestionCarga.setBackground(new java.awt.Color(34, 40, 44));
                 pnCCenter.add(pnlGestionCarga);
                 pnlGestionCarga.setLayout(null);
@@ -180,7 +182,7 @@ public class Principal extends javax.swing.JFrame {
                  pnlGestionCarga.add(pnelRegistraColor);
                  
                  pnelCargarProducto = new pnlRegistrarProducto();
-                 pnelCargarProducto.setBounds(10, 185, 839, 193);
+                 pnelCargarProducto.setBounds(10, 185, 839, 232);
                  pnlGestionCarga.add(pnelCargarProducto);
         
         pnlGestionPrecios = new pnlGestionPrecios();
