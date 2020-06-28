@@ -98,12 +98,12 @@ public class pnlGestionPrecios extends JPanel{
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
         lblNewLabel_2 = new JLabel("Porcentaje");
-        lblNewLabel_2.setBounds(360, 9, 59, 15);
+        lblNewLabel_2.setBounds(377, 9, 59, 15);
         lblNewLabel_2.setForeground(Color.WHITE);
         lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
         txtPorcentaje = new JTextField();
-        txtPorcentaje.setBounds(348, 29, 86, 20);
+        txtPorcentaje.setBounds(348, 24, 113, 30);
         txtPorcentaje.setColumns(10);
         
         lblNewLabel_3 = new JLabel("Procesar");

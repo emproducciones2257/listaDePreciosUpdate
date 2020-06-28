@@ -121,7 +121,6 @@ public class dbGestionPrecios {
 				// TODO: handle exception
 				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());	
 			}
-			
 		}
 	}
 
