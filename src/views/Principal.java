@@ -12,6 +12,8 @@ import modelo.dtosNecesarios;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
 
 
 public class Principal extends javax.swing.JFrame {
@@ -28,7 +30,6 @@ public class Principal extends javax.swing.JFrame {
 			refrescarDatos();
 			
 		} catch (Exception e) {
-			// TODO: handle exception
 		}
     }
     
@@ -162,9 +163,10 @@ public class Principal extends javax.swing.JFrame {
         pnCCenter.setLayout(null);
                 
                 pnlConsultaPrecios = new pnlConsultaPrecios();
+                pnlConsultaPrecios.setSize(849, 378);
+                pnlConsultaPrecios.setVisible(false);
                 pnlConsultaPrecios.setLocation(10, 11);
                 pnCCenter.add(pnlConsultaPrecios);
-                pnlConsultaPrecios.setVisible(false);
 
                 pnlGestionCarga = new JPanel();
                 pnlGestionCarga.setBounds(10, 11, 849, 428);
@@ -182,9 +184,22 @@ public class Principal extends javax.swing.JFrame {
                  pnlGestionCarga.add(pnelRegistraColor);
                  
                  pnelCargarProducto = new pnlRegistrarProducto();
+                 pnelCargarProducto.getVisorDatosPrecios().setBounds(226, 83, 347, 240);
+                 pnelCargarProducto.getTxtUVenta().setBounds(102, 190, 113, 30);
+                 pnelCargarProducto.getTxtBusquedPrecio().setBounds(277, 22, 314, 30);
+                 pnelCargarProducto.getScpDescripcion().setBounds(601, 57, 208, 77);
+                 pnelCargarProducto.getTxtCodMarca().setBounds(102, 67, 113, 30);
+                 pnelCargarProducto.getTxtCodProducto().setBounds(102, 149, 113, 30);
+                 pnelCargarProducto.getBtnRegistrarProd().setBounds(601, 163, 208, 23);
+                 pnelCargarProducto.getJcbColor().setBounds(102, 108, 113, 30);
                  pnelCargarProducto.setBounds(10, 185, 839, 232);
                  pnlGestionCarga.add(pnelCargarProducto);
-        
+                 pnelCargarProducto.setLayout(null);
+                 
+                 pnlGestionCategorias = new pnlGestionCategoria();
+                 pnlGestionCarga.add(pnlGestionCategorias);
+
+   
         pnlGestionPrecios = new pnlGestionPrecios();
         pnlGestionPrecios.setVisible(false);
         pnCCenter.add(pnlGestionPrecios);
@@ -261,6 +276,7 @@ public class Principal extends javax.swing.JFrame {
     private javax.swing.JPanel pnlSlide; 
     private JPanel pnelRegistraColor;
     private JPanel pnelRegistrarMarca;
+    private JPanel pnlGestionCategorias;
     private pnlRegistrarProducto pnelCargarProducto;
     private JPanel pnlGestionCarga;
     private JPanel pnlGestionPrecios;
@@ -268,6 +284,7 @@ public class Principal extends javax.swing.JFrame {
     private static JLabel lblFechaBD;
     private static DBDtos DBDtos;
     public static dtosNecesarios dtos;
+    
 	
     // geter y seterrrrr
     
@@ -302,5 +319,4 @@ public class Principal extends javax.swing.JFrame {
 	public static dtosNecesarios getDtos() {
 		return dtos;
 	}
-	
 }

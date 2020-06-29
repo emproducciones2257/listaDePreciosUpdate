@@ -35,7 +35,6 @@ public class DBGestionProductos {
 
 
 	public void registrarCloud(produCloud produCloud) {
-		// TODO Auto-generated method stub
     	DocumentReference docRef = conectFirebase.getFirestore()
     			.collection(constantes.COLECCION_PRODUCTO).document();
 
@@ -44,7 +43,6 @@ public class DBGestionProductos {
     	try {
 			System.out.println("Update time : " + result.get().getUpdateTime());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}

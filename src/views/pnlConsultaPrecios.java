@@ -4,7 +4,6 @@ import java.awt.*;
 import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-
 import control.controlConsultaPrecios;
 import modelo.produConPreci;
 
@@ -22,8 +21,6 @@ public class pnlConsultaPrecios extends JPanel{
     private String [] nombreColumnas = {"ID","Descripcion","Precio","Cantidad","SumRes","Borrar"};
 
 	public pnlConsultaPrecios() {
-		// TODO Auto-generated constructor stub
-
 		crearComponentes();
 		
 		//Propiedades JPanel
@@ -45,7 +42,6 @@ public class pnlConsultaPrecios extends JPanel{
 	}
 
 	private void crearComponentes() {
-		// TODO Auto-generated method stub
 		
 		txtBuscarCB = new JTextField();
         txtBuscarCB.setBounds(641, 21, 146, 30);
@@ -94,7 +90,6 @@ public class pnlConsultaPrecios extends JPanel{
 	}
 	
 	public void limpiarTabla() {
-		// TODO Auto-generated method stub
 			DefaultTableModel aModel = (DefaultTableModel) tblProductosVendidos.getModel();
 			int a = aModel.getRowCount()-1;
 			for(int i=a; i>=0;i--){

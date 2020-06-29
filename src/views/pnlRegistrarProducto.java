@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
-
 import conexionBD.dbGestionPrecios;
 import control.controlRegistrarProducto;
 import modelo.preciosDocumento;
@@ -187,7 +186,7 @@ public class pnlRegistrarProducto extends JPanel {
 	}
 
 	 public void limpiarTabla() {
-		// TODO Auto-generated method stub
+		 
 		int a = getaModel().getRowCount()-1;
 		for(int i=a; i>=0;i--){
 			getaModel().removeRow(i);

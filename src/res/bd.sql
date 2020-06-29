@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS 'Categorias'
+DROP TABLE IF EXISTS 'categorias'
 ;
 
 DROP TABLE IF EXISTS 'color'
@@ -16,11 +16,10 @@ DROP TABLE IF EXISTS 'preciosServidor'
 DROP TABLE IF EXISTS 'producto'
 ;
 
-CREATE TABLE 'Categorias'
+CREATE TABLE 'categorias'
 (
-	'idCat' INTEGER NOT NULL PRIMARY KEY,
-	'nomCat' TEXT NOT NULL,
-	'idProd' INTEGER NULL
+	'idCat' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	'nomCat' TEXT NOT NULL
 )
 ;
 
@@ -55,7 +54,9 @@ CREATE TABLE 'preciosServidor'
 	'idPreSer' INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
 	'codigoPoducto' INTEGER NOT NULL,
 	'descArt' TEXT NOT NULL,
-	'precio' DOUBLE NOT NULL
+	'precio' DOUBLE NOT NULL,
+	'idCat' INTEGER NULL,
+	CONSTRAINT 'FK_preciosServidor_Categorias' FOREIGN KEY ('idCat') REFERENCES 'categorias' ('idCat') ON DELETE No Action ON UPDATE No Action
 )
 ;
 
@@ -82,8 +83,8 @@ CREATE INDEX 'IXFK_color_marca'
  ON 'color' ('idMarca' ASC)
 ;
 
-CREATE INDEX 'IXFK_producto_Categorias'
- ON 'producto' ('idCat' ASC)
+CREATE INDEX 'IXFK_preciosServidor_Categorias'
+ ON 'preciosServidor' ('idCat' ASC)
 ;
 
 CREATE INDEX 'IXFK_producto_color'

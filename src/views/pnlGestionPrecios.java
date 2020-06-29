@@ -77,7 +77,6 @@ public class pnlGestionPrecios extends JPanel{
 	}
 	
 	private void crearComponentes() {
-		// TODO Auto-generated method stub
 		
 		btnBuscarArchivo = new JButton("PDF");
 		btnBuscarArchivo.setBounds(10, 28, 86, 23);

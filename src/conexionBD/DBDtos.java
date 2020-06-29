@@ -64,7 +64,7 @@ public class DBDtos {
 			
 		}else {
 			try {
-				obtenerRegistroCloud();
+				//TODO trabajo en nube. obtenerRegistroCloud();
 				pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionUpdateDtosNece);
 				pre.setString(1, fecha);
 				pre.setInt(2, por);
@@ -73,7 +73,7 @@ public class DBDtos {
 				
 				pre.close();
 				coneCone.connect().close();
-				updateCloud(fecha,por);
+				//TODO trabajo en nube.  updateCloud(fecha,por);
 			} catch (Exception e) {
 				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
 			}
@@ -110,14 +110,13 @@ public class DBDtos {
 			pre.execute();
 			pre.close();
 			coneCone.connect().close();
-			registrarCloud(fecha,por);
+			//TODO trabajo en nube.  registrarCloud(fecha,por);
 		} catch (Exception e) {
 			avisos.errorCargaDtos(ventanasAvisos.CARGA_ERROR, e.getMessage());
 		}
 	}
 	
 	private void registrarCloud(String fecha, int por) {
-		// TODO Auto-generated method stub
 		
 			dtosNecesarios temp = new dtosNecesarios(fecha,por);
 			
@@ -128,14 +127,13 @@ public class DBDtos {
 			try {
 				System.out.println("Update time : " + insertar.get().getUpdateTime());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
 	}
 
 	public void actualiazarPorcentaje(int porcen) {
 		dtosNecesarios dtoTemp = obtenerRegistro();
-		obtenerRegistroCloud();
+		
 		if(dtoTemp!=null) {
 			try {
 				pre = coneCone.connect().prepareStatement(instruccionesSQL.instruccionUpdatePorcentaje);
@@ -146,7 +144,7 @@ public class DBDtos {
 				pre.close();
 				resu.close();
 				coneCone.connect().close();
-				updatePorcenCloud(porcen);
+				//TODO trabajo en nube.  updatePorcenCloud(porcen);
 				avisos.updateCorrecta(ventanasAvisos.UPDATE_OK);
 			} catch (SQLException e) {
 				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
@@ -157,7 +155,6 @@ public class DBDtos {
 	}
 
 	private void updatePorcenCloud(int porcen) {
-		// TODO Auto-generated method stub
 		if(registroFechaPor.getPorcentaje()!=porcen) {
 
 			docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_DTO_NEC).document(idModificar);
@@ -169,7 +166,6 @@ public class DBDtos {
 	}
 
 	private void obtenerRegistroCloud() {
-		// TODO Auto-generated method stub
 		colecPrecios = conectFirebase.getFirestore().collection(constantes.COLECCION_DTO_NEC);
 		
 		ApiFuture<QuerySnapshot> response = colecPrecios.get();

@@ -32,6 +32,11 @@ public class instruccionesSQL {
 	public static String instruccionRegistroInicialDtos = "INSERT INTO dtosNecesarios VALUES (NULL,?,?)";
 	public static String instruccionUpdateDtosNece = "UPDATE dtosNecesarios SET fechaBD = ? , porcenta = ? WHERE idDtos = ?";
 	public static String instruccionUpdatePorcentaje = "UPDATE dtosNecesarios SET porcenta = ? WHERE idDtos = ?";
+	
+	//instrucciones tabla categorias
+	public static String instruccionRegistroCategoria = "INSERT INTO categorias VALUES (NULL,?)";
+	
+	
 
 	
 }

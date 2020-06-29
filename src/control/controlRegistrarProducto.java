@@ -38,7 +38,6 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 
 
 	public controlRegistrarProducto(pnlRegistrarProducto pnl) {
-		// TODO Auto-generated constructor stub
 		
 		this.pnl=pnl;
 		DBGP = new dbGestionPrecios();
@@ -57,7 +56,6 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 		if(pnl.getTxtCodMarca().getText().isEmpty() ||
 				pnl.getTxtCodMarca().getText().isEmpty() ||
@@ -92,7 +90,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 			
 			DBGProdu.registrarProducto(proTemp);
 			
-			DBGProdu.registrarCloud(produCloud);
+			// TODO ACA NUBE TMB DBGProdu.registrarCloud(produCloud);
 			
 			pnl.resetearComponentes();
 		}	
@@ -100,7 +98,6 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 		if (e.getSource().equals(pnl.getTxtCodMarca())) {   
 			
@@ -150,7 +147,6 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 
 
 	private void cargarColoresDisponibles() {
-		// TODO Auto-generated method stub
 		
 		pnl.getJcbColor().removeAllItems();
 		
@@ -167,13 +163,11 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
@@ -183,7 +177,6 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 		pnl.getTxtDescripcionProducto().setText(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getProd());
 		
@@ -194,25 +187,21 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 

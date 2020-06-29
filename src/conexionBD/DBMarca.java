@@ -19,7 +19,6 @@ public class DBMarca {
     private ventanasAvisos avisos;
 
     public DBMarca() {
-		// TODO Auto-generated constructor stub
     	avisos = new ventanasAvisos(null);
 	}
 	

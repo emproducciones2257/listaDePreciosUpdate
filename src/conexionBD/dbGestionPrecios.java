@@ -20,6 +20,7 @@ import com.google.cloud.firestore.QuerySnapshot;
 import com.google.cloud.firestore.WriteResult;
 import com.google.common.collect.Iterators;
 
+import modelo.constantes;
 import modelo.preciosCloud;
 import modelo.preciosDocumento;
 import modelo.produCloud;
@@ -36,7 +37,6 @@ public class dbGestionPrecios {
     private Iterator<preciosCloud> it;
     
     public dbGestionPrecios() {
-		// TODO Auto-generated constructor stub
     	avisos = new ventanasAvisos(null);	
 	}
     
@@ -50,10 +50,10 @@ public class dbGestionPrecios {
     		
     		while (resu.next()) {
 				preciosDocumento p = new preciosDocumento(
-						resu.getInt("idPreSer"),
-						resu.getInt("codigoPoducto"),
-						resu.getString("descArt"),
-						resu.getDouble("precio"));
+						resu.getInt(1),
+						resu.getInt(2),
+						resu.getString(3),
+						resu.getDouble(4));
 				
 				temp.add(p);	
 			}
@@ -63,13 +63,10 @@ public class dbGestionPrecios {
     		coneCone.connect().close();
     		
 		} catch (Exception e) {
-			// TODO: handle exception
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
 		}
-    	
 		return temp;
 	}
-
 
 	public void cargarADB(List<preciosDocumento> preciosNuevos) {
 		
@@ -87,7 +84,7 @@ public class dbGestionPrecios {
 			int res;
 			// actualizo los productos
 			
-			obtenerNube();
+			//TODO trabajo en nube.  obtenerNube();
 			List<preciosDocumento> preciosNuevosParaCargar = new ArrayList<>();
 			
 			try {
@@ -97,7 +94,6 @@ public class dbGestionPrecios {
 					preciosDocumento p = obtenerProductoXCodProd(e.getCodigo(),conecone);
 					
 					if (p==null) {
-						//TODO YA NO GATOOOOO
 
 						preciosNuevosParaCargar.add(e);
 
@@ -118,7 +114,6 @@ public class dbGestionPrecios {
 				conecone.close();
 	            avisos.updateCorrecta(ventanasAvisos.UPDATE_OK);
 			} catch (Exception e) {
-				// TODO: handle exception
 				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());	
 			}
 		}
@@ -142,7 +137,7 @@ public class dbGestionPrecios {
 				pre.setString(2, temp.getProd());
 				pre.setDouble(3, temp.getPrecio());
 				
-				registrarCloud(preCloud);
+				//TODO trabajo en nube.  registrarCloud(preCloud);
 				pre.execute();
 			}
 			avisos.cargaCorrecta(ventanasAvisos.CARGA_OK);
@@ -173,7 +168,6 @@ public class dbGestionPrecios {
     		coneCone.connect().close();
     		
 		} catch (Exception e) {
-			// TODO: handle exception
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
 		}
 		return temp;
@@ -196,14 +190,13 @@ public class dbGestionPrecios {
 	
 	public void registrarCloud(preciosCloud preciCloud) {
 
-    	docRef = conectFirebase.getFirestore().collection("precios").document();
+    	docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS).document();
 		
     	ApiFuture<WriteResult> result = docRef.create(preciCloud);
     	
     	try {
 			System.out.println("CARGUE A LA BASE: " + result.get().getUpdateTime());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
@@ -211,7 +204,7 @@ public class dbGestionPrecios {
 	private void obtenerNube() {
 		preciosCloud temp = new preciosCloud();
 		preNube = new HashSet<>();
-		colecPrecios = conectFirebase.getFirestore().collection("precios");
+		colecPrecios = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS);
 		
 		ApiFuture<QuerySnapshot> respuestaDeConsulta = colecPrecios.get();
 		
@@ -224,10 +217,8 @@ public class dbGestionPrecios {
 			}
 			
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -239,9 +230,9 @@ public class dbGestionPrecios {
 			
 			String idProdUpdate = obtenerIdProducto(codigoBuscar);
 			
-			docRef = conectFirebase.getFirestore().collection("precios").document(idProdUpdate);
+			docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS).document(idProdUpdate);
 			
-			ApiFuture<WriteResult> future = docRef.update("precio", preciCloud);
+			ApiFuture<WriteResult> future = docRef.update(constantes.CAMPO_PRECIO, preciCloud);
 
 			WriteResult result;
 			
@@ -250,16 +241,13 @@ public class dbGestionPrecios {
 			System.out.println("ACTUALIZO CODIGO: "  + codigoBuscar + " idDocumento : " + idProdUpdate);
 			
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
 	private String obtenerIdProducto(int codigoBuscar) {
-		// TODO Auto-generated method stub
 		preciosCloud comparar = null;
 		it = preNube.iterator();
 		while (it.hasNext()) {
@@ -288,7 +276,6 @@ public class dbGestionPrecios {
 			}
     		
 		} catch (Exception e) {
-			// TODO: handle exception
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
 		}
     	
@@ -304,10 +291,9 @@ public class dbGestionPrecios {
 			pre.setInt(2, e.getCodigo());
 			pre.executeUpdate();
 
-			updateCloud(e.getPrecio(), e.getCodigo());
+			//TODO ACA NUBE updateCloud(e.getPrecio(), e.getCodigo());
 			
 		} catch (SQLException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 	}
