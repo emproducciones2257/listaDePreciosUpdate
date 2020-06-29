@@ -35,6 +35,8 @@ public class instruccionesSQL {
 	
 	//instrucciones tabla categorias
 	public static String instruccionRegistroCategoria = "INSERT INTO categorias VALUES (NULL,?)";
+	public static String instruccionObtenerCategorias = "SELECT * FROM marca WHERE \"categorias\"";
+
 	
 	
 
