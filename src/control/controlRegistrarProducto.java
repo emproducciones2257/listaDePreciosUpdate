@@ -23,11 +23,11 @@ import modelo.*;
 import views.pnlRegistrarProducto;
 import views.ventanasAvisos;
 
-public class  controlRegistrarProducto implements KeyListener, ActionListener, MouseListener, ItemListener{
+public class  controlRegistrarProducto implements KeyListener, ActionListener, MouseListener{
 	
 	private pnlRegistrarProducto pnl;
 	private int cantidad = 0;
-	private String codigoMarca ="",codigoProducto ="";
+	private String codigoMarca ="",codigoProducto ="", categoriaSeleccionada="";
 	public marca mar;
 	private DBMarca BDmarca;
 	private DBColor BDcolor;
@@ -55,8 +55,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		pnl.getTxtCodMarca().addKeyListener(this);
 		pnl.getTxtBusquedPrecio().addKeyListener(this);
 		pnl.getVisorDatosPrecios().addMouseListener(this);
-		pnl.getcmbCategorias().addMouseListener(this);
-		pnl.getcmbCategorias().addItemListener(this);
+		pnl.getcmbCategorias().addActionListener(this);	
 		prepre = new ArrayList<preciosDocumento>();
 		avisos = new ventanasAvisos(pnl);
 		cargarCategorias();
@@ -104,6 +103,15 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 				
 				pnl.resetearComponentes();
 			}	
+		}
+		
+		if(e.getSource().equals(pnl.getcmbCategorias())) {
+			
+			categoriaSeleccionada=pnl.getcmbCategorias().getSelectedItem().toString();
+			
+			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
+				System.out.println("Se toco el elemento: " + categoriaSeleccionada );
+			}
 		}
 	}
 
@@ -205,6 +213,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 			pnl.getcmbCategorias().removeAllItems();
 		}
 		
+		pnl.getcmbCategorias().addItem("DEFECTO");
 		if (!categorias.isEmpty()) {
 			
 			for (categorias ca : categorias) {
@@ -236,8 +245,4 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		
 	}
 
-	@Override
-	public void itemStateChanged(ItemEvent e) {
-		System.out.println("Se toco el elemento: " + e.getItem().toString());
-	}
 }

@@ -13,6 +13,10 @@ public class constantes {
 	//cloud campo
 	public static final String CAMPO_FECHA_DB = "fechaBD";
 	public static final String CAMPO_PORCEN = "porcentaje";
-	public static final String CAMPO_PRECIO = "porcentaje";		
+	public static final String CAMPO_PRECIO = "porcentaje";
+	
+	
+	//varias
+	public static final Object VALOR_DEFECTO_CATEGORIAS = "SELECCIONAR CATEGORIA";		
 
 }
