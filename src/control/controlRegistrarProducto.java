@@ -2,6 +2,8 @@ package control;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -13,6 +15,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 import conexionBD.DBColor;
+import conexionBD.DBGestionCategorias;
 import conexionBD.DBGestionProductos;
 import conexionBD.DBMarca;
 import conexionBD.dbGestionPrecios;
@@ -20,7 +23,7 @@ import modelo.*;
 import views.pnlRegistrarProducto;
 import views.ventanasAvisos;
 
-public class  controlRegistrarProducto implements KeyListener, ActionListener, MouseListener{
+public class  controlRegistrarProducto implements KeyListener, ActionListener, MouseListener, ItemListener{
 	
 	private pnlRegistrarProducto pnl;
 	private int cantidad = 0;
@@ -28,6 +31,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 	public marca mar;
 	private DBMarca BDmarca;
 	private DBColor BDcolor;
+	private DBGestionCategorias DBCategorias;
 	private DBGestionProductos DBGProdu;
 	private ArrayList<color> coloresMarca;
 	private List<preciosDocumento> prepre;
@@ -35,6 +39,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
     private producto proTemp;
     private ventanasAvisos avisos;
     private produCloud produCloud;
+    private ArrayList<categorias> categorias;
 
 
 	public controlRegistrarProducto(pnlRegistrarProducto pnl) {
@@ -43,57 +48,63 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		DBGP = new dbGestionPrecios();
 		BDmarca = new DBMarca();
 		BDcolor = new DBColor();
+		DBCategorias = new DBGestionCategorias();
 		proTemp = new producto();
 		produCloud = new produCloud();
 		DBGProdu = new DBGestionProductos();
 		pnl.getTxtCodMarca().addKeyListener(this);
 		pnl.getTxtBusquedPrecio().addKeyListener(this);
 		pnl.getVisorDatosPrecios().addMouseListener(this);
+		pnl.getcmbCategorias().addMouseListener(this);
+		pnl.getcmbCategorias().addItemListener(this);
 		prepre = new ArrayList<preciosDocumento>();
 		avisos = new ventanasAvisos(pnl);
-		
+		cargarCategorias();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		
-		if(pnl.getTxtCodMarca().getText().isEmpty() ||
-				pnl.getTxtCodMarca().getText().isEmpty() ||
-				pnl.getTxtDescripcionProducto().getText().isEmpty()) {
+		if(e.getSource().equals(pnl.getBtnRegistrarProd())) {
 			
-			avisos.faltanDatos(ventanasAvisos.FALTAN_DATOS);
-			pnl.resetearComponentes();
-			
-		}else {
-			
-			proTemp.setMarca(mar.getIdMarca());
-			
-			produCloud.setCodMarc(mar.getCodBarMarca());
-			
-			if(pnl.getJcbColor().getSelectedIndex()==0) {
-				proTemp.setColor(0);
-			}else { proTemp.setColor(coloresMarca.get(pnl.getJcbColor().getSelectedIndex()-1).getIdColor());}
-			
-			coloresMarca.clear();
-			
-			proTemp.setUnidadDeVenta(Integer.valueOf(pnl.getTxtUVenta().getText()));
-			
-			produCloud.setUnidadDeVenta(proTemp.getUnidadDeVenta());
-			
-			proTemp.setDtosExtras(pnl.getTxtDescripcionProducto().getText().toString());
-			
-			produCloud.setDtosExtras(proTemp.getDtosExtras());
-			
-			proTemp.setCodBarr(pnl.getTxtCodProducto().getText());
-			
-			produCloud.setCodProd(proTemp.getCodBarr());
-			
-			DBGProdu.registrarProducto(proTemp);
-			
-			// TODO ACA NUBE TMB DBGProdu.registrarCloud(produCloud);
-			
-			pnl.resetearComponentes();
-		}	
+			if(pnl.getTxtCodMarca().getText().isEmpty() ||
+					pnl.getTxtCodMarca().getText().isEmpty() ||
+					pnl.getTxtDescripcionProducto().getText().isEmpty()) {
+				
+				avisos.faltanDatos(ventanasAvisos.FALTAN_DATOS);
+				pnl.resetearComponentes();
+				
+			}else {
+				
+				proTemp.setMarca(mar.getIdMarca());
+				
+				produCloud.setCodMarc(mar.getCodBarMarca());
+				
+				if(pnl.getJcbColor().getSelectedIndex()==0) {
+					proTemp.setColor(0);
+				}else { proTemp.setColor(coloresMarca.get(pnl.getJcbColor().getSelectedIndex()-1).getIdColor());}
+				
+				coloresMarca.clear();
+				
+				proTemp.setUnidadDeVenta(Integer.valueOf(pnl.getTxtUVenta().getText()));
+				
+				produCloud.setUnidadDeVenta(proTemp.getUnidadDeVenta());
+				
+				proTemp.setDtosExtras(pnl.getTxtDescripcionProducto().getText().toString());
+				
+				produCloud.setDtosExtras(proTemp.getDtosExtras());
+				
+				proTemp.setCodBarr(pnl.getTxtCodProducto().getText());
+				
+				produCloud.setCodProd(proTemp.getCodBarr());
+				
+				DBGProdu.registrarProducto(proTemp);
+				
+				// TODO ACA NUBE TMB DBGProdu.registrarCloud(produCloud);
+				
+				pnl.resetearComponentes();
+			}	
+		}
 	}
 
 	@Override
@@ -178,11 +189,31 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		pnl.getTxtDescripcionProducto().setText(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getProd());
+		if(e.getSource().equals(pnl.getVisibleRect())) {
+			pnl.getTxtDescripcionProducto().setText(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getProd());
+			
+			proTemp.setIdPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getIdPrecio());
+			
+			produCloud.setPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getCodigo());
+		}
+	}
+
+	private void cargarCategorias() {
+		categorias = DBCategorias.obtenerCategorias();
 		
-		proTemp.setIdPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getIdPrecio());
+		if(pnl.getcmbCategorias().getItemCount()>0) {
+			pnl.getcmbCategorias().removeAllItems();
+		}
 		
-		produCloud.setPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getCodigo());
+		if (!categorias.isEmpty()) {
+			
+			for (categorias ca : categorias) {
+				pnl.getcmbCategorias().addItem(ca.getNomCat());
+			}
+			
+		}else {
+			System.out.println("LLEGUE VACIOOO");
+		}
 	}
 
 	@Override
@@ -205,4 +236,8 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		
 	}
 
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		System.out.println("Se toco el elemento: " + e.getItem().toString());
+	}
 }

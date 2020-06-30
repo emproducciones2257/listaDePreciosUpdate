@@ -30,6 +30,9 @@ public class pnlRegistrarProducto extends JPanel {
     private JTable visorDatosPrecios;
     private DefaultTableModel aModel;
     private dbGestionPrecios DBGP;
+    private JButton btnCancelarCarga;
+    private JComboBox<String> cmbCategorias;
+    private JLabel lbCategoria;
     
     private String [] nombreColumnas = {"Descripcion","Precio"};
 	
@@ -66,22 +69,11 @@ public class pnlRegistrarProducto extends JPanel {
 		 add(txtUVenta);
 		 add(lblNewLabel_1);
 		 add(pnlBD);		 
+		 add(btnCancelarCarga);
+		 add(cmbCategorias);
+		 add(lbCategoria);
 		 
 		 btnRegistrarProd.addActionListener(new controlRegistrarProducto(this)); 
-		 
-		 JButton btnCancelarCarga = new JButton("Cancelar Carga");
-		 btnCancelarCarga.setBounds(601, 197, 208, 23);
-		 add(btnCancelarCarga);
-		 
-		 JComboBox<String> comboBox = new JComboBox();
-		 comboBox.setBounds(102, 27, 113, 30);
-		 add(comboBox);
-		 
-		 JLabel lbCategoria = new JLabel("Categoria");
-		 lbCategoria.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		 lbCategoria.setForeground(Color.WHITE);
-		 lbCategoria.setBounds(25, 30, 67, 14);
-		 add(lbCategoria);
 	}
 
 	private void crearComponentes() {
@@ -151,6 +143,17 @@ public class pnlRegistrarProducto extends JPanel {
         pnlBD = new JScrollPane(visorDatosPrecios);
         pnlBD.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         pnlBD.setBounds(225, 57, 366, 163);
+        
+        btnCancelarCarga = new JButton("Cancelar Carga");
+		btnCancelarCarga.setBounds(601, 197, 208, 23);
+		
+		cmbCategorias = new JComboBox();
+		cmbCategorias.setBounds(102, 27, 113, 30);
+		
+		lbCategoria = new JLabel("Categoria");
+		lbCategoria.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbCategoria.setForeground(Color.WHITE);
+		lbCategoria.setBounds(25, 30, 67, 14);
 	}
 	
 	
@@ -191,10 +194,6 @@ public class pnlRegistrarProducto extends JPanel {
 		for(int i=a; i>=0;i--){
 			getaModel().removeRow(i);
 		}
-	}
-
-	public TitledBorder getTituloPanelCargaProducto() {
-		return tituloPanelCargaProducto;
 	}
 
 
@@ -250,5 +249,9 @@ public class pnlRegistrarProducto extends JPanel {
 
 	public void setaModel(DefaultTableModel aModel) {
 		this.aModel = aModel;
+	}
+	
+	public JComboBox<String> getcmbCategorias() {
+		return cmbCategorias;
 	}
 }

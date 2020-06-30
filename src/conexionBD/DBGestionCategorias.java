@@ -3,6 +3,8 @@ package conexionBD;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+
+import modelo.categorias;
 import modelo.marca;
 import views.ventanasAvisos;
 
@@ -33,31 +35,29 @@ public class DBGestionCategorias {
 		
 		}
 	
-	public ArrayList<String> obtenerCategorias() {
+	public ArrayList<categorias> obtenerCategorias() {
 		
-		ArrayList<String> listaCategorias = new ArrayList<>();
+		ArrayList<categorias> listaCategorias = new ArrayList<>();
 		
 		try {
 			pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionObtenerCategorias);
 			resu= pre.executeQuery();
 			
 			while (resu.next()) {
-				martemp = new marca();
-				martemp.setCodBarMarca(resu.getString("codMarca"));
-				martemp.setIdMarca(resu.getInt("idMarca"));
-				martemp.setNombreMarca(resu.getString("nombre"));
-				
+				categorias cat = new categorias();
+				cat.setIdCategoria(resu.getInt(1));
+				cat.setNomCat(resu.getString(2));
+				listaCategorias.add(cat);
+			}
+			
 			pre.close();
 			resu.close();
 			coneCone.connect().close();
-			}
 			
 		} catch (Exception e) {
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
 		}
 		
-		return martemp;
+		return listaCategorias;
 	}
-	
-	
 }
