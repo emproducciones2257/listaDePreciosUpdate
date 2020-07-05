@@ -73,45 +73,55 @@ public class pnlGestionPrecios extends JPanel{
 		txtDescripcion = new JTextArea();
 		scrollPane.setViewportView(txtDescripcion);
 		
+		JComboBox jcmbCategorias = new JComboBox();
+		jcmbCategorias.setBounds(687, 21, 131, 30);
+		add(jcmbCategorias);
+		
+		JLabel lblNewLabel_8 = new JLabel("Categoria");
+		lblNewLabel_8.setForeground(Color.WHITE);
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_8.setBounds(718, 3, 68, 14);
+		add(lblNewLabel_8);
+		
 		lista = new ArrayList<preciosDocumento>();
 	}
 	
 	private void crearComponentes() {
 		
 		btnBuscarArchivo = new JButton("PDF");
-		btnBuscarArchivo.setBounds(10, 28, 86, 23);
+		btnBuscarArchivo.setBounds(31, 21, 86, 30);
 	        
 	    lblEstadoArchivo = new JLabel("Sin Archivo");
-	    lblEstadoArchivo.setBounds(175, 31, 92, 15);
+	    lblEstadoArchivo.setBounds(152, 29, 92, 15);
 	    lblEstadoArchivo.setForeground(Color.WHITE);
 	    lblEstadoArchivo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 	    
 	    lblNewLabel = new JLabel("Buscar Archivo");
-	    lblNewLabel.setBounds(17, 9, 79, 15);
+	    lblNewLabel.setBounds(35, 3, 79, 15);
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNewLabel.setForeground(Color.WHITE);
         
         lblNewLabel_1 = new JLabel("Estado Archivo");
-        lblNewLabel_1.setBounds(165, 9, 81, 15);
+        lblNewLabel_1.setBounds(142, 3, 81, 15);
         lblNewLabel_1.setForeground(Color.WHITE);
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
         lblNewLabel_2 = new JLabel("Porcentaje");
-        lblNewLabel_2.setBounds(377, 9, 59, 15);
+        lblNewLabel_2.setBounds(314, 3, 59, 15);
         lblNewLabel_2.setForeground(Color.WHITE);
         lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
         txtPorcentaje = new JTextField();
-        txtPorcentaje.setBounds(348, 24, 113, 30);
+        txtPorcentaje.setBounds(287, 21, 113, 30);
         txtPorcentaje.setColumns(10);
         
         lblNewLabel_3 = new JLabel("Procesar");
-        lblNewLabel_3.setBounds(629, 9, 46, 15);
+        lblNewLabel_3.setBounds(543, 3, 46, 15);
         lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNewLabel_3.setForeground(Color.WHITE);
         
         btnProcesar = new JButton("Procesar Archivo");
-        btnProcesar.setBounds(599, 28, 113, 23);
+        btnProcesar.setBounds(510, 21, 113, 30);
         
         tblListadoPrecios = new JTable();
         

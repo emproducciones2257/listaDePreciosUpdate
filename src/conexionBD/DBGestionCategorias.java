@@ -3,9 +3,7 @@ package conexionBD;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-
 import modelo.categorias;
-import modelo.marca;
 import views.ventanasAvisos;
 
 public class DBGestionCategorias {
@@ -18,7 +16,6 @@ public class DBGestionCategorias {
 		avisos=new ventanasAvisos(null);
 	}
 	
-
 	public void cargarCategoria(String cat) {
 			
 		try {
@@ -29,10 +26,8 @@ public class DBGestionCategorias {
 	        coneCone.connect().close();
 	        avisos.cargaCorrecta(ventanasAvisos.CARGA_OK);
 	        } catch (Exception e) {
-	        	System.out.print("No se pudo cargar" + e.getMessage());
 	        	avisos.cargaFallida(ventanasAvisos.CARGA_ERROR, e.getMessage());
 	        }
-		
 		}
 	
 	public ArrayList<categorias> obtenerCategorias() {

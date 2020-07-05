@@ -34,7 +34,6 @@ public class pnlGestionCategoria extends JPanel {
 		add(btnCancelar);
 		
 		btnCargarCategoria.addActionListener(new gestionCategorias(this));	
-		
 	}
 
 	private void crearComponenete() {

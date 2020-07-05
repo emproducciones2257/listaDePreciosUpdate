@@ -164,7 +164,6 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		}
 	}
 
-
 	private void cargarColoresDisponibles() {
 		
 		pnl.getJcbColor().removeAllItems();
