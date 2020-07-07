@@ -3,7 +3,6 @@ package res;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 
@@ -13,7 +12,7 @@ public class leerExcel {
 	
 		public static void main(String[] args) throws Exception {
 			
-		FileInputStream documentoExcel = new FileInputStream(new File("C:\\PERFUMERIA.xls"));
+		FileInputStream documentoExcel = new FileInputStream(new File("C:\\ListadoDePrecios.xls"));
 		
 		//creo libro 
 		Workbook libroExcell = WorkbookFactory.create(documentoExcel);

@@ -139,6 +139,10 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 
             }	
 	}
+	
+	private void extraerDtosExcel(File ruta) {
+		
+	}
         
     private String obtenerFechaDocumento(String textoRecuperado) {
     	
