@@ -17,6 +17,15 @@ public class constantes {
 	
 	
 	//varias
-	public static final Object VALOR_DEFECTO_CATEGORIAS = "SELECCIONAR CATEGORIA";		
+	public static final String VALOR_DEFECTO_CATEGORIAS = "SELECCIONAR CATEGORIA";
+	public static final String VALOR_TIPO_PDF = "Ducumento PDF";
+	public static final String VALOR_EXTENCION_PDF = "pdf";
+	public static final String VALOR_TIPO_EXCEL1 = "Ducumento Excel, .xls";
+	public static final String VALOR_TIPO_EXCEL2 = "Ducumento Excel, .xlsx";
+	public static final String VALOR_EXTENCION_EXCEL1 = "xls";
+	public static final String VALOR_EXTENCION_EXCEL2 = "xlsx";
+	public static final String ARCHIVO_OK = "Archivo Cargado";
+	
+
 
 }

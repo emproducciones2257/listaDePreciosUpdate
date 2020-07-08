@@ -2,14 +2,26 @@ package control;
 
 import java.awt.event.*;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+
 import conexionBD.DBDtos;
+import conexionBD.DBGestionCategorias;
 import conexionBD.dbGestionPrecios;
+import modelo.categorias;
+import modelo.constantes;
 import modelo.preciosDocumento;
 import views.Principal;
 import views.pnlGestionPrecios;
@@ -23,26 +35,30 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 	private dbGestionPrecios DBGP;
 	private DBDtos DBDT;
 	private ventanasAvisos avisos;
-	private String fecha;
+	private String fecha,categoriaSeleccionada="";
 	private preciosDocumento productoActualizar;
 	private List<preciosDocumento> prepre;
+	private ArrayList<categorias> categorias;
+	private DBGestionCategorias DBCategorias;
+	private FileNameExtensionFilter filPdf,filExcel1,filExcel2;
 	
 	public controlGestionPrecios(pnlGestionPrecios pnlPrecios) {
-		// TODO Auto-generated constructor stub
 		this.pnlPrecios = pnlPrecios;
 		pnlPrecios.getBtnProcesar().addActionListener(this);
 		pnlPrecios.getTblListadoPrecios().addMouseListener(this);
 		pnlPrecios.getBtnRegistrarPrecio().addActionListener(this);
 		pnlPrecios.getTxtFiltrarProducto().addKeyListener(this);
+		pnlPrecios.getJcmbCategorias().addActionListener(this);
 		precios = new ArrayList<preciosDocumento>();
 		DBGP = new dbGestionPrecios();
+		DBCategorias = new DBGestionCategorias();
 		DBDT = new DBDtos();
 		avisos = new ventanasAvisos(pnlPrecios);
+		cargarCategorias();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
 		if (e.getSource().equals(pnlPrecios.getBtnBuscarArchivo())) {
 			obtenerArchivo();		
@@ -94,21 +110,60 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 			pnlPrecios.limpiarTabla();
 			pnlPrecios.modeloTabla();
 		}
+		
+		if(e.getSource().equals(pnlPrecios.getJcmbCategorias())) {
+			
+			categoriaSeleccionada=pnlPrecios.getJcmbCategorias().getSelectedItem().toString();
+
+			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
+				
+				pnlPrecios.getBtnBuscarArchivo().setEnabled(true);
+				
+				if(categoriaSeleccionada.equals("LIBRERIA")) {
+					filPdf=new FileNameExtensionFilter(constantes.VALOR_TIPO_PDF, constantes.VALOR_EXTENCION_PDF);
+				}else {
+					filExcel1 = new FileNameExtensionFilter(constantes.VALOR_TIPO_EXCEL1, constantes.VALOR_EXTENCION_EXCEL1);
+					filExcel2 = new FileNameExtensionFilter(constantes.VALOR_TIPO_EXCEL2, constantes.VALOR_EXTENCION_EXCEL2);
+				}
+				
+			}else {
+				pnlPrecios.getBtnBuscarArchivo().setEnabled(false);
+			}
+		}
+	}
+	
+	private void cargarCategorias() {
+		categorias = DBCategorias.obtenerCategorias();
+		
+		if(pnlPrecios.getJcmbCategorias().getItemCount()>0) {
+			pnlPrecios.getJcmbCategorias().removeAllItems();
+		}
+		
+		pnlPrecios.getJcmbCategorias().addItem(constantes.VALOR_DEFECTO_CATEGORIAS);
+		if (!categorias.isEmpty()) {
+			
+			for (categorias ca : categorias) {
+				pnlPrecios.getJcmbCategorias().addItem(ca.getNomCat());
+			}
+		}
 	}
 	
 	private void obtenerArchivo() {
 		
-		FileNameExtensionFilter filtro = new FileNameExtensionFilter("Ducumento PDF", "pdf");
+		JFileChooser b = new JFileChooser();
 		
-		 JFileChooser b = new JFileChooser();
-		 
-		 b.setFileFilter(filtro);
-		 
+		if(categoriaSeleccionada.equals("LIBRERIA")) {
+			b.setFileFilter(filPdf);
+		}else {
+			b.setFileFilter(filExcel1);
+			b.setFileFilter(filExcel2);
+		}
+
 		 int returnVal = b.showOpenDialog(null);
 		 
 		 if(returnVal == JFileChooser.APPROVE_OPTION) {
 	            archivo = b.getSelectedFile().getAbsoluteFile();
-	            pnlPrecios.getLblEstadoArchivo().setText("Archivo cargado correctamente");
+	            pnlPrecios.getLblEstadoArchivo().setText(constantes.ARCHIVO_OK);
 	     }else {
 			avisos.CargaErronea(ventanasAvisos.ERROR_CARGA_ARCHIVO);
 		}
@@ -135,14 +190,66 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
             pruebaDelimitador(temp); 
 
             } catch (IOException e) {
-                    // TODO Auto-generated catch block
 
             }	
 	}
 	
 	private void extraerDtosExcel(File ruta) {
 		
+		FileInputStream documentoExcel;
+		
+		try {
+			
+			documentoExcel = new FileInputStream(ruta);
+			//creo libro 
+			Workbook libroExcell = WorkbookFactory.create(documentoExcel);
+			
+			//obtengo la primero hoja del libro
+			Sheet HojaLibro = libroExcell.getSheetAt(0);
+			
+			ArrayList<Object> filasCelda;
+			
+			Cell celdaTemporal = null;
+			
+			Iterator<Row> filaIterator = HojaLibro.rowIterator();
+			filaIterator.next();
+			
+	        while (filaIterator.hasNext()) {
+	        	
+	            Row fila = filaIterator.next();
+
+	            Iterator<Cell> celdalIterator = fila.cellIterator();
+	            
+	            filasCelda = new ArrayList<>();
+
+	            while (celdalIterator.hasNext()) {
+	                celdaTemporal = celdalIterator.next();
+	                
+	                if(celdaTemporal.getCellType()==CellType.NUMERIC) {
+				    	filasCelda.add(celdaTemporal.getNumericCellValue());
+	            	}
+	            	if (celdaTemporal.getCellType()==CellType.STRING) {
+				    	filasCelda.add(celdaTemporal.getStringCellValue());
+					}
+	            }
+	            procesarCelda(filasCelda);
+	        }
+			
+			documentoExcel.close();
+			libroExcell.close();
+		} catch (Exception e) {
+			
+			avisos.CargaErronea(ventanasAvisos.ERROR_CARGA_ARCHIVO);
+		}
+
 	}
+	
+	private static void procesarCelda(ArrayList<Object> filasCelda) {
+		if(filasCelda.size()==3) {
+			System.out.println("CODIGO: " + filasCelda.get(0)+", DESC.: " + filasCelda.get(1) + " VALOR: $ " + filasCelda.get(2));
+		}
+
+	}	
         
     private String obtenerFechaDocumento(String textoRecuperado) {
     	

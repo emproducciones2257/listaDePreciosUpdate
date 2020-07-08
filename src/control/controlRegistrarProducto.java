@@ -212,15 +212,12 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 			pnl.getcmbCategorias().removeAllItems();
 		}
 		
-		pnl.getcmbCategorias().addItem("DEFECTO");
+		pnl.getcmbCategorias().addItem(constantes.VALOR_DEFECTO_CATEGORIAS);
 		if (!categorias.isEmpty()) {
 			
 			for (categorias ca : categorias) {
 				pnl.getcmbCategorias().addItem(ca.getNomCat());
 			}
-			
-		}else {
-			System.out.println("LLEGUE VACIOOO");
 		}
 	}
 

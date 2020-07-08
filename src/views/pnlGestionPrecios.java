@@ -36,6 +36,8 @@ public class pnlGestionPrecios extends JPanel{
     private JTextField txtFiltrarProducto;
     private List<preciosDocumento> lista;
     private JScrollPane scrollPane;
+    private JLabel lblNewLabel_8;
+    private JComboBox jcmbCategorias;
     
 	public pnlGestionPrecios() {
 		
@@ -64,64 +66,53 @@ public class pnlGestionPrecios extends JPanel{
 		add(btnRegistrarPrecio);
 		add(txtFiltrarProducto);
 		add(lblNewLabel_7);
+		add(jcmbCategorias);
+		add(lblNewLabel_8);
 		
 		btnBuscarArchivo.addActionListener(new controlGestionPrecios(this));
 		
-		
 		add(scrollPane);
-		
-		txtDescripcion = new JTextArea();
-		scrollPane.setViewportView(txtDescripcion);
-		
-		JComboBox jcmbCategorias = new JComboBox();
-		jcmbCategorias.setBounds(687, 21, 131, 30);
-		add(jcmbCategorias);
-		
-		JLabel lblNewLabel_8 = new JLabel("Categoria");
-		lblNewLabel_8.setForeground(Color.WHITE);
-		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		lblNewLabel_8.setBounds(718, 3, 68, 14);
-		add(lblNewLabel_8);
 		
 		lista = new ArrayList<preciosDocumento>();
 	}
 	
 	private void crearComponentes() {
 		
-		btnBuscarArchivo = new JButton("PDF");
-		btnBuscarArchivo.setBounds(31, 21, 86, 30);
+		btnBuscarArchivo = new JButton("SELECCIONAR");
+		btnBuscarArchivo.setBounds(10, 21, 140, 30);
+		btnBuscarArchivo.setEnabled(false);
 	        
 	    lblEstadoArchivo = new JLabel("Sin Archivo");
-	    lblEstadoArchivo.setBounds(152, 29, 92, 15);
+	    lblEstadoArchivo.setBounds(187, 28, 92, 15);
 	    lblEstadoArchivo.setForeground(Color.WHITE);
 	    lblEstadoArchivo.setFont(new Font("Tahoma", Font.PLAIN, 12));
 	    
 	    lblNewLabel = new JLabel("Buscar Archivo");
-	    lblNewLabel.setBounds(35, 3, 79, 15);
+	    lblNewLabel.setBounds(41, 3, 79, 15);
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNewLabel.setForeground(Color.WHITE);
         
         lblNewLabel_1 = new JLabel("Estado Archivo");
-        lblNewLabel_1.setBounds(142, 3, 81, 15);
+        lblNewLabel_1.setBounds(177, 3, 81, 15);
         lblNewLabel_1.setForeground(Color.WHITE);
         lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
         lblNewLabel_2 = new JLabel("Porcentaje");
-        lblNewLabel_2.setBounds(314, 3, 59, 15);
+        lblNewLabel_2.setBounds(349, 3, 59, 15);
         lblNewLabel_2.setForeground(Color.WHITE);
         lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 12));
         
         txtPorcentaje = new JTextField();
-        txtPorcentaje.setBounds(287, 21, 113, 30);
+        txtPorcentaje.setBounds(324, 21, 113, 30);
         txtPorcentaje.setColumns(10);
         
         lblNewLabel_3 = new JLabel("Procesar");
-        lblNewLabel_3.setBounds(543, 3, 46, 15);
+        lblNewLabel_3.setBounds(556, 3, 46, 15);
         lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNewLabel_3.setForeground(Color.WHITE);
         
         btnProcesar = new JButton("Procesar Archivo");
-        btnProcesar.setBounds(510, 21, 113, 30);
+        btnProcesar.setBounds(518, 21, 140, 30);
         
         tblListadoPrecios = new JTable();
         
@@ -163,6 +154,17 @@ public class pnlGestionPrecios extends JPanel{
         
         txtFiltrarProducto = new JTextField();
         txtFiltrarProducto.setBounds(198, 290, 221, 30);
+        
+        txtDescripcion = new JTextArea();
+		scrollPane.setViewportView(txtDescripcion);
+		
+		jcmbCategorias = new JComboBox();
+		jcmbCategorias.setBounds(708, 21, 131, 30);
+		
+		lblNewLabel_8 = new JLabel("Categoria");
+		lblNewLabel_8.setForeground(Color.WHITE);
+		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lblNewLabel_8.setBounds(741, 3, 68, 14);
 	}
 
 	public void modeloTabla() {
@@ -237,6 +239,10 @@ public class pnlGestionPrecios extends JPanel{
 	
 	public void setLista(List<preciosDocumento> lista) {
 		this.lista = lista;
+	}
+
+	public JComboBox getJcmbCategorias() {
+		return jcmbCategorias;
 	}
 
 	public preciosDocumento retornarElemento(int selectedRow){return lista.get(selectedRow);}
