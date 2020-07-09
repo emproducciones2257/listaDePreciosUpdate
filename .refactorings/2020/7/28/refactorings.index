@@ -5,3 +5,4 @@
 1594072186516	Rename local variable 'row'
 1594072203694	Rename local variable 'cellIterator'
 1594160244392	Delete element
+1594247238468	Extract method 'enviarArchivoBD'

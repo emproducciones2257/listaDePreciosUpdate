@@ -102,7 +102,7 @@ public class DBDtos {
 		
 	}
 
-	public void cargaInicialDtos(String fecha, int por) {
+	private void cargaInicialDtos(String fecha, int por) {
 		try {
 			pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionRegistroInicialDtos);
 			pre.setString(1, fecha);

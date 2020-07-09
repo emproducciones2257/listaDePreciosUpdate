@@ -1,29 +1,15 @@
 package conexionBD;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
-
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Query;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.common.collect.Iterators;
-
 import modelo.constantes;
 import modelo.preciosCloud;
 import modelo.preciosDocumento;
-import modelo.produCloud;
 import views.ventanasAvisos;
 
 public class dbGestionPrecios {
@@ -51,10 +37,10 @@ public class dbGestionPrecios {
     		while (resu.next()) {
 				preciosDocumento p = new preciosDocumento(
 						resu.getInt(1),
-						resu.getInt(2),
+						resu.getString(2),
 						resu.getString(3),
 						resu.getDouble(4));
-				
+						resu.getInt(5);
 				temp.add(p);	
 			}
     		
@@ -91,7 +77,7 @@ public class dbGestionPrecios {
 				conecone = coneCone.connect();
 				for (preciosDocumento e : preciosNuevos) {
 					
-					preciosDocumento p = obtenerProductoXCodProd(e.getCodigo(),conecone);
+					preciosDocumento p = obtenerProductoXCodProd(e.getCodigo(),e.getCategoria(),conecone);
 					
 					if (p==null) {
 
@@ -130,12 +116,14 @@ public class dbGestionPrecios {
 			
 			for (int i = 0; i < preciosNuevos.size(); i++) {
 				preciosDocumento temp = preciosNuevos.get(i);
-				preCloud.setIdPrecioBDLocal(temp.getCodigo());
+				preCloud.setIdPrecioBDLocal(Integer.valueOf(temp.getCodigo()));
 				preCloud.setPrecio(temp.getPrecio());
+				preCloud.setCategoria(temp.getCategoria());
 				
-				pre.setInt(1, temp.getCodigo());
+				pre.setString(1, temp.getCodigo());
 				pre.setString(2, temp.getProd());
 				pre.setDouble(3, temp.getPrecio());
+				pre.setInt(4, temp.getCategoria());
 				
 				//TODO trabajo en nube.  registrarCloud(preCloud);
 				pre.execute();
@@ -157,7 +145,7 @@ public class dbGestionPrecios {
     		while (resu.next()) {
 				preciosDocumento p = new preciosDocumento();
 				p.setIdPrecio(resu.getInt(1));
-				p.setCodigo(resu.getInt(2));
+				p.setCodigo(resu.getString(2));
 				p.setProd(resu.getString(3));
 				p.setPrecio(resu.getDouble(4));
 				temp.add(p);	
@@ -178,7 +166,7 @@ public class dbGestionPrecios {
 			pre = coneCone.connect().prepareStatement(instruccionesSQL.instruccionActualizarProducto);
 			pre.setString(1, productoActualizar.getProd());
 			pre.setDouble(2, productoActualizar.getPrecio());
-			pre.setInt(3, productoActualizar.getCodigo());
+			pre.setString(3, productoActualizar.getCodigo());
 			pre.setInt(4, productoActualizar.getIdPrecio());
 			pre.executeUpdate();
 			pre.close();
@@ -259,20 +247,22 @@ public class dbGestionPrecios {
 		return comparar.getIdPrecio();
 	}
 	
-	public preciosDocumento obtenerProductoXCodProd(int codProd, Connection con) {
+	public preciosDocumento obtenerProductoXCodProd(String codProd,int codCat,Connection con) {
 		preciosDocumento p = null;
     	
     	try {
     		pre= con.prepareStatement(instruccionesSQL.instruccionRecuperarProductoXId);
-    		pre.setInt(1, codProd);
+    		pre.setString(1, codProd);
+    		pre.setInt(2, codCat);
     		resu = pre.executeQuery();
     		
     		while (resu.next()) {
     			p = new preciosDocumento();
     			p.setIdPrecio(resu.getInt(1));
-    			p.setCodigo(resu.getInt(2));
+    			p.setCodigo(resu.getString(2));
     			p.setProd(resu.getString(3));
     			p.setPrecio(resu.getDouble(4));
+    			p.setCategoria(resu.getInt(5));
 			}
     		
 		} catch (Exception e) {
@@ -288,7 +278,8 @@ public class dbGestionPrecios {
 
 			pre= tet.prepareStatement(instruccionesSQL.instruccionActualizarProductoPrecio);
 			pre.setDouble(1, e.getPrecio());
-			pre.setInt(2, e.getCodigo());
+			pre.setString(2, e.getCodigo());
+			pre.setInt(3, e.getCategoria());
 			pre.executeUpdate();
 
 			//TODO ACA NUBE updateCloud(e.getPrecio(), e.getCodigo());

@@ -36,6 +36,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 	private DBDtos DBDT;
 	private ventanasAvisos avisos;
 	private String fecha,categoriaSeleccionada="";
+	private categorias indiceCatSelec;
 	private preciosDocumento productoActualizar;
 	private List<preciosDocumento> prepre;
 	private ArrayList<categorias> categorias;
@@ -71,10 +72,9 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 			}
 			
 			if((archivo.isFile())&&(pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
-				extraerTextoPdf(archivo);
-				DBGP.cargarADB(precios);
-				DBDT.cargaInicialDtos(fecha,0);
-				Principal.refrescarDatos();
+				
+				enviarArchivoBD(fecha,0);
+
 				archivo = new File("");
 				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
 			}
@@ -84,16 +84,13 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 			}
 			
 			if((archivo.isFile())&&(!pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
-				extraerTextoPdf(archivo);
-				DBDT.actualiazarDtos(
-						fecha,
+				
+				enviarArchivoBD(fecha,
 						Integer.parseInt(pnlPrecios.getTxtPorcentaje().getText()));
 				Principal.refrescarDatos();
-				DBGP.cargarADB(precios);
 				archivo = new File("");
 				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
 			}
-
 		}
 		
 		if (e.getSource().equals(pnlPrecios.getBtnRegistrarPrecio())) {
@@ -114,7 +111,11 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 		if(e.getSource().equals(pnlPrecios.getJcmbCategorias())) {
 			
 			categoriaSeleccionada=pnlPrecios.getJcmbCategorias().getSelectedItem().toString();
-
+			
+			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
+				indiceCatSelec = categorias.get(pnlPrecios.getJcmbCategorias().getSelectedIndex()-1);
+			}
+			
 			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
 				
 				pnlPrecios.getBtnBuscarArchivo().setEnabled(true);
@@ -130,6 +131,19 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 				pnlPrecios.getBtnBuscarArchivo().setEnabled(false);
 			}
 		}
+	}
+
+	private void enviarArchivoBD(String fe, int porcentaje) {
+		if(categoriaSeleccionada.equals("LIBRERIA")) {
+			extraerTextoPdf(archivo);
+			DBDT.actualiazarDtos(fe,porcentaje);
+			Principal.refrescarDatos();
+		}else {
+			extraerDtosExcel(archivo);
+			System.out.println("EL TAMAÑO ES: " + precios.size());
+		}
+		
+		DBGP.cargarADB(precios);
 	}
 	
 	private void cargarCategorias() {
@@ -196,11 +210,9 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 	
 	private void extraerDtosExcel(File ruta) {
 		
-		FileInputStream documentoExcel;
-		
 		try {
-			
-			documentoExcel = new FileInputStream(ruta);
+			//System.out.println("RUTA: " + ruta.getAbsoluteFile().getName());
+			FileInputStream documentoExcel = new FileInputStream("C:\\"+ ruta.getAbsoluteFile().getName());
 			//creo libro 
 			Workbook libroExcell = WorkbookFactory.create(documentoExcel);
 			
@@ -238,17 +250,19 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 			documentoExcel.close();
 			libroExcell.close();
 		} catch (Exception e) {
-			
 			avisos.CargaErronea(ventanasAvisos.ERROR_CARGA_ARCHIVO);
+			e.printStackTrace();
 		}
-
 	}
 	
-	private static void procesarCelda(ArrayList<Object> filasCelda) {
+	private void procesarCelda(ArrayList<Object> filasCelda) {
 		if(filasCelda.size()==3) {
-			System.out.println("CODIGO: " + filasCelda.get(0)+", DESC.: " + filasCelda.get(1) + " VALOR: $ " + filasCelda.get(2));
+			preciosDocumento pTemp = new preciosDocumento(filasCelda.get(0).toString(),
+					filasCelda.get(1).toString(),
+					Double.valueOf(filasCelda.get(2).toString()),
+					indiceCatSelec.getIdCategoria());
+			precios.add(pTemp);
 		}
-
 	}	
         
     private String obtenerFechaDocumento(String textoRecuperado) {
@@ -297,7 +311,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
             String descripcion="";
             String precio="";
             String Leido = "";
-            Double precioPorcentaje=0.0;
+            
             char c;
             byte contador = 0;
         
@@ -338,7 +352,10 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
                 
                 precio= (precio.replace(",","."));
                               
-                preciosDocumento temp = new preciosDocumento(Integer.parseInt(codigo),descripcion, Double.parseDouble(precio),precioPorcentaje);
+                preciosDocumento temp = new preciosDocumento(codigo,
+                												descripcion,
+                												Double.parseDouble(precio),
+                												indiceCatSelec.getIdCategoria());
                                 
                 precios.add(temp);
                                

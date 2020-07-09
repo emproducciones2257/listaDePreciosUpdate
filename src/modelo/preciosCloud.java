@@ -5,9 +5,9 @@ public class preciosCloud {
 	private String idPrecio;
 	private int idPrecioBDLocal;
     private Double precio;
+    private int categoria;
     
     public preciosCloud() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getIdPrecio() {
@@ -34,9 +34,17 @@ public class preciosCloud {
 		this.precio = precio;
 	}
 
+	public int getCategoria() {
+		return categoria;
+	}
+
+	public void setCategoria(int categoria) {
+		this.categoria = categoria;
+	}
+
 	@Override
 	public String toString() {
 		return "preciosCloud [idPrecio=" + idPrecio + ", idPrecioBDLocal=" + idPrecioBDLocal + ", precio=" + precio
-				+ "]";
+				+ ", categoria=" + categoria + "]";
 	}
 }
