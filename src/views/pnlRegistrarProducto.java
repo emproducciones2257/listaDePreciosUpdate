@@ -41,7 +41,7 @@ public class pnlRegistrarProducto extends JPanel {
 		DBGP = new dbGestionPrecios();
 		
 		crearComponentes();
-		modeloTabla(DBGP.obtenerListadoProductosPrecios());
+		//modeloTabla(DBGP.obtenerListadoProductosPrecios());
 		
 		//propiedades Titulo
 		tituloPanelCargaProducto.setTitleColor((Color.WHITE));

@@ -73,8 +73,8 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 			
 			if((archivo.isFile())&&(pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
 				
-				enviarArchivoBD(fecha,0);
-
+				enviarArchivoBD(0);
+				
 				archivo = new File("");
 				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
 			}
@@ -85,9 +85,8 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 			
 			if((archivo.isFile())&&(!pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
 				
-				enviarArchivoBD(fecha,
-						Integer.parseInt(pnlPrecios.getTxtPorcentaje().getText()));
-				Principal.refrescarDatos();
+				enviarArchivoBD(Integer.parseInt(pnlPrecios.getTxtPorcentaje().getText()));
+				
 				archivo = new File("");
 				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
 			}
@@ -104,14 +103,14 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 			}
 			
 			DBGP.actualizarRegistro(productoActualizar);
-			pnlPrecios.limpiarTabla();
-			pnlPrecios.modeloTabla();
+			//pnlPrecios.limpiarTabla();
+			//pnlPrecios.modeloTabla();
 		}
 		
 		if(e.getSource().equals(pnlPrecios.getJcmbCategorias())) {
 			
 			categoriaSeleccionada=pnlPrecios.getJcmbCategorias().getSelectedItem().toString();
-			
+
 			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
 				indiceCatSelec = categorias.get(pnlPrecios.getJcmbCategorias().getSelectedIndex()-1);
 			}
@@ -121,8 +120,13 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 				pnlPrecios.getBtnBuscarArchivo().setEnabled(true);
 				
 				if(categoriaSeleccionada.equals("LIBRERIA")) {
+					mostrarTodosPreciosPorCategorias();
+					//Guardo las preferencias de la extencion
 					filPdf=new FileNameExtensionFilter(constantes.VALOR_TIPO_PDF, constantes.VALOR_EXTENCION_PDF);
+
 				}else {
+					mostrarTodosPreciosPorCategorias();
+
 					filExcel1 = new FileNameExtensionFilter(constantes.VALOR_TIPO_EXCEL1, constantes.VALOR_EXTENCION_EXCEL1);
 					filExcel2 = new FileNameExtensionFilter(constantes.VALOR_TIPO_EXCEL2, constantes.VALOR_EXTENCION_EXCEL2);
 				}
@@ -133,14 +137,27 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 		}
 	}
 
-	private void enviarArchivoBD(String fe, int porcentaje) {
+	private void mostrarTodosPreciosPorCategorias() {
+		prepre = DBGP.obtenerListadoProductosPrecios(indiceCatSelec.getIdCategoria());
+		
+		//Recupero para mostrar los registros ya cargados
+		if (!prepre.isEmpty()) {
+			
+			if(pnlPrecios.getTblListadoPrecios().getRowCount()>0) {
+				pnlPrecios.limpiarTabla();
+			}
+			pnlPrecios.setLista(prepre);
+			pnlPrecios.modeloTabla();
+		}
+	}
+
+	private void enviarArchivoBD(int porcentaje) {
 		if(categoriaSeleccionada.equals("LIBRERIA")) {
 			extraerTextoPdf(archivo);
-			DBDT.actualiazarDtos(fe,porcentaje);
+			DBDT.actualiazarDtos(fecha,porcentaje);
 			Principal.refrescarDatos();
 		}else {
 			extraerDtosExcel(archivo);
-			System.out.println("EL TAMAÑO ES: " + precios.size());
 		}
 		
 		DBGP.cargarADB(precios);
@@ -211,8 +228,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 	private void extraerDtosExcel(File ruta) {
 		
 		try {
-			//System.out.println("RUTA: " + ruta.getAbsoluteFile().getName());
-			FileInputStream documentoExcel = new FileInputStream("C:\\"+ ruta.getAbsoluteFile().getName());
+			FileInputStream documentoExcel = new FileInputStream(ruta);
 			//creo libro 
 			Workbook libroExcell = WorkbookFactory.create(documentoExcel);
 			
@@ -398,7 +414,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 	@Override
 	public void keyPressed(KeyEvent e) {
 		
-		prepre = DBGP.obtenerListadoProductosPreciosFiltrados(pnlPrecios.getTxtFiltrarProducto().getText());
+		/*prepre = DBGP.obtenerListadoProductosPreciosFiltrados(pnlPrecios.getTxtFiltrarProducto().getText());
 		
 		if (!prepre.isEmpty()) {
 			pnlPrecios.limpiarTabla();
@@ -406,7 +422,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 			pnlPrecios.modeloTabla();
 		}else {
 			pnlPrecios.limpiarTabla();
-		}	
+		}	*/
 	}
 
 	@Override

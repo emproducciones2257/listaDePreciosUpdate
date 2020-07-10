@@ -43,7 +43,7 @@ public class pnlGestionPrecios extends JPanel{
 		
 		DBGP = new dbGestionPrecios();
 		crearComponentes();
-		modeloTabla();
+
 		//propiedades JPanel
 		setBackground(new java.awt.Color(34, 40, 44));
 		setBounds(10, 11, 849, 378);;
@@ -169,9 +169,9 @@ public class pnlGestionPrecios extends JPanel{
 
 	public void modeloTabla() {
 		
-		if(lista==null) {
+		/*if(lista==null) {
 			lista = DBGP.obtenerListadoProductosPrecios();
-		}
+		}*/
 		
 		Object O[]=null;
 		 aModel = new DefaultTableModel();

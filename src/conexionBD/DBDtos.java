@@ -60,6 +60,7 @@ public class DBDtos {
 		
 		dtosNecesarios dtoTemp = obtenerRegistro();
 		if(dtoTemp==null) {
+			System.out.println(fecha + " porcentaje: " + por);
 			cargaInicialDtos(fecha, por);
 			
 		}else {
@@ -75,7 +76,8 @@ public class DBDtos {
 				coneCone.connect().close();
 				//TODO trabajo en nube.  updateCloud(fecha,por);
 			} catch (Exception e) {
-				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
+				//avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
+				e.printStackTrace();
 			}
 		}
 	}
@@ -112,7 +114,8 @@ public class DBDtos {
 			coneCone.connect().close();
 			//TODO trabajo en nube.  registrarCloud(fecha,por);
 		} catch (Exception e) {
-			avisos.errorCargaDtos(ventanasAvisos.CARGA_ERROR, e.getMessage());
+			//avisos.errorCargaDtos(ventanasAvisos.CARGA_ERROR, e.getMessage());
+			e.printStackTrace();
 		}
 	}
 	

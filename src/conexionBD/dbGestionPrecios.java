@@ -26,12 +26,13 @@ public class dbGestionPrecios {
     	avisos = new ventanasAvisos(null);	
 	}
     
-    public List<preciosDocumento> obtenerListadoProductosPrecios() {
+    public List<preciosDocumento> obtenerListadoProductosPrecios(int codCat) {
     	
     	List<preciosDocumento> temp = new ArrayList<preciosDocumento>();
     	
     	try {
     		pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionRecuperarTodosProductosPrecios);
+    		pre.setInt(1, codCat);
     		resu = pre.executeQuery();
     		
     		while (resu.next()) {
@@ -56,7 +57,7 @@ public class dbGestionPrecios {
 
 	public void cargarADB(List<preciosDocumento> preciosNuevos) {
 		
-		List<preciosDocumento> listaPreciosBase = obtenerListadoProductosPrecios();
+		List<preciosDocumento> listaPreciosBase = obtenerListadoProductosPrecios(preciosNuevos.get(0).getCategoria());
 		
 		Connection conecone = null;
 		
@@ -100,7 +101,7 @@ public class dbGestionPrecios {
 				conecone.close();
 	            avisos.updateCorrecta(ventanasAvisos.UPDATE_OK);
 			} catch (Exception e) {
-				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());	
+				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
 			}
 		}
 	}
@@ -116,7 +117,7 @@ public class dbGestionPrecios {
 			
 			for (int i = 0; i < preciosNuevos.size(); i++) {
 				preciosDocumento temp = preciosNuevos.get(i);
-				preCloud.setIdPrecioBDLocal(Integer.valueOf(temp.getCodigo()));
+				preCloud.setIdPrecioBDLocal(temp.getIdPrecio());
 				preCloud.setPrecio(temp.getPrecio());
 				preCloud.setCategoria(temp.getCategoria());
 				

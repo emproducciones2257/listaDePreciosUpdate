@@ -14,7 +14,7 @@ public class instruccionesSQL {
 	
 	
 	//instrucciones tabla precios
-	public static String instruccionRecuperarTodosProductosPrecios="SELECT \"idPreSer\", \"codigoPoducto\" ,\"descArt\", \"precio\" ,\"idCat\" FROM preciosServidor";
+	public static String instruccionRecuperarTodosProductosPrecios="SELECT \"idPreSer\", \"codigoPoducto\" ,\"descArt\", \"precio\" ,\"idCat\" FROM preciosServidor WHERE idCat = ?";
 	public static String instruccionRecuperarProductoXId="SELECT \"idPreSer\", \"codigoPoducto\" ,\"descArt\", \"precio\", \"idCat\"  FROM preciosServidor WHERE \"codigoPoducto\" = ? AND \"idCat\" = ? ";
 	public static String instruccionCargaProductoPrecio="INSERT INTO preciosServidor VALUES (NULL,?,?,?,?)";
 	public static String instruccionActualizarProductoPrecio="UPDATE preciosServidor SET precio = ? WHERE codigoPoducto = ? AND idCat = ? ";
