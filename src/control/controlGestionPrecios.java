@@ -113,6 +113,11 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 
 			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
 				indiceCatSelec = categorias.get(pnlPrecios.getJcmbCategorias().getSelectedIndex()-1);
+			}else {
+				
+				if(pnlPrecios.getTblListadoPrecios().getRowCount()>0) {
+					pnlPrecios.limpiarTabla();
+				}
 			}
 			
 			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
@@ -140,7 +145,6 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 	private void mostrarTodosPreciosPorCategorias() {
 		prepre = DBGP.obtenerListadoProductosPrecios(indiceCatSelec.getIdCategoria());
 		
-		//Recupero para mostrar los registros ya cargados
 		if (!prepre.isEmpty()) {
 			
 			if(pnlPrecios.getTblListadoPrecios().getRowCount()>0) {
@@ -161,6 +165,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 		}
 		
 		DBGP.cargarADB(precios);
+		mostrarTodosPreciosPorCategorias();
 	}
 	
 	private void cargarCategorias() {

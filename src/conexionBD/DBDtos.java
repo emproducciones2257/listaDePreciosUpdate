@@ -60,7 +60,7 @@ public class DBDtos {
 		
 		dtosNecesarios dtoTemp = obtenerRegistro();
 		if(dtoTemp==null) {
-			System.out.println(fecha + " porcentaje: " + por);
+
 			cargaInicialDtos(fecha, por);
 			
 		}else {

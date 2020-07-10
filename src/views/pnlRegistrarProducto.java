@@ -196,7 +196,6 @@ public class pnlRegistrarProducto extends JPanel {
 		}
 	}
 
-
 	public JComboBox<String> getJcbColor() {
 		return jcbColor;
 	}

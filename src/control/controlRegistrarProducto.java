@@ -12,6 +12,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 
 import conexionBD.DBColor;
@@ -28,7 +29,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 	private pnlRegistrarProducto pnl;
 	private int cantidad = 0;
 	private String codigoMarca ="",codigoProducto ="", categoriaSeleccionada="";
-	public marca mar;
+	private marca mar;
 	private DBMarca BDmarca;
 	private DBColor BDcolor;
 	private DBGestionCategorias DBCategorias;
@@ -40,7 +41,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
     private ventanasAvisos avisos;
     private produCloud produCloud;
     private ArrayList<categorias> categorias;
-
+	private categorias indiceCatSelec;
 
 	public controlRegistrarProducto(pnlRegistrarProducto pnl) {
 		
@@ -110,8 +111,36 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 			categoriaSeleccionada=pnl.getcmbCategorias().getSelectedItem().toString();
 			
 			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
-				System.out.println("Se toco el elemento: " + categoriaSeleccionada );
+				indiceCatSelec = categorias.get(pnl.getcmbCategorias().getSelectedIndex()-1);
+			}else {
+				
+				if(pnl.getVisorDatosPrecios().getRowCount()>0){
+					pnl.limpiarTabla();
+				}
 			}
+			
+			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
+								
+				if(categoriaSeleccionada.equals("LIBRERIA")) {
+					mostrarTodosPreciosPorCategorias();
+
+				}else {
+					mostrarTodosPreciosPorCategorias();
+				}
+			}
+		}
+	}
+	
+	private void mostrarTodosPreciosPorCategorias() {
+		
+		prepre = DBGP.obtenerListadoProductosPrecios(indiceCatSelec.getIdCategoria());
+		
+		if (!prepre.isEmpty()) {
+			
+			if(pnl.getVisorDatosPrecios().getRowCount()>0) {
+				pnl.limpiarTabla();
+			}
+			pnl.modeloTabla(prepre);
 		}
 	}
 
@@ -191,7 +220,9 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 
 	marca obtenerMarca(String codigo){
 		return BDmarca.obtenerMarca(codigo);
-		}
+	}
+	
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
