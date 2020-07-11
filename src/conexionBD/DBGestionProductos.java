@@ -26,6 +26,7 @@ public class DBGestionProductos {
 	            pre.setInt(6, proTemp.getUnidadDeVenta());
 	            pre.setInt(7, proTemp.getMedida());
 	            pre.setString(8, proTemp.getCodBarr());
+	            pre.setInt(9, proTemp.getIdCategoria());
 	            pre.execute();
 	            coneCone.connect().close();
 	        } catch (Exception e) {

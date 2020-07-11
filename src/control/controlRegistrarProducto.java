@@ -98,6 +98,10 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 				
 				produCloud.setCodProd(proTemp.getCodBarr());
 				
+				produCloud.setIdCategoria(indiceCatSelec.getIdCategoria());
+				
+				proTemp.setIdCategoria(indiceCatSelec.getIdCategoria());
+				
 				DBGProdu.registrarProducto(proTemp);
 				
 				// TODO ACA NUBE TMB DBGProdu.registrarCloud(produCloud);
@@ -227,7 +231,8 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		
-		if(e.getSource().equals(pnl.getVisibleRect())) {
+		if(e.getSource().equals(pnl.getVisorDatosPrecios())) {
+			
 			pnl.getTxtDescripcionProducto().setText(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getProd());
 			
 			proTemp.setIdPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getIdPrecio());

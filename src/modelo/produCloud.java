@@ -5,12 +5,12 @@ public class produCloud {
 	private int idProducto;
 	private int Precio;
 	private int unidadDeVenta = 0;
+	private int idCategoria;
 	private String dtosExtras;
 	private String codProd;
 	private String codMarc;
 	
 	public produCloud() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getIdProducto() {
@@ -61,9 +61,18 @@ public class produCloud {
 		this.codMarc = codMarc;
 	}
 
+	public int getIdCategoria() {
+		return idCategoria;
+	}
+
+	public void setIdCategoria(int idCategoria) {
+		this.idCategoria = idCategoria;
+	}
+
 	@Override
 	public String toString() {
 		return "produCloud [idProducto=" + idProducto + ", Precio=" + Precio + ", unidadDeVenta=" + unidadDeVenta
-				+ ", dtosExtras=" + dtosExtras + ", codProd=" + codProd + ", codMarc=" + codMarc + "]";
+				+ ", idCategoria=" + idCategoria + ", dtosExtras=" + dtosExtras + ", codProd=" + codProd + ", codMarc="
+				+ codMarc + "]";
 	}
 }
