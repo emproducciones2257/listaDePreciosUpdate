@@ -19,6 +19,7 @@ public class pnlConsultaPrecios extends JPanel{
     private TablaOtraclase tablaArtenativa;
     
     private String [] nombreColumnas = {"ID","Descripcion","Precio","Cantidad","SumRes","Borrar"};
+    private JTextField textField;
 
 	public pnlConsultaPrecios() {
 		crearComponentes();
@@ -38,20 +39,37 @@ public class pnlConsultaPrecios extends JPanel{
         add(btnNuevaVta);   
         
         btnNuevaVta.addActionListener(new controlConsultaPrecios(this));
+        
+        JLabel lblNewLabel = new JLabel("CONSULTA LIBRERIA");
+        lblNewLabel.setForeground(Color.WHITE);
+        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblNewLabel.setBounds(641, 11, 115, 14);
+        add(lblNewLabel);
+        
+        textField = new JTextField();
+        textField.setBounds(625, 110, 146, 30);
+        add(textField);
+        textField.setColumns(10);
+        
+        JLabel lblNewLabel_1 = new JLabel("CONSULTA PERFUMERIA");
+        lblNewLabel_1.setForeground(Color.WHITE);
+        lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblNewLabel_1.setBounds(625, 85, 146, 14);
+        add(lblNewLabel_1);
         tablaArtenativa = new TablaOtraclase();
 	}
 
 	private void crearComponentes() {
 		
 		txtBuscarCB = new JTextField();
-        txtBuscarCB.setBounds(641, 21, 146, 30);
+        txtBuscarCB.setBounds(625, 37, 146, 30);
         txtBuscarCB.setColumns(10);
         
         lblPrecio = new JLabel("$ 0");
         lblPrecio.setFont(new Font("Tahoma", Font.PLAIN, 34));
         lblPrecio.setForeground(Color.GREEN);
         lblPrecio.setBackground(Color.WHITE);
-        lblPrecio.setBounds(668, 225, 146, 56);
+        lblPrecio.setBounds(668, 250, 146, 56);
         
         lblTotalParcial = new JLabel("TOTAL $ 0");
         lblTotalParcial.setForeground(Color.GREEN);
@@ -61,7 +79,7 @@ public class pnlConsultaPrecios extends JPanel{
         
         lblDescripcion = new JLabel();
         lblDescripcion.setForeground(Color.WHITE);
-        lblDescripcion.setBounds(597, 94, 242, 120);
+        lblDescripcion.setBounds(597, 209, 242, 42);
         
         tblProductosVendidos = new JTable();
 
