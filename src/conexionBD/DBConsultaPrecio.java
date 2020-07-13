@@ -40,7 +40,6 @@ public class DBConsultaPrecio {
             coneCone.connect().close();
             
 		} catch (Exception e) {
-			// TODO: handle exception
 			System.out.println("NOOOO " + e.getMessage());
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
 		}

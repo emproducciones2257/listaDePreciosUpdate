@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
-import conexionBD.dbGestionPrecios;
 import control.controlRegistrarProducto;
 import modelo.preciosDocumento;
 
@@ -29,7 +28,6 @@ public class pnlRegistrarProducto extends JPanel {
     private JLabel lblNewLabel_1;
     private JTable visorDatosPrecios;
     private DefaultTableModel aModel;
-    private dbGestionPrecios DBGP;
     private JButton btnCancelarCarga;
     private JComboBox<String> cmbCategorias;
     private JLabel lbCategoria;
@@ -37,11 +35,8 @@ public class pnlRegistrarProducto extends JPanel {
     private String [] nombreColumnas = {"Descripcion","Precio"};
 	
 	public pnlRegistrarProducto() {
-		
-		DBGP = new dbGestionPrecios();
-		
+				
 		crearComponentes();
-		//modeloTabla(DBGP.obtenerListadoProductosPrecios());
 		
 		//propiedades Titulo
 		tituloPanelCargaProducto.setTitleColor((Color.WHITE));
@@ -186,7 +181,6 @@ public class pnlRegistrarProducto extends JPanel {
 		getTxtBusquedPrecio().setText("");
 		getTxtCodProducto().setText("");
 		getTxtUVenta().setText("0");
-		limpiarTabla();
 	}
 
 	 public void limpiarTabla() {

@@ -39,4 +39,9 @@ public class produConPreci {
 	public void setUniVta(int uniVta) {
 		this.uniVta = uniVta;
 	}
+	@Override
+	public String toString() {
+		return "produConPreci [id=" + id + ", descri=" + descri + ", precio=" + precio + ", cantidad=" + cantidad
+				+ ", uniVta=" + uniVta + "]";
+	}
 }

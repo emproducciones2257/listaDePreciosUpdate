@@ -88,6 +88,8 @@ public class controlConsultaPrecios implements ActionListener, KeyListener, Mous
 			
 			produ = DBCPreio.obtenerPrecio(marTemp.getIdMarca(),codigoProducto,codCat);
 			
+			System.out.println(produ.toString());
+			
 			if(produ!=null) {
 				id++;
 				

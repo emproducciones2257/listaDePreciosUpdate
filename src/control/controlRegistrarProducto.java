@@ -1,20 +1,8 @@
 package control;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableModel;
-
 import conexionBD.DBColor;
 import conexionBD.DBGestionCategorias;
 import conexionBD.DBGestionProductos;
@@ -116,6 +104,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 			
 			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
 				indiceCatSelec = categorias.get(pnl.getcmbCategorias().getSelectedIndex()-1);
+				mostrarTodosPreciosPorCategorias();
 				
 			}else {
 				
@@ -125,7 +114,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 				}
 			}
 			
-			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
+			/*if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
 	
 				if(categoriaSeleccionada.equals("LIBRERIA")) {
 					mostrarTodosPreciosPorCategorias();
@@ -135,7 +124,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 					mostrarTodosPreciosPorCategorias();
 					pnl.resetearComponentes();
 				}
-			}
+			}*/
 		}
 	}
 	
