@@ -116,24 +116,29 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 			
 			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
 				indiceCatSelec = categorias.get(pnl.getcmbCategorias().getSelectedIndex()-1);
+				
 			}else {
 				
 				if(pnl.getVisorDatosPrecios().getRowCount()>0){
 					pnl.limpiarTabla();
+					pnl.resetearComponentes();
 				}
 			}
 			
 			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
-								
+	
 				if(categoriaSeleccionada.equals("LIBRERIA")) {
 					mostrarTodosPreciosPorCategorias();
+					pnl.resetearComponentes();
 
 				}else {
 					mostrarTodosPreciosPorCategorias();
+					pnl.resetearComponentes();
 				}
 			}
 		}
 	}
+	
 	
 	private void mostrarTodosPreciosPorCategorias() {
 		
@@ -186,7 +191,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		
 		if (e.getSource().equals(pnl.getTxtBusquedPrecio())) {
 			
-			prepre = DBGP.obtenerListadoProductosPreciosFiltrados(pnl.getTxtBusquedPrecio().getText());
+			prepre = DBGP.obtenerListadoProductosPreciosFiltrados(pnl.getTxtBusquedPrecio().getText(),indiceCatSelec.getIdCategoria());
 			
 			if (!prepre.isEmpty()) {
 				pnl.limpiarTabla();
@@ -276,5 +281,4 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 	public void mouseReleased(MouseEvent e) {
 		
 	}
-
 }

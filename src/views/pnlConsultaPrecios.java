@@ -17,9 +17,10 @@ public class pnlConsultaPrecios extends JPanel{
     private JTable tblProductosVendidos;
     private JButton btnNuevaVta;
     private TablaOtraclase tablaArtenativa;
-    
     private String [] nombreColumnas = {"ID","Descripcion","Precio","Cantidad","SumRes","Borrar"};
-    private JTextField textField;
+    private JTextField txtBuscarCBPerfumeria;
+    private JLabel lblNewLabel;
+    private JLabel lblNewLabel_1;
 
 	public pnlConsultaPrecios() {
 		crearComponentes();
@@ -36,26 +37,12 @@ public class pnlConsultaPrecios extends JPanel{
         add(lblTotalParcial);
         add(lblDescripcion);
         add(jSPTabla);
-        add(btnNuevaVta);   
+        add(btnNuevaVta); 
+        add(lblNewLabel);
+        add(txtBuscarCBPerfumeria);
+        add(lblNewLabel_1);
         
         btnNuevaVta.addActionListener(new controlConsultaPrecios(this));
-        
-        JLabel lblNewLabel = new JLabel("CONSULTA LIBRERIA");
-        lblNewLabel.setForeground(Color.WHITE);
-        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNewLabel.setBounds(641, 11, 115, 14);
-        add(lblNewLabel);
-        
-        textField = new JTextField();
-        textField.setBounds(625, 110, 146, 30);
-        add(textField);
-        textField.setColumns(10);
-        
-        JLabel lblNewLabel_1 = new JLabel("CONSULTA PERFUMERIA");
-        lblNewLabel_1.setForeground(Color.WHITE);
-        lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblNewLabel_1.setBounds(625, 85, 146, 14);
-        add(lblNewLabel_1);
         tablaArtenativa = new TablaOtraclase();
 	}
 
@@ -89,6 +76,20 @@ public class pnlConsultaPrecios extends JPanel{
         
         btnNuevaVta = new JButton("NUEVA VENTA");
         btnNuevaVta.setBounds(668, 338, 131, 23);
+        
+        lblNewLabel = new JLabel("CONSULTA LIBRERIA");
+        lblNewLabel.setForeground(Color.WHITE);
+        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblNewLabel.setBounds(641, 11, 115, 14);
+        
+        txtBuscarCBPerfumeria = new JTextField();
+        txtBuscarCBPerfumeria.setBounds(625, 110, 146, 30);
+        txtBuscarCBPerfumeria.setColumns(10);
+        
+        lblNewLabel_1 = new JLabel("CONSULTA PERFUMERIA");
+        lblNewLabel_1.setForeground(Color.WHITE);
+        lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblNewLabel_1.setBounds(625, 85, 146, 14);
 	}
 	
 	public void modeloTabla(ArrayList<produConPreci> art) {
@@ -101,9 +102,9 @@ public class pnlConsultaPrecios extends JPanel{
 	
 	public void limpiarComponenetes () {
 		getTxtBuscarCB().setText("");
+		getTxtBuscarCBPerfumeria().setText("");
 		getLblPrecio().setText("$ "+0);
 		getLblDescripcion().setText("");
-		getLblTotalParcial().setText("Total: $ 0");
 		getTxtBuscarCB().setFocusable(true);
 	}
 	
@@ -137,5 +138,9 @@ public class pnlConsultaPrecios extends JPanel{
 
 	public JTable getTblProductosVendidos() {
 		return tblProductosVendidos;
+	}
+
+	public JTextField getTxtBuscarCBPerfumeria() {
+		return txtBuscarCBPerfumeria;
 	}
 }

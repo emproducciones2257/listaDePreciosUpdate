@@ -136,11 +136,12 @@ public class dbGestionPrecios {
 		}
 	}
 
-	public List<preciosDocumento> obtenerListadoProductosPreciosFiltrados(String text) {
+	public List<preciosDocumento> obtenerListadoProductosPreciosFiltrados(String text, int idCat) {
 		List<preciosDocumento> temp = new ArrayList<preciosDocumento>();
     	
     	try {
-    		pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionRecuperarProductosFiltrados + "'%" + text +"%'");
+    		pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionRecuperarProductosFiltrados 
+    													+ "'%" + text +"%' AND idCat = " + idCat);
     		resu = pre.executeQuery();
     		
     		while (resu.next()) {

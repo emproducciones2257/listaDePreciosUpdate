@@ -15,17 +15,17 @@ public class DBConsultaPrecio {
     private ventanasAvisos avisos;
     
     public DBConsultaPrecio() {
-		// TODO Auto-generated constructor stub
     	avisos = new ventanasAvisos(null);
 	}
     
-	public produConPreci obtenerPrecio(int idMarca, String codigoProducto) {
+	public produConPreci obtenerPrecio(int idMarca, String codigoProducto, int codCat) {
 		produConPreci produ = null;
 		
 		try {
 			
 			pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionConsultarPrecio
-														+"'"+codigoProducto+"' AND idMarca =" + idMarca);
+														+"'"+codigoProducto+"' AND idMarca =" + idMarca +" AND producto.idCat = "
+														+ codCat);
             pre.execute();
             resu = pre.executeQuery();
             

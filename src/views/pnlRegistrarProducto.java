@@ -172,6 +172,7 @@ public class pnlRegistrarProducto extends JPanel {
 	    		 aModel.setValueAt(lista.get(i).getProd(), i, 0);
 	    		 aModel.setValueAt(lista.get(i).getPrecio(), i, 1); 
 			}
+	    	
 	     }
 	    
 	     visorDatosPrecios.setModel(aModel);
