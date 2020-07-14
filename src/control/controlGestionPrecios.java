@@ -156,6 +156,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 	}
 
 	private void enviarArchivoBD(int porcentaje) {
+		
 		if(categoriaSeleccionada.equals("LIBRERIA")) {
 			extraerTextoPdf(archivo);
 			DBDT.actualiazarDtos(fecha,porcentaje);
@@ -164,7 +165,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 			extraerDtosExcel(archivo);
 		}
 		
-		DBGP.cargarADB(precios);
+		DBGP.cargarADB(precios,categoriaSeleccionada);
 		mostrarTodosPreciosPorCategorias();
 	}
 	

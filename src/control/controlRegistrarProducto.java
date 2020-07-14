@@ -92,7 +92,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 				
 				DBGProdu.registrarProducto(proTemp);
 				
-				// TODO ACA NUBE TMB DBGProdu.registrarCloud(produCloud);
+				DBGProdu.registrarCloud(produCloud,indiceCatSelec.getNomCat());
 				
 				pnl.resetearComponentes();
 			}	
@@ -113,22 +113,9 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 					pnl.resetearComponentes();
 				}
 			}
-			
-			/*if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
-	
-				if(categoriaSeleccionada.equals("LIBRERIA")) {
-					mostrarTodosPreciosPorCategorias();
-					pnl.resetearComponentes();
-
-				}else {
-					mostrarTodosPreciosPorCategorias();
-					pnl.resetearComponentes();
-				}
-			}*/
 		}
 	}
-	
-	
+		
 	private void mostrarTodosPreciosPorCategorias() {
 		
 		prepre = DBGP.obtenerListadoProductosPrecios(indiceCatSelec.getIdCategoria());
@@ -220,8 +207,6 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		return BDmarca.obtenerMarca(codigo);
 	}
 	
-	
-
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		

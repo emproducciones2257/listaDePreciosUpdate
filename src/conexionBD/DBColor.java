@@ -33,9 +33,7 @@ public class DBColor {
 	        }
 	    }
 
-	@SuppressWarnings("null")
-	public ArrayList<color> obtenerColoresMarca(int idMarca) {
-		// TODO Auto-generated method stub
+	 public ArrayList<color> obtenerColoresMarca(int idMarca) {
 		
 		ArrayList<color> coloresMarca = new ArrayList<>();
 		
@@ -53,7 +51,6 @@ public class DBColor {
 	           resu.close();
 	           coneCone.connect().close();
 		} catch (Exception e) {
-			// TODO: handle exception
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA,e.getMessage());
 		}
 

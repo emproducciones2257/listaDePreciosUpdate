@@ -4,16 +4,13 @@ import java.awt.Color;
 
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-
 import conexionBD.DBDtos;
 import conexionBD.coneCone;
 import control.controlBtnPrincipal;
 import modelo.dtosNecesarios;
+import javax.swing.*;
 
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
+
 
 
 public class Principal extends javax.swing.JFrame {
@@ -229,7 +226,7 @@ public class Principal extends javax.swing.JFrame {
         DBDtos = new DBDtos();
         
         pack();
-    }// </editor-fold>//GEN-END:initComponents
+    }
 
     public static void main(String args[]) {
     	
@@ -285,7 +282,6 @@ public class Principal extends javax.swing.JFrame {
     private static DBDtos DBDtos;
     public static dtosNecesarios dtos;
     
-	
     // geter y seterrrrr
     
     public javax.swing.JButton getBtnRegistro() {

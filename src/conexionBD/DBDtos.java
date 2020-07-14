@@ -1,18 +1,11 @@
 package conexionBD;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 
 import modelo.constantes;
 import modelo.dtosNecesarios;
@@ -65,7 +58,7 @@ public class DBDtos {
 			
 		}else {
 			try {
-				//TODO trabajo en nube. obtenerRegistroCloud();
+				obtenerRegistroCloud();
 				pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionUpdateDtosNece);
 				pre.setString(1, fecha);
 				pre.setInt(2, por);
@@ -74,16 +67,14 @@ public class DBDtos {
 				
 				pre.close();
 				coneCone.connect().close();
-				//TODO trabajo en nube.  updateCloud(fecha,por);
+				updateCloud(fecha,por);
 			} catch (Exception e) {
-				//avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
-				e.printStackTrace();
+				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
 			}
 		}
 	}
 
 	private void updateCloud(String fecha, int por) {
-		// TODO Auto-generated method stub
 		Map<String, Object> temporal = new HashMap<>();
 		temporal.put("fechaBD", fecha);
 		temporal.put("porcentaje", por);
@@ -101,7 +92,6 @@ public class DBDtos {
 			
 			ApiFuture<WriteResult> writeResult = docRef.update(constantes.CAMPO_PORCEN,por);
 		}
-		
 	}
 
 	private void cargaInicialDtos(String fecha, int por) {
@@ -112,10 +102,9 @@ public class DBDtos {
 			pre.execute();
 			pre.close();
 			coneCone.connect().close();
-			//TODO trabajo en nube.  registrarCloud(fecha,por);
+			registrarCloud(fecha,por);
 		} catch (Exception e) {
-			//avisos.errorCargaDtos(ventanasAvisos.CARGA_ERROR, e.getMessage());
-			e.printStackTrace();
+			avisos.errorCargaDtos(ventanasAvisos.CARGA_ERROR, e.getMessage());
 		}
 	}
 	
@@ -147,7 +136,7 @@ public class DBDtos {
 				pre.close();
 				resu.close();
 				coneCone.connect().close();
-				//TODO trabajo en nube.  updatePorcenCloud(porcen);
+				updatePorcenCloud(porcen);
 				avisos.updateCorrecta(ventanasAvisos.UPDATE_OK);
 			} catch (SQLException e) {
 				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
@@ -163,8 +152,6 @@ public class DBDtos {
 			docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_DTO_NEC).document(idModificar);
 			
 			ApiFuture<WriteResult> update = docRef.update(constantes.CAMPO_PORCEN,porcen);
-			
-			System.out.println("ACTUALIZO CODIGO: ");
 		}
 	}
 
@@ -179,10 +166,8 @@ public class DBDtos {
 				idModificar=(e.getId());
 			}
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

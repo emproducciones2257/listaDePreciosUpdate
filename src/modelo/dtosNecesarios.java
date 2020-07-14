@@ -7,7 +7,6 @@ public class dtosNecesarios {
 	private int porcentaje;
 	
 	public dtosNecesarios() {
-		// TODO Auto-generated constructor stub
 	}
 	
 	public dtosNecesarios(String fechaBD, int porcentaje) {
@@ -34,7 +33,4 @@ public class dtosNecesarios {
 	public void setPorcentaje(int porcentaje) {
 		this.porcentaje = porcentaje;
 	}
-	
-	
-
 }

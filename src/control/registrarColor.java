@@ -53,14 +53,10 @@ public class registrarColor implements ActionListener, KeyListener{
 		}
 	}
 		
-	marca obtenerMarca(String codigo){
-		return BDmarca.obtenerMarca(codigo);
-		}
-
-
+	marca obtenerMarca(String codigo){return BDmarca.obtenerMarca(codigo);}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 		codigo = String.valueOf(pnlColor.gettxtScaner().getText());
 		cantidad++;
@@ -90,14 +86,10 @@ public class registrarColor implements ActionListener, KeyListener{
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void keyReleased(KeyEvent e) {		
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void keyTyped(KeyEvent e) {		
 	};
 }

@@ -40,7 +40,6 @@ public class ventanasAvisos {
 
 	
 	public ventanasAvisos(JPanel vista) {
-		// TODO Auto-generated constructor stub
 		this.vista=vista;
 	}
 	
@@ -48,58 +47,43 @@ public class ventanasAvisos {
 		JOptionPane.showMessageDialog(vista, message, "Verificar Datos", JOptionPane.ERROR_MESSAGE);
 	}
 
-	public void datoExistente(String marcaRegistrada) {
-		// TODO Auto-generated method stub
-		
+	public void datoExistente(String marcaRegistrada) {		
 		JOptionPane.showMessageDialog(vista, marcaRegistrada, "Verificar Datos", JOptionPane.OK_OPTION);
 	}
 
 	public void cargaCorrecta(String cargaOk) {
-		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(vista, cargaOk, "Carga Correcta", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public void cargaFallida(String cargaError, String message) {
-		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(vista, cargaError + " " + message, "Verificar Datos", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void errorConsulta(String errorConsulta, String message) {
-		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(vista, errorConsulta + " " + message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void CargaErronea(String errorCargaArchivo) {
-		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(vista, errorCargaArchivo, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void updateCorrecta(String updateOk) {
-		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(vista, updateOk, "Actualizacion Correcta", JOptionPane.INFORMATION_MESSAGE);	
 	}
 
 	public void errorUpdate(String errorUpdate, String message) {
-		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(vista, errorUpdate + " " + message, "Error Update", JOptionPane.ERROR_MESSAGE);
 	}
 
-	public void ProductoNoReg(String productoNReg) {
-		// TODO Auto-generated method stub
-		
+	public void ProductoNoReg(String productoNReg) {		
 		JOptionPane.showMessageDialog(vista, productoNReg, "No Registrado", JOptionPane.WARNING_MESSAGE);
 	}
 
 	public void errorCargaDtos(String cargaError, String message) {
-		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(vista, cargaError + " " + message, "Error carga fecha y porcentaje", JOptionPane.ERROR_MESSAGE);
 	}
 
 	public void mostrarSiESta(String men) {
-		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(vista, men, "No Registrado", JOptionPane.WARNING_MESSAGE);
-
-		
 	}
-
 }

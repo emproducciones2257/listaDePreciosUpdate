@@ -4,7 +4,6 @@ import java.sql.PreparedStatement;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.DocumentReference;
 import com.google.cloud.firestore.WriteResult;
-
 import modelo.constantes;
 import modelo.produCloud;
 import modelo.producto;
@@ -12,7 +11,6 @@ import modelo.producto;
 public class DBGestionProductos {
 	
 	 private PreparedStatement pre;
-
 
 	public void registrarProducto(producto proTemp) {
 		
@@ -35,9 +33,16 @@ public class DBGestionProductos {
 	}
 
 
-	public void registrarCloud(produCloud produCloud) {
-    	DocumentReference docRef = conectFirebase.getFirestore()
-    			.collection(constantes.COLECCION_PRODUCTO).document();
+	public void registrarCloud(produCloud produCloud, String nombCat) {
+		DocumentReference docRef;
+		
+		if(nombCat.equals("LIBRERIA")) {
+			docRef = conectFirebase.getFirestore()
+	    			.collection(constantes.COLECCION_PRODUCTO).document();
+		}else {
+			docRef = conectFirebase.getFirestore()
+	    			.collection(constantes.COLECCION_PRECIOS_PERFU).document();
+		}
 
     	ApiFuture<WriteResult> result = docRef.create(produCloud);
     	

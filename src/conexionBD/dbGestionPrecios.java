@@ -6,7 +6,6 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.google.common.collect.Iterators;
 import modelo.constantes;
 import modelo.preciosCloud;
 import modelo.preciosDocumento;
@@ -55,7 +54,7 @@ public class dbGestionPrecios {
 		return temp;
 	}
 
-	public void cargarADB(List<preciosDocumento> preciosNuevos) {
+	public void cargarADB(List<preciosDocumento> preciosNuevos, String categoriaSeleccionada) {
 		
 		List<preciosDocumento> listaPreciosBase = obtenerListadoProductosPrecios(preciosNuevos.get(0).getCategoria());
 		
@@ -65,13 +64,15 @@ public class dbGestionPrecios {
 		
 		if(listaPreciosBase.isEmpty()) {
 
-			cargarArticulosNuevos(preciosNuevos);
+			cargarArticulosNuevos(preciosNuevos,categoriaSeleccionada);
 			
 		}else {
+			
 			int res;
 			// actualizo los productos
 			
-			//TODO trabajo en nube.  obtenerNube();
+			obtenerNube(categoriaSeleccionada);
+			
 			List<preciosDocumento> preciosNuevosParaCargar = new ArrayList<>();
 			
 			try {
@@ -95,7 +96,8 @@ public class dbGestionPrecios {
 				}
 				
 				if(!preciosNuevosParaCargar.isEmpty()) {
-					cargarArticulosNuevos(preciosNuevosParaCargar);
+					
+					cargarArticulosNuevos(preciosNuevosParaCargar, categoriaSeleccionada);
 				}
 				
 				conecone.close();
@@ -106,7 +108,7 @@ public class dbGestionPrecios {
 		}
 	}
 
-	private void cargarArticulosNuevos(List<preciosDocumento> preciosNuevos) {
+	private void cargarArticulosNuevos(List<preciosDocumento> preciosNuevos, String categoriaSeleccionada) {
 		
 		preciosCloud preCloud = new preciosCloud();
 		
@@ -126,7 +128,7 @@ public class dbGestionPrecios {
 				pre.setDouble(3, temp.getPrecio());
 				pre.setInt(4, temp.getCategoria());
 				
-				//TODO trabajo en nube.  registrarCloud(preCloud);
+				registrarCloud(preCloud, categoriaSeleccionada);
 				pre.execute();
 			}
 			avisos.cargaCorrecta(ventanasAvisos.CARGA_OK);
@@ -178,10 +180,15 @@ public class dbGestionPrecios {
 		}
 	}
 	
-	public void registrarCloud(preciosCloud preciCloud) {
-
-    	docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS).document();
+	public void registrarCloud(preciosCloud preciCloud, String categoriaSeleccionada) {
 		
+		if (categoriaSeleccionada.equals("LIBRERIA")) {
+			
+			docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS).document();
+		}else {
+			docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS_PERFU).document();
+		}
+
     	ApiFuture<WriteResult> result = docRef.create(preciCloud);
     	
     	try {
@@ -191,11 +198,16 @@ public class dbGestionPrecios {
 		} 
 	}
 	
-	private void obtenerNube() {
+	private void obtenerNube(String categoriaSeleccionada) {
 		preciosCloud temp = new preciosCloud();
 		preNube = new HashSet<>();
-		colecPrecios = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS);
 		
+		if (categoriaSeleccionada.equals("LIBRERIA")) {
+			colecPrecios = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS);
+		}else {
+			colecPrecios = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS_PERFU);
+		}
+
 		ApiFuture<QuerySnapshot> respuestaDeConsulta = colecPrecios.get();
 		
 		try {
@@ -238,6 +250,7 @@ public class dbGestionPrecios {
 	}
 
 	private String obtenerIdProducto(int codigoBuscar) {
+		
 		preciosCloud comparar = null;
 		it = preNube.iterator();
 		while (it.hasNext()) {
@@ -284,7 +297,7 @@ public class dbGestionPrecios {
 			pre.setInt(3, e.getCategoria());
 			pre.executeUpdate();
 
-			//TODO ACA NUBE updateCloud(e.getPrecio(), e.getCodigo());
+			updateCloud(e.getPrecio(), e.getIdPrecio());
 			
 		} catch (SQLException e1) {
 			e1.printStackTrace();
