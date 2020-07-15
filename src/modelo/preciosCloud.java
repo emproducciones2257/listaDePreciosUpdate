@@ -3,7 +3,7 @@ package modelo;
 public class preciosCloud {
 	
 	private String idPrecio;
-	private int idPrecioBDLocal;
+	private String idPrecioBDLocal;
     private Double precio;
     private int categoria;
     
@@ -18,11 +18,11 @@ public class preciosCloud {
 		this.idPrecio = idPrecio;
 	}
 
-	public int getIdPrecioBDLocal() {
+	public String getIdPrecioBDLocal() {
 		return idPrecioBDLocal;
 	}
 
-	public void setIdPrecioBDLocal(int idPrecioBDLocal) {
+	public void setIdPrecioBDLocal(String idPrecioBDLocal) {
 		this.idPrecioBDLocal = idPrecioBDLocal;
 	}
 

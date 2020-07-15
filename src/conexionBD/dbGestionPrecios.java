@@ -90,7 +90,7 @@ public class dbGestionPrecios {
 						
 						if (res!=0) {
 							
-							actualizarPrecio(conecone,e);	
+							actualizarPrecio(conecone,e, categoriaSeleccionada);	
 						}
 					}
 				}
@@ -119,9 +119,9 @@ public class dbGestionPrecios {
 			
 			for (int i = 0; i < preciosNuevos.size(); i++) {
 				preciosDocumento temp = preciosNuevos.get(i);
-				preCloud.setIdPrecioBDLocal(temp.getIdPrecio());
+				preCloud.setIdPrecioBDLocal(temp.getCodigo());
 				preCloud.setPrecio(temp.getPrecio());
-				preCloud.setCategoria(temp.getCategoria());
+				//preCloud.setCategoria(temp.getCategoria());
 				
 				pre.setString(1, temp.getCodigo());
 				pre.setString(2, temp.getProd());
@@ -225,15 +225,20 @@ public class dbGestionPrecios {
 		}
 	}
 	
-	private void updateCloud(Double preciCloud, int codigoBuscar) {
+	private void updateCloud(Double preciCloud, String codigoBuscar, String categoriaSeleccionada) {
 		
 		try {
 			//obtengo la referencia al documento del precio
 			
 			String idProdUpdate = obtenerIdProducto(codigoBuscar);
 			
-			docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS).document(idProdUpdate);
-			
+			if (categoriaSeleccionada.equals("LIBRERIA")) {
+
+				docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS).document(idProdUpdate);
+			}else {
+				docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS_PERFU).document(idProdUpdate);
+			}
+
 			ApiFuture<WriteResult> future = docRef.update(constantes.CAMPO_PRECIO, preciCloud);
 
 			WriteResult result;
@@ -249,13 +254,13 @@ public class dbGestionPrecios {
 		}
 	}
 
-	private String obtenerIdProducto(int codigoBuscar) {
+	private String obtenerIdProducto(String codigoBuscar) {
 		
 		preciosCloud comparar = null;
 		it = preNube.iterator();
 		while (it.hasNext()) {
 			comparar = it.next();
-			if (comparar.getIdPrecioBDLocal()==codigoBuscar) {
+			if (comparar.getIdPrecioBDLocal().equals(codigoBuscar)) {
 				break;
 			}
 		}
@@ -287,7 +292,7 @@ public class dbGestionPrecios {
 		return p;
 	}
 
-	private void actualizarPrecio(Connection tet,preciosDocumento e) {
+	private void actualizarPrecio(Connection tet,preciosDocumento e, String categoriaSeleccionada) {
 		
 		try {
 
@@ -296,8 +301,7 @@ public class dbGestionPrecios {
 			pre.setString(2, e.getCodigo());
 			pre.setInt(3, e.getCategoria());
 			pre.executeUpdate();
-
-			updateCloud(e.getPrecio(), e.getIdPrecio());
+			updateCloud(e.getPrecio(), e.getCodigo(), categoriaSeleccionada);
 			
 		} catch (SQLException e1) {
 			e1.printStackTrace();

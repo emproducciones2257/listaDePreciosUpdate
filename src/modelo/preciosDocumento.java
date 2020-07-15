@@ -79,4 +79,10 @@ public class preciosDocumento implements Comparable<preciosDocumento>{
 			return -1;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return "preciosDocumento [idPrecio=" + idPrecio + ", codigo=" + codigo + ", prod=" + prod + ", precio=" + precio
+				+ ", categoria=" + categoria + "]";
+	}
 }
