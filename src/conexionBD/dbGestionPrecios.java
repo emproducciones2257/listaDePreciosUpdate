@@ -121,7 +121,6 @@ public class dbGestionPrecios {
 				preciosDocumento temp = preciosNuevos.get(i);
 				preCloud.setIdPrecioBDLocal(temp.getCodigo());
 				preCloud.setPrecio(temp.getPrecio());
-				//preCloud.setCategoria(temp.getCategoria());
 				
 				pre.setString(1, temp.getCodigo());
 				pre.setString(2, temp.getProd());
@@ -192,7 +191,7 @@ public class dbGestionPrecios {
     	ApiFuture<WriteResult> result = docRef.create(preciCloud);
     	
     	try {
-			System.out.println("CARGUE A LA BASE: " + result.get().getUpdateTime());
+			// ACA OBTENGO EL ID DEL REGISTRO NUEVO QUE CARGO System.out.println("CARGUE A LA BASE: " + docRef.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 
