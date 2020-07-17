@@ -192,6 +192,7 @@ public class dbGestionPrecios {
     	
     	try {
 			// ACA OBTENGO EL ID DEL REGISTRO NUEVO QUE CARGO System.out.println("CARGUE A LA BASE: " + docRef.getId());
+    		System.out.println("CARGUE A LA BASE: " + docRef.getId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		} 

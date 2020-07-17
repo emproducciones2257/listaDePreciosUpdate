@@ -67,7 +67,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 		
 		if (e.getSource().equals(pnlPrecios.getBtnProcesar())) {
 			
-			if((!archivo.isFile())&&(pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
+			/*if((!archivo.isFile())&&(pnlPrecios.getTxtPorcentaje().getText().isEmpty())) {
 				avisos.faltanDatos(ventanasAvisos.FALTAN_DATOS);
 			}
 			
@@ -89,7 +89,9 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 				
 				archivo = new File("");
 				pnlPrecios.getLblEstadoArchivo().setText("Sin Archivo");
-			}
+			}*/
+			
+			enviarArchivoBD(0);
 		}
 		
 		if (e.getSource().equals(pnlPrecios.getBtnRegistrarPrecio())) {
@@ -157,15 +159,26 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 
 	private void enviarArchivoBD(int porcentaje) {
 		
-		if(categoriaSeleccionada.equals("LIBRERIA")) {
+		/*if(categoriaSeleccionada.equals("LIBRERIA")) {
 			extraerTextoPdf(archivo);
 			DBDT.actualiazarDtos(fecha,porcentaje);
 			Principal.refrescarDatos();
 		}else {
 			extraerDtosExcel(archivo);
-		}
+		}*/
 		
-		DBGP.cargarADB(precios,categoriaSeleccionada);
+		precios = new ArrayList<>();
+		
+		preciosDocumento temp = new preciosDocumento("99999","EL JIUJU",20.5,2);
+		preciosDocumento temp2 = new preciosDocumento("88888","EL JIUJU2",20.5,2);
+		preciosDocumento temp3 = new preciosDocumento("77777","EL JIUJU3",20.5,2);
+		
+		precios.add(temp);
+		precios.add(temp2);
+		precios.add(temp3);
+		
+		//DBGP.cargarADB(precios,categoriaSeleccionada);
+		DBGP.cargarADB(precios,"LIBRERIA");
 		mostrarTodosPreciosPorCategorias();
 	}
 	
