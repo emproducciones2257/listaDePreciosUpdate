@@ -10,9 +10,8 @@ public class constantes {
 	public static final String COLECCION_PRODUCTO = "productos";
 	public static final String COLECCION_PRECIOS = "precios";
 	public static final String COLECCION_PRECIOS_PERFU = "preciosPerfumeria";
+	public static final String COLECCION_PRODUCTO_PERFU = "productosPerfumeria";
 
-
-	
 	
 	//cloud campo
 	public static final String CAMPO_FECHA_DB = "fechaBD";

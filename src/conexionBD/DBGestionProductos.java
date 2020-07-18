@@ -41,7 +41,7 @@ public class DBGestionProductos {
 	    			.collection(constantes.COLECCION_PRODUCTO).document();
 		}else {
 			docRef = conectFirebase.getFirestore()
-	    			.collection(constantes.COLECCION_PRECIOS_PERFU).document();
+	    			.collection(constantes.COLECCION_PRODUCTO_PERFU).document();
 		}
 
     	ApiFuture<WriteResult> result = docRef.create(produCloud);
