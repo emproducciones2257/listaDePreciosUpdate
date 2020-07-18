@@ -2,10 +2,7 @@ package conexionBD;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import modelo.marca;
 import modelo.produConPreci;
-import modelo.producto;
 import views.ventanasAvisos;
 
 public class DBConsultaPrecio {
@@ -40,7 +37,6 @@ public class DBConsultaPrecio {
             coneCone.connect().close();
             
 		} catch (Exception e) {
-			System.out.println("NOOOO " + e.getMessage());
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
 		}
 
