@@ -3,12 +3,13 @@ package modelo;
 public class produCloud {
 	
 	private int idProducto;
-	private int Precio;
+	private String Precio;
 	private int unidadDeVenta = 0;
 	private int idCategoria;
 	private String dtosExtras;
 	private String codProd;
 	private String codMarc;
+	private String idNube;
 	
 	public produCloud() {
 	}
@@ -21,11 +22,11 @@ public class produCloud {
 		this.idProducto = idProducto;
 	}
 
-	public int getPrecio() {
+	public String getPrecio() {
 		return Precio;
 	}
 
-	public void setPrecio(int precio) {
+	public void setPrecio(String precio) {
 		Precio = precio;
 	}
 
@@ -69,10 +70,18 @@ public class produCloud {
 		this.idCategoria = idCategoria;
 	}
 
+	public String getIdNube() {
+		return idNube;
+	}
+
+	public void setIdNube(String idNube) {
+		this.idNube = idNube;
+	}
+
 	@Override
 	public String toString() {
 		return "produCloud [idProducto=" + idProducto + ", Precio=" + Precio + ", unidadDeVenta=" + unidadDeVenta
 				+ ", idCategoria=" + idCategoria + ", dtosExtras=" + dtosExtras + ", codProd=" + codProd + ", codMarc="
-				+ codMarc + "]";
+				+ codMarc + ", idNube=" + idNube + "]";
 	}
 }

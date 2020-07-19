@@ -11,6 +11,7 @@ import modelo.producto;
 public class DBGestionProductos {
 	
 	 private PreparedStatement pre;
+	 private DocumentReference docRef;
 
 	public void registrarProducto(producto proTemp) {
 		
@@ -34,7 +35,6 @@ public class DBGestionProductos {
 
 
 	public void registrarCloud(produCloud produCloud, String nombCat) {
-		DocumentReference docRef;
 		
 		if(nombCat.equals("LIBRERIA")) {
 			docRef = conectFirebase.getFirestore()

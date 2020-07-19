@@ -3,7 +3,6 @@ package control;
 import java.awt.event.*;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 import javax.swing.JFileChooser;
@@ -166,7 +165,6 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 		}
 		
 		DBGP.cargarADB(precios,categoriaSeleccionada);
-		DBGP.cargarADB(precios,"LIBRERIA");
 		mostrarTodosPreciosPorCategorias();
 	}
 	

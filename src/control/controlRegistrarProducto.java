@@ -216,7 +216,8 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 			
 			proTemp.setIdPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getIdPrecio());
 			
-			produCloud.setPrecio(Integer.valueOf(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getCodigo()));
+			produCloud.setPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getCodigo());
+			
 		}
 	}
 
