@@ -11,8 +11,6 @@ import modelo.dtosNecesarios;
 import javax.swing.*;
 
 
-
-
 public class Principal extends javax.swing.JFrame {
 
 
