@@ -38,6 +38,15 @@ public class ventanasAvisos {
 
 	public static final String PRODUCTO_N_REG = "Producto no registrado";
 
+
+	public static final String NO_ESTA_EL_ARTICULO = "NO SE ENCUENTRA EL ARTICULO";
+
+
+	public static final String ARTICULO_VACIO = "INGRESAR ARTICULO PARA BUSCAR";
+
+
+	public static final String ARTICULO_EXISTENTE = "Articulo Existente";
+
 	
 	public ventanasAvisos(JPanel vista) {
 		this.vista=vista;

@@ -38,6 +38,7 @@ public class pnlGestionPrecios extends JPanel{
     private JScrollPane scrollPane;
     private JLabel lblNewLabel_8;
     private JComboBox jcmbCategorias;
+    private JButton btnMrioSer;
     
 	public pnlGestionPrecios() {
 		
@@ -68,11 +69,12 @@ public class pnlGestionPrecios extends JPanel{
 		add(lblNewLabel_7);
 		add(jcmbCategorias);
 		add(lblNewLabel_8);
+		add(btnMrioSer);
 		
 		btnBuscarArchivo.addActionListener(new controlGestionPrecios(this));
 		
 		add(scrollPane);
-		
+
 		lista = new ArrayList<preciosDocumento>();
 	}
 	
@@ -165,6 +167,9 @@ public class pnlGestionPrecios extends JPanel{
 		lblNewLabel_8.setForeground(Color.WHITE);
 		lblNewLabel_8.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		lblNewLabel_8.setBounds(741, 3, 68, 14);
+		
+		btnMrioSer = new JButton("M. Sergio");
+		btnMrioSer.setBounds(708, 290, 131, 30);
 	}
 
 	public void modeloTabla() {
@@ -236,7 +241,11 @@ public class pnlGestionPrecios extends JPanel{
 	public JTextField getTxtFiltrarProducto() {
 		return txtFiltrarProducto;
 	}
-	
+		
+	public JButton getBtnMrioSer() {
+		return btnMrioSer;
+	}
+
 	public void setLista(List<preciosDocumento> lista) {
 		this.lista = lista;
 	}

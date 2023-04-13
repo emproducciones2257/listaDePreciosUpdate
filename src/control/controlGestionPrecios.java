@@ -22,6 +22,7 @@ import conexionBD.dbGestionPrecios;
 import modelo.categorias;
 import modelo.constantes;
 import modelo.preciosDocumento;
+import views.PnlMauroSergio;
 import views.Principal;
 import views.pnlGestionPrecios;
 import views.ventanasAvisos;
@@ -49,12 +50,14 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 		pnlPrecios.getBtnRegistrarPrecio().addActionListener(this);
 		pnlPrecios.getTxtFiltrarProducto().addKeyListener(this);
 		pnlPrecios.getJcmbCategorias().addActionListener(this);
+		pnlPrecios.getBtnMrioSer().addActionListener(this);
 		precios = new ArrayList<preciosDocumento>();
 		DBGP = new dbGestionPrecios();
 		DBCategorias = new DBGestionCategorias();
 		DBDT = new DBDtos();
 		avisos = new ventanasAvisos(pnlPrecios);
 		cargarCategorias();
+		precios = new ArrayList<>();
 	}
 
 	@Override
@@ -138,6 +141,11 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 			}else {
 				pnlPrecios.getBtnBuscarArchivo().setEnabled(false);
 			}
+		}
+		
+		if(e.getSource().equals(pnlPrecios.getBtnMrioSer())) {
+			PnlMauroSergio pnl = new PnlMauroSergio();
+			pnl.setVisible(true);
 		}
 	}
 
@@ -226,7 +234,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
             pruebaDelimitador(temp); 
 
             } catch (IOException e) {
-
+            	e.printStackTrace();
           }	
 	}
 	
@@ -377,7 +385,7 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
                 												descripcion,
                 												Double.parseDouble(precio),
                 												indiceCatSelec.getIdCategoria());
-                                
+
                 precios.add(temp);
                                
                 contador=0;

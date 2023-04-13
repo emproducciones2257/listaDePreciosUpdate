@@ -22,7 +22,7 @@ public class pdfs {
 		PDDocument dNuevo = new PDDocument();
         try {
             //cargo el documento
-            PDDocument documento = PDDocument.load(new File("C:\\Users\\Emanuel\\Desktop\\d.pdf"));
+            PDDocument documento = PDDocument.load(new File("C:\\Users\\Emanuel\\Desktop\\boletasrawson.pdf"));
 			
             //PDFTextStripper extraccion = new PDFTextStripper();	
             
