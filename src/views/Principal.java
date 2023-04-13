@@ -15,7 +15,7 @@ public class Principal extends javax.swing.JFrame {
 
 
     public Principal() {
-    	//Comentario
+    	//Comentario 2
     	setTitle("Lista De Precios - Algun Lugar Castilla");
     	setResizable(false);
     	
