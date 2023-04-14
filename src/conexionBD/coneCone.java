@@ -9,6 +9,7 @@ public class coneCone {
 
 	
 	public static Connection connect() throws SQLException {
+		//HOla manola
         Connection conn = null;
         String url = "C:/sqlite/db/dbPrecios.db";
         File file = new File(url);
