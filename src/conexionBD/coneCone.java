@@ -10,7 +10,8 @@ public class coneCone {
 	
 	public static Connection connect() throws SQLException {
         Connection conn = null;
-        String url = "C:/sqlite/db/dbPrecios.db";
+        //C:\Users\Emanuel\git\listaDePreciosUpdate
+        String url = "C:/Users/Emanuel/git/listaDePreciosUpdate/dbPrecios.db";
         File file = new File(url);
         
         if(file.exists()) {
