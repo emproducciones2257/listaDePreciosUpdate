@@ -365,10 +365,6 @@ public class controlGestionPrecios implements ActionListener, MouseListener, Key
 				c = Leido.charAt(contador);
 			}
 
-			if (codigo.equals("123")) {
-				System.out.print(Leido);
-			}
-
 			Leido = Leido.replaceFirst(codigo, "");
 
 			c = 'a';
