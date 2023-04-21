@@ -1,27 +1,14 @@
 package conexionBD;
 
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.sql.*;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
-
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.DocumentSnapshot;
-import com.google.cloud.firestore.Query;
-import com.google.cloud.firestore.QuerySnapshot;
-import com.google.cloud.firestore.WriteResult;
-import com.google.common.collect.Iterators;
-
+import com.google.cloud.firestore.*;
+import modelo.constantes;
 import modelo.preciosCloud;
 import modelo.preciosDocumento;
-import modelo.produCloud;
 import views.ventanasAvisos;
 
 public class dbGestionPrecios {
@@ -35,25 +22,25 @@ public class dbGestionPrecios {
     private Iterator<preciosCloud> it;
     
     public dbGestionPrecios() {
-		// TODO Auto-generated constructor stub
     	avisos = new ventanasAvisos(null);	
 	}
     
-    public List<preciosDocumento> obtenerListadoProductosPrecios() {
+    public List<preciosDocumento> obtenerListadoProductosPrecios(int codCat) {
     	
     	List<preciosDocumento> temp = new ArrayList<preciosDocumento>();
     	
     	try {
     		pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionRecuperarTodosProductosPrecios);
+    		pre.setInt(1, codCat);
     		resu = pre.executeQuery();
     		
     		while (resu.next()) {
 				preciosDocumento p = new preciosDocumento(
-						resu.getInt("idPreSer"),
-						resu.getInt("codigoPoducto"),
-						resu.getString("descArt"),
-						resu.getDouble("precio"));
-				
+						resu.getInt(1),
+						resu.getString(2),
+						resu.getString(3),
+						resu.getDouble(4));
+						resu.getInt(5);
 				temp.add(p);	
 			}
     		
@@ -62,84 +49,106 @@ public class dbGestionPrecios {
     		coneCone.connect().close();
     		
 		} catch (Exception e) {
-			// TODO: handle exception
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
 		}
-    	
 		return temp;
 	}
 
-	public void cargarADB(List<preciosDocumento> preciosNuevos) {
+	public void cargarADB(List<preciosDocumento> preciosNuevos, String categoriaSeleccionada) {
 		
-		List<preciosDocumento> listaPreciosBase = obtenerListadoProductosPrecios();
-		preciosCloud preCloud = new preciosCloud();
+		List<preciosDocumento> listaPreciosBase = obtenerListadoProductosPrecios(preciosNuevos.get(0).getCategoria());
+		
+		Connection conecone = null;
 		
 		//Cargo los productos por primera vez
 		
 		if(listaPreciosBase.isEmpty()) {
 
-			try {
-	            pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionCargaProductoPrecio);
-	            for (int i = 0; i < preciosNuevos.size(); i++) {
-	            	
-	            	preciosDocumento temp = preciosNuevos.get(i);
-	            	preCloud.setIdPrecioBDLocal(temp.getCodigo());
-	            	preCloud.setPrecio(temp.getPrecio());
-	            	
-	            	pre.setInt(1, temp.getCodigo());
-	            	pre.setString(2, temp.getProd());
-	            	pre.setDouble(3, temp.getPrecio());
-	            	
-	            	registrarCloud(preCloud);
-	            	pre.execute();
-				}
-	            
-	            pre.close();
-	            coneCone.connect().close();
-	            avisos.cargaCorrecta(ventanasAvisos.CARGA_OK);
-	        } catch (Exception e) {
-	        	avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
-	       }
+			cargarArticulosNuevos(preciosNuevos,categoriaSeleccionada);
 			
 		}else {
+			
+			int res;
 			// actualizo los productos
-			obtenerNube();
+			
+			obtenerNube(categoriaSeleccionada);
+			
+			List<preciosDocumento> preciosNuevosParaCargar = new ArrayList<>();
+			
 			try {
-				pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionActualizarProductoPrecio);
-				
-	            for (preciosDocumento nuevo : preciosNuevos) {
-	            	
-	            	for (preciosDocumento base : listaPreciosBase) {
+				conecone = coneCone.connect();
+				for (preciosDocumento e : preciosNuevos) {
+					
+					preciosDocumento p = obtenerProductoXCodProd(e.getCodigo(),e.getCategoria(),conecone);
+					
+					if (p==null) {
+
+						preciosNuevosParaCargar.add(e);
+
+					}else {
+						res = Double.compare(e.getPrecio(), p.getPrecio());
 						
-	            		if ((base.getCodigo()==nuevo.getCodigo())&&!(nuevo.getPrecio().equals(base.getPrecio()))) {
-							pre.setDouble(1, nuevo.getPrecio());
-							pre.setInt(2, nuevo.getCodigo());
-							pre.executeUpdate();
-							updateCloud(nuevo.getPrecio(), nuevo.getCodigo());
-							break;
+						if (res!=0) {
+							
+							actualizarPrecio(conecone,e, categoriaSeleccionada);	
 						}
 					}
 				}
-	            pre.close();
-	            coneCone.connect().close();
+				
+				if(!preciosNuevosParaCargar.isEmpty()) {
+					
+					cargarArticulosNuevos(preciosNuevosParaCargar, categoriaSeleccionada);
+				}
+				
+				conecone.close();
 	            avisos.updateCorrecta(ventanasAvisos.UPDATE_OK);
 			} catch (Exception e) {
-				// TODO: handle exception
 				avisos.errorUpdate(ventanasAvisos.ERROR_UPDATE, e.getMessage());
 			}
 		}
 	}
 
-	public List<preciosDocumento> obtenerListadoProductosPreciosFiltrados(String text) {
+	private void cargarArticulosNuevos(List<preciosDocumento> preciosNuevos, String categoriaSeleccionada) {
+		
+		preciosCloud preCloud = new preciosCloud();
+		
+		try {
+			Connection co = coneCone.connect();
+			
+			pre = co.prepareStatement(instruccionesSQL.instruccionCargaProductoPrecio);
+			
+			for (int i = 0; i < preciosNuevos.size(); i++) {
+				preciosDocumento temp = preciosNuevos.get(i);
+				preCloud.setIdPrecioBDLocal(temp.getCodigo());
+				preCloud.setPrecio(temp.getPrecio());
+				
+				pre.setString(1, temp.getCodigo());
+				pre.setString(2, temp.getProd());
+				pre.setDouble(3, temp.getPrecio());
+				pre.setInt(4, temp.getCategoria());
+				
+				registrarCloud(preCloud, categoriaSeleccionada);
+				pre.execute();
+			}
+			avisos.cargaCorrecta(ventanasAvisos.CARGA_OK);
+			co.close();
+		} catch (SQLException e) {
+			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
+		}
+	}
+
+	public List<preciosDocumento> obtenerListadoProductosPreciosFiltrados(String text, int idCat) {
 		List<preciosDocumento> temp = new ArrayList<preciosDocumento>();
     	
     	try {
-    		pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionRecuperarProductosFiltrados + "'%" + text +"%'");
+    		pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionRecuperarProductosFiltrados 
+    													+ "'%" + text +"%' AND idCat = " + idCat);
     		resu = pre.executeQuery();
     		
     		while (resu.next()) {
 				preciosDocumento p = new preciosDocumento();
 				p.setIdPrecio(resu.getInt(1));
+				p.setCodigo(resu.getString(2));
 				p.setProd(resu.getString(3));
 				p.setPrecio(resu.getDouble(4));
 				temp.add(p);	
@@ -150,7 +159,6 @@ public class dbGestionPrecios {
     		coneCone.connect().close();
     		
 		} catch (Exception e) {
-			// TODO: handle exception
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
 		}
 		return temp;
@@ -161,7 +169,7 @@ public class dbGestionPrecios {
 			pre = coneCone.connect().prepareStatement(instruccionesSQL.instruccionActualizarProducto);
 			pre.setString(1, productoActualizar.getProd());
 			pre.setDouble(2, productoActualizar.getPrecio());
-			pre.setInt(3, productoActualizar.getCodigo());
+			pre.setString(3, productoActualizar.getCodigo());
 			pre.setInt(4, productoActualizar.getIdPrecio());
 			pre.executeUpdate();
 			pre.close();
@@ -171,26 +179,35 @@ public class dbGestionPrecios {
 		}
 	}
 	
-	public void registrarCloud(preciosCloud preciCloud) {
-		// TODO Auto-generated method stub
-
-    	docRef = conectFirebase.getFirestore().collection("precios").document();
+	public void registrarCloud(preciosCloud preciCloud, String categoriaSeleccionada) {
 		
+		if (categoriaSeleccionada.equals("LIBRERIA")) {
+			
+			docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS).document();
+		}else {
+			docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS_PERFU).document();
+		}
+
     	ApiFuture<WriteResult> result = docRef.create(preciCloud);
     	
     	try {
-			System.out.println("Update time : " + result.get().getUpdateTime());
+			// ACA OBTENGO EL ID DEL REGISTRO NUEVO QUE CARGO System.out.println("CARGUE A LA BASE: " + docRef.getId());
+    		System.out.println("CARGUE A LA BASE: " + docRef.getId());
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
 	}
 	
-	private void obtenerNube() {
+	private void obtenerNube(String categoriaSeleccionada) {
 		preciosCloud temp = new preciosCloud();
 		preNube = new HashSet<>();
-		colecPrecios = conectFirebase.getFirestore().collection("precios");
 		
+		if (categoriaSeleccionada.equals("LIBRERIA")) {
+			colecPrecios = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS);
+		}else {
+			colecPrecios = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS_PERFU);
+		}
+
 		ApiFuture<QuerySnapshot> respuestaDeConsulta = colecPrecios.get();
 		
 		try {
@@ -202,24 +219,27 @@ public class dbGestionPrecios {
 			}
 			
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	private void updateCloud(Double preciCloud, int codigoBuscar) {
+	private void updateCloud(Double preciCloud, String codigoBuscar, String categoriaSeleccionada) {
 		
 		try {
 			//obtengo la referencia al documento del precio
 			
 			String idProdUpdate = obtenerIdProducto(codigoBuscar);
 			
-			docRef = conectFirebase.getFirestore().collection("precios").document(idProdUpdate);
-			
-			ApiFuture<WriteResult> future = docRef.update("precio", preciCloud);
+			if (categoriaSeleccionada.equals("LIBRERIA")) {
+
+				docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS).document(idProdUpdate);
+			}else {
+				docRef = conectFirebase.getFirestore().collection(constantes.COLECCION_PRECIOS_PERFU).document(idProdUpdate);
+			}
+
+			ApiFuture<WriteResult> future = docRef.update(constantes.CAMPO_PRECIO, preciCloud);
 
 			WriteResult result;
 			
@@ -228,24 +248,63 @@ public class dbGestionPrecios {
 			System.out.println("ACTUALIZO CODIGO: "  + codigoBuscar + " idDocumento : " + idProdUpdate);
 			
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	private String obtenerIdProducto(int codigoBuscar) {
-		// TODO Auto-generated method stub
+	private String obtenerIdProducto(String codigoBuscar) {
+		
 		preciosCloud comparar = null;
 		it = preNube.iterator();
 		while (it.hasNext()) {
 			comparar = it.next();
-			if (comparar.getIdPrecioBDLocal()==codigoBuscar) {
+			if (comparar.getIdPrecioBDLocal().equals(codigoBuscar)) {
 				break;
 			}
 		}
 		return comparar.getIdPrecio();
+	}
+	
+	public preciosDocumento obtenerProductoXCodProd(String codProd,int codCat,Connection con) {
+		preciosDocumento p = null;
+    	
+    	try {
+    		pre= con.prepareStatement(instruccionesSQL.instruccionRecuperarProductoXId);
+    		pre.setString(1, codProd);
+    		pre.setInt(2, codCat);
+    		resu = pre.executeQuery();
+    		
+    		while (resu.next()) {
+    			p = new preciosDocumento();
+    			p.setIdPrecio(resu.getInt(1));
+    			p.setCodigo(resu.getString(2));
+    			p.setProd(resu.getString(3));
+    			p.setPrecio(resu.getDouble(4));
+    			p.setCategoria(resu.getInt(5));
+			}
+    		
+		} catch (Exception e) {
+			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
+		}
+    	
+		return p;
+	}
+
+	private void actualizarPrecio(Connection tet,preciosDocumento e, String categoriaSeleccionada) {
+		
+		try {
+
+			pre= tet.prepareStatement(instruccionesSQL.instruccionActualizarProductoPrecio);
+			pre.setDouble(1, e.getPrecio());
+			pre.setString(2, e.getCodigo());
+			pre.setInt(3, e.getCategoria());
+			pre.executeUpdate();
+			updateCloud(e.getPrecio(), e.getCodigo(), categoriaSeleccionada);
+			
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 }

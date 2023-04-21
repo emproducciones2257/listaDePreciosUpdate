@@ -1,31 +1,33 @@
 package modelo;
 
-public class preciosDocumento {
+public class preciosDocumento implements Comparable<preciosDocumento>{
 	
 	private int idPrecio;
-	private int codigo;
+	private String codigo;
     private String prod;
     private Double precio;   
-    private Double precioPorcentaje;
+    private int categoria;
 
-    
-     public preciosDocumento (int idPrecio, int c, String p, Double d) {
+     public preciosDocumento (int idPrecio, String codigo, String prod, Double d) {
     	 this.idPrecio=idPrecio;
-         codigo=c;
-         prod= p;
-         precio=d;       
+         this.codigo=codigo;
+         this.prod= prod;
+         this.precio=d;       
     } 
      
-     public preciosDocumento (int c, String p, Double d, double preCal) {
-         codigo=c;
-         prod= p;
-         precio=d;       
-         precioPorcentaje=preCal;
-        
+     public preciosDocumento (String codigo, String prod, Double precio) {
+         this.codigo=codigo;
+         this.prod= prod;
+         this.precio=precio;        
+    } 
+     public preciosDocumento (String codigo, String prod, Double precio, int categoria ) {
+         this.codigo=codigo;
+         this.prod= prod;
+         this.precio=precio;
+         this.categoria=categoria;
     } 
 
     public preciosDocumento() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getIdPrecio() {
@@ -36,13 +38,11 @@ public class preciosDocumento {
 		this.idPrecio = idPrecio;
 	}
 
-
-
-	public int getCodigo() {
+	public String getCodigo() {
         return codigo;
     }
 
-    public void setCodigo(int codigo) {
+    public void setCodigo(String codigo) {
         this.codigo = codigo;
     }
 
@@ -62,21 +62,27 @@ public class preciosDocumento {
         this.precio = precio;
         
     }
-    
-    public Double getPrecioPorcentaje() {
-        return precioPorcentaje;
-    }
 
-    public void setPrecioPorcentaje(Double PrecioPorcentaje) {
-        this.precioPorcentaje = PrecioPorcentaje;
-        
-    }
-    
-    @Override
-    public String toString (){
-        
-        return "Codigo: " + codigo + " Descripcion: "+ prod + " Precio: " + precio + " Precio Porcentaje: "+ precioPorcentaje;
-   
-    }
+	public int getCategoria() {
+		return categoria;
+	}
 
+	public void setCategoria(int categoria) {
+		this.categoria = categoria;
+	}
+
+	@Override
+	public int compareTo(preciosDocumento o) {
+		if(Integer.valueOf(this.codigo)>Integer.valueOf(o.codigo)) 
+		return 1;
+		else {
+			return -1;
+		}
+	}
+
+	@Override
+	public String toString() {
+		return "preciosDocumento [idPrecio=" + idPrecio + ", codigo=" + codigo + ", prod=" + prod + ", precio=" + precio
+				+ ", categoria=" + categoria + "]";
+	}
 }

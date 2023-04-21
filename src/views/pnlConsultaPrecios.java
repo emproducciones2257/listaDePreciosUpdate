@@ -17,12 +17,12 @@ public class pnlConsultaPrecios extends JPanel{
     private JTable tblProductosVendidos;
     private JButton btnNuevaVta;
     private TablaOtraclase tablaArtenativa;
-    
     private String [] nombreColumnas = {"ID","Descripcion","Precio","Cantidad","SumRes","Borrar"};
+    private JTextField txtBuscarCBPerfumeria;
+    private JLabel lblNewLabel;
+    private JLabel lblNewLabel_1;
 
 	public pnlConsultaPrecios() {
-		// TODO Auto-generated constructor stub
-
 		crearComponentes();
 		
 		//Propiedades JPanel
@@ -37,24 +37,26 @@ public class pnlConsultaPrecios extends JPanel{
         add(lblTotalParcial);
         add(lblDescripcion);
         add(jSPTabla);
-        add(btnNuevaVta);   
+        add(btnNuevaVta); 
+        add(lblNewLabel);
+        add(txtBuscarCBPerfumeria);
+        add(lblNewLabel_1);
         
         btnNuevaVta.addActionListener(new controlConsultaPrecios(this));
         tablaArtenativa = new TablaOtraclase();
 	}
 
 	private void crearComponentes() {
-		// TODO Auto-generated method stub
 		
 		txtBuscarCB = new JTextField();
-        txtBuscarCB.setBounds(641, 21, 146, 30);
+        txtBuscarCB.setBounds(625, 37, 146, 30);
         txtBuscarCB.setColumns(10);
         
         lblPrecio = new JLabel("$ 0");
         lblPrecio.setFont(new Font("Tahoma", Font.PLAIN, 34));
         lblPrecio.setForeground(Color.GREEN);
         lblPrecio.setBackground(Color.WHITE);
-        lblPrecio.setBounds(668, 225, 146, 56);
+        lblPrecio.setBounds(668, 250, 146, 56);
         
         lblTotalParcial = new JLabel("TOTAL $ 0");
         lblTotalParcial.setForeground(Color.GREEN);
@@ -64,7 +66,7 @@ public class pnlConsultaPrecios extends JPanel{
         
         lblDescripcion = new JLabel();
         lblDescripcion.setForeground(Color.WHITE);
-        lblDescripcion.setBounds(597, 94, 242, 120);
+        lblDescripcion.setBounds(597, 209, 242, 42);
         
         tblProductosVendidos = new JTable();
 
@@ -74,6 +76,20 @@ public class pnlConsultaPrecios extends JPanel{
         
         btnNuevaVta = new JButton("NUEVA VENTA");
         btnNuevaVta.setBounds(668, 338, 131, 23);
+        
+        lblNewLabel = new JLabel("CONSULTA LIBRERIA");
+        lblNewLabel.setForeground(Color.WHITE);
+        lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblNewLabel.setBounds(641, 11, 115, 14);
+        
+        txtBuscarCBPerfumeria = new JTextField();
+        txtBuscarCBPerfumeria.setBounds(625, 110, 146, 30);
+        txtBuscarCBPerfumeria.setColumns(10);
+        
+        lblNewLabel_1 = new JLabel("CONSULTA PERFUMERIA");
+        lblNewLabel_1.setForeground(Color.WHITE);
+        lblNewLabel_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        lblNewLabel_1.setBounds(625, 85, 146, 14);
 	}
 	
 	public void modeloTabla(ArrayList<produConPreci> art) {
@@ -86,14 +102,13 @@ public class pnlConsultaPrecios extends JPanel{
 	
 	public void limpiarComponenetes () {
 		getTxtBuscarCB().setText("");
+		getTxtBuscarCBPerfumeria().setText("");
 		getLblPrecio().setText("$ "+0);
 		getLblDescripcion().setText("");
-		getLblTotalParcial().setText("Total: $ 0");
 		getTxtBuscarCB().setFocusable(true);
 	}
 	
 	public void limpiarTabla() {
-		// TODO Auto-generated method stub
 			DefaultTableModel aModel = (DefaultTableModel) tblProductosVendidos.getModel();
 			int a = aModel.getRowCount()-1;
 			for(int i=a; i>=0;i--){
@@ -123,5 +138,9 @@ public class pnlConsultaPrecios extends JPanel{
 
 	public JTable getTblProductosVendidos() {
 		return tblProductosVendidos;
+	}
+
+	public JTextField getTxtBuscarCBPerfumeria() {
+		return txtBuscarCBPerfumeria;
 	}
 }

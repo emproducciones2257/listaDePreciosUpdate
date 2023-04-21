@@ -19,7 +19,6 @@ public class DBMarca {
     private ventanasAvisos avisos;
 
     public DBMarca() {
-		// TODO Auto-generated constructor stub
     	avisos = new ventanasAvisos(null);
 	}
 	
@@ -28,7 +27,7 @@ public class DBMarca {
         try {
             pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionRegistrarMarca);
             pre.setString(1, marca.getNombreMarca());
-            pre.setInt(2, marca.getCodBarMarca());
+            pre.setString(2, marca.getCodBarMarca());
             pre.execute();
             pre.close();
             coneCone.connect().close();
@@ -38,7 +37,7 @@ public class DBMarca {
         	avisos.cargaFallida(ventanasAvisos.CARGA_ERROR, e.getMessage());
         }
     }
-	public boolean verificarCodigo(int codigo) {
+	public boolean verificarCodigo(String codigo) {
 		
 		boolean estado = false;
 		
@@ -59,17 +58,17 @@ public class DBMarca {
 		return estado;
 	}
 
-	public marca obtenerMarca(int codigo) {
+	public marca obtenerMarca(String codigo) {
 		
 		marca martemp = null;
 		
 		try {
-			pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionObtenerObjetoMarca + codigo);
+			pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionObtenerObjetoMarca + "'"+codigo+"'");
 			resu= pre.executeQuery();
 			
 			while (resu.next()) {
 				martemp = new marca();
-				martemp.setCodBarMarca(resu.getInt("codMarca"));
+				martemp.setCodBarMarca(resu.getString("codMarca"));
 				martemp.setIdMarca(resu.getInt("idMarca"));
 				martemp.setNombreMarca(resu.getString("nombre"));
 				

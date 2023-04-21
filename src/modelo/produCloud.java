@@ -3,14 +3,15 @@ package modelo;
 public class produCloud {
 	
 	private int idProducto;
-	private int Precio;
+	private String Precio;
 	private int unidadDeVenta = 0;
+	private int idCategoria;
 	private String dtosExtras;
-	private int codProd;
-	private int codMarc;
+	private String codProd;
+	private String codMarc;
+	private String idNube;
 	
 	public produCloud() {
-		// TODO Auto-generated constructor stub
 	}
 
 	public int getIdProducto() {
@@ -21,11 +22,11 @@ public class produCloud {
 		this.idProducto = idProducto;
 	}
 
-	public int getPrecio() {
+	public String getPrecio() {
 		return Precio;
 	}
 
-	public void setPrecio(int precio) {
+	public void setPrecio(String precio) {
 		Precio = precio;
 	}
 
@@ -45,25 +46,42 @@ public class produCloud {
 		this.dtosExtras = dtosExtras;
 	}
 
-	public int getCodProd() {
+	public String getCodProd() {
 		return codProd;
 	}
 
-	public void setCodProd(int codProd) {
+	public void setCodProd(String codProd) {
 		this.codProd = codProd;
 	}
 
-	public int getCodMarc() {
+	public String getCodMarc() {
 		return codMarc;
 	}
 
-	public void setCodMarc(int codMarc) {
+	public void setCodMarc(String codMarc) {
 		this.codMarc = codMarc;
+	}
+
+	public int getIdCategoria() {
+		return idCategoria;
+	}
+
+	public void setIdCategoria(int idCategoria) {
+		this.idCategoria = idCategoria;
+	}
+
+	public String getIdNube() {
+		return idNube;
+	}
+
+	public void setIdNube(String idNube) {
+		this.idNube = idNube;
 	}
 
 	@Override
 	public String toString() {
 		return "produCloud [idProducto=" + idProducto + ", Precio=" + Precio + ", unidadDeVenta=" + unidadDeVenta
-				+ ", dtosExtras=" + dtosExtras + ", codProd=" + codProd + ", codMarc=" + codMarc + "]";
+				+ ", idCategoria=" + idCategoria + ", dtosExtras=" + dtosExtras + ", codProd=" + codProd + ", codMarc="
+				+ codMarc + ", idNube=" + idNube + "]";
 	}
 }

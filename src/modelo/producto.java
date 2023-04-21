@@ -6,11 +6,12 @@ public class producto {
 	private int cantidad;
 	private int idColor;
 	private int idPrecio;
+	private int idCategoria;
 	private int idMarca;
 	private int medida;
 	private int unidadDeVenta = 0;
 	private String dtosExtras;
-	private int codBarr;
+	private String codBarr;
 	
 	
 	public int getIdProducto() {
@@ -62,16 +63,34 @@ public class producto {
 		this.dtosExtras = dtosExtras;
 	}
 
-	public int getCodBarr() {
+	public String getCodBarr() {
 		return codBarr;
 	}
-	public void setCodBarr(int codBarr) {
+	public void setCodBarr(String codBarr) {
 		this.codBarr = codBarr;
+	}
+	public int getIdColor() {
+		return idColor;
+	}
+	public void setIdColor(int idColor) {
+		this.idColor = idColor;
+	}
+	public int getIdCategoria() {
+		return idCategoria;
+	}
+	public void setIdCategoria(int idCategoria) {
+		this.idCategoria = idCategoria;
+	}
+	public int getIdMarca() {
+		return idMarca;
+	}
+	public void setIdMarca(int idMarca) {
+		this.idMarca = idMarca;
 	}
 	@Override
 	public String toString() {
 		return "producto [idProducto=" + idProducto + ", cantidad=" + cantidad + ", idColor=" + idColor + ", idPrecio="
-				+ idPrecio + ", idMarca=" + idMarca + ", medida=" + medida + ", unidadDeVenta=" + unidadDeVenta
-				+ ", dtosExtras=" + dtosExtras + "]";
+				+ idPrecio + ", idCategoria=" + idCategoria + ", idMarca=" + idMarca + ", medida=" + medida
+				+ ", unidadDeVenta=" + unidadDeVenta + ", dtosExtras=" + dtosExtras + ", codBarr=" + codBarr + "]";
 	}
 }

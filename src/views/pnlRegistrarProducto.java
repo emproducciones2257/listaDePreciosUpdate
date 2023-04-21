@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.DefaultTableModel;
-import conexionBD.dbGestionPrecios;
 import control.controlRegistrarProducto;
 import modelo.preciosDocumento;
 
@@ -29,16 +28,15 @@ public class pnlRegistrarProducto extends JPanel {
     private JLabel lblNewLabel_1;
     private JTable visorDatosPrecios;
     private DefaultTableModel aModel;
-    private dbGestionPrecios DBGP;
+    private JButton btnCancelarCarga;
+    private JComboBox<String> cmbCategorias;
+    private JLabel lbCategoria;
     
     private String [] nombreColumnas = {"Descripcion","Precio"};
 	
 	public pnlRegistrarProducto() {
-		
-		DBGP = new dbGestionPrecios();
-		
+				
 		crearComponentes();
-		modeloTabla(DBGP.obtenerListadoProductosPrecios());
 		
 		//propiedades Titulo
 		tituloPanelCargaProducto.setTitleColor((Color.WHITE));
@@ -46,7 +44,7 @@ public class pnlRegistrarProducto extends JPanel {
 		
 		//propiedades JPanel
 		 setBackground(new Color(34, 40, 44));
-		 setBounds(20, 207, 839, 193);
+		 setBounds(20, 207, 840, 231);
 		 setLayout(null);
 		 setBorder(tituloPanelCargaProducto);
 		 
@@ -66,6 +64,9 @@ public class pnlRegistrarProducto extends JPanel {
 		 add(txtUVenta);
 		 add(lblNewLabel_1);
 		 add(pnlBD);		 
+		 add(btnCancelarCarga);
+		 add(cmbCategorias);
+		 add(lbCategoria);
 		 
 		 btnRegistrarProd.addActionListener(new controlRegistrarProducto(this)); 
 	}
@@ -75,32 +76,32 @@ public class pnlRegistrarProducto extends JPanel {
 		lblMarca_1 = new JLabel("Marca");
 	    lblMarca_1.setForeground(Color.WHITE);
 	    lblMarca_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-	    lblMarca_1.setBounds(27, 27, 44, 19);
+	    lblMarca_1.setBounds(27, 72, 44, 19);
 	    
 	    lblNombreColor_1 = new JLabel("Color");
         lblNombreColor_1.setForeground(Color.WHITE);
         lblNombreColor_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNombreColor_1.setBackground(Color.WHITE);
-        lblNombreColor_1.setBounds(27, 57, 49, 25);
+        lblNombreColor_1.setBounds(27, 110, 49, 25);
         
         jcbColor = new JComboBox<String>();
-        jcbColor.setBounds(102, 63, 113, 30);
+        jcbColor.setBounds(102, 108, 113, 30);
         
         btnRegistrarProd = new JButton("Registrar Producto");
-        btnRegistrarProd.setBounds(601, 159, 208, 23);
+        btnRegistrarProd.setBounds(601, 163, 208, 23);
         
         lblCodigo_1 = new JLabel("Codigo");
         lblCodigo_1.setForeground(Color.WHITE);
         lblCodigo_1.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        lblCodigo_1.setBounds(25, 106, 46, 14);
+        lblCodigo_1.setBounds(27, 154, 46, 14);
         
         txtCodProducto = new JTextField();
         txtCodProducto.setColumns(10);
-        txtCodProducto.setBounds(102, 104, 113, 30);
+        txtCodProducto.setBounds(102, 149, 113, 30);
         txtCodProducto.setEditable(false);
         
         txtCodMarca = new JTextField();
-        txtCodMarca.setBounds(102, 22, 113, 30);
+        txtCodMarca.setBounds(102, 67, 113, 30);
         
         scpDescripcion = new JScrollPane();
         scpDescripcion.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
@@ -121,10 +122,10 @@ public class pnlRegistrarProducto extends JPanel {
         lblNewLabel = new JLabel("U. Venta");
         lblNewLabel.setFont(new Font("Tahoma", Font.PLAIN, 12));
         lblNewLabel.setForeground(Color.WHITE);
-        lblNewLabel.setBounds(10, 162, 64, 14);
+        lblNewLabel.setBounds(28, 197, 64, 14);
         
         txtUVenta = new JTextField();
-        txtUVenta.setBounds(102, 155, 113, 30);        
+        txtUVenta.setBounds(102, 190, 113, 30);        
         txtUVenta.setText("0");
         
         lblNewLabel_1 = new JLabel("Buscar");
@@ -136,7 +137,18 @@ public class pnlRegistrarProducto extends JPanel {
    
         pnlBD = new JScrollPane(visorDatosPrecios);
         pnlBD.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        pnlBD.setBounds(225, 57, 366, 125);
+        pnlBD.setBounds(225, 57, 366, 163);
+        
+        btnCancelarCarga = new JButton("Cancelar Carga");
+		btnCancelarCarga.setBounds(601, 197, 208, 23);
+		
+		cmbCategorias = new JComboBox();
+		cmbCategorias.setBounds(102, 27, 113, 30);
+		
+		lbCategoria = new JLabel("Categoria");
+		lbCategoria.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		lbCategoria.setForeground(Color.WHITE);
+		lbCategoria.setBounds(25, 30, 67, 14);
 	}
 	
 	
@@ -155,6 +167,7 @@ public class pnlRegistrarProducto extends JPanel {
 	    		 aModel.setValueAt(lista.get(i).getProd(), i, 0);
 	    		 aModel.setValueAt(lista.get(i).getPrecio(), i, 1); 
 			}
+	    	
 	     }
 	    
 	     visorDatosPrecios.setModel(aModel);
@@ -168,21 +181,15 @@ public class pnlRegistrarProducto extends JPanel {
 		getTxtBusquedPrecio().setText("");
 		getTxtCodProducto().setText("");
 		getTxtUVenta().setText("0");
-		limpiarTabla();
 	}
 
 	 public void limpiarTabla() {
-		// TODO Auto-generated method stub
+		 
 		int a = getaModel().getRowCount()-1;
 		for(int i=a; i>=0;i--){
 			getaModel().removeRow(i);
 		}
 	}
-
-	public TitledBorder getTituloPanelCargaProducto() {
-		return tituloPanelCargaProducto;
-	}
-
 
 	public JComboBox<String> getJcbColor() {
 		return jcbColor;
@@ -237,5 +244,8 @@ public class pnlRegistrarProducto extends JPanel {
 	public void setaModel(DefaultTableModel aModel) {
 		this.aModel = aModel;
 	}
-
+	
+	public JComboBox<String> getcmbCategorias() {
+		return cmbCategorias;
+	}
 }

@@ -2,14 +2,14 @@ package modelo;
 
 public class marca {
 	private int idMarca;
-	private int codBarMarca;
+	private String codBarMarca;
 	private String nombreMarca;
 	
 	
 	public marca() {}
 	
 	
-	public marca(int idMarca, int codBarMarca, String nombreMarca) {
+	public marca(int idMarca, String codBarMarca, String nombreMarca) {
 		super();
 		this.idMarca = idMarca;
 		this.codBarMarca = codBarMarca;
@@ -23,10 +23,10 @@ public class marca {
 	public void setIdMarca(int idMarca) {
 		this.idMarca = idMarca;
 	}
-	public int getCodBarMarca() {
+	public String getCodBarMarca() {
 		return codBarMarca;
 	}
-	public void setCodBarMarca(int codBarMarca) {
+	public void setCodBarMarca(String codBarMarca) {
 		this.codBarMarca = codBarMarca;
 	}
 	public String getNombreMarca() {

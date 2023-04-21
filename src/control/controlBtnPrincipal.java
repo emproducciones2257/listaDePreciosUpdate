@@ -1,10 +1,10 @@
 package control;
 
 import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+import java.awt.event.*;
 import javax.swing.JButton;
 import javax.swing.plaf.basic.BasicButtonUI;
+
 import views.Principal;
 
 public class controlBtnPrincipal implements MouseListener{
@@ -55,13 +55,12 @@ public class controlBtnPrincipal implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 	

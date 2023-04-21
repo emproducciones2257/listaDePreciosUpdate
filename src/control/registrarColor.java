@@ -1,6 +1,7 @@
 package control;
 
 import java.awt.event.*;
+
 import conexionBD.*;
 import modelo.*;
 import views.pnlRegistrarColor;
@@ -52,14 +53,10 @@ public class registrarColor implements ActionListener, KeyListener{
 		}
 	}
 		
-	marca obtenerMarca(int codigo){
-		return BDmarca.obtenerMarca(codigo);
-		}
-
-
+	marca obtenerMarca(String codigo){return BDmarca.obtenerMarca(codigo);}
+	
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 		codigo = String.valueOf(pnlColor.gettxtScaner().getText());
 		cantidad++;
@@ -69,7 +66,7 @@ public class registrarColor implements ActionListener, KeyListener{
 			System.out.print(codigo);
 			pnlColor.gettxtScaner().setText(codigo.substring(3,8));
 			
-			mar = obtenerMarca(Integer.valueOf(pnlColor.gettxtScaner().getText()));
+			mar = obtenerMarca(pnlColor.gettxtScaner().getText());
 					
 			if(mar!=null) {
 
@@ -89,14 +86,10 @@ public class registrarColor implements ActionListener, KeyListener{
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void keyReleased(KeyEvent e) {		
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void keyTyped(KeyEvent e) {		
 	};
 }

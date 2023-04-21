@@ -2,10 +2,7 @@ package conexionBD;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-
-import modelo.marca;
 import modelo.produConPreci;
-import modelo.producto;
 import views.ventanasAvisos;
 
 public class DBConsultaPrecio {
@@ -15,18 +12,17 @@ public class DBConsultaPrecio {
     private ventanasAvisos avisos;
     
     public DBConsultaPrecio() {
-		// TODO Auto-generated constructor stub
     	avisos = new ventanasAvisos(null);
 	}
     
-	public produConPreci obtenerPrecio(int idMarca, int codigoProducto) {
+	public produConPreci obtenerPrecio(int idMarca, String codigoProducto, int codCat) {
 		produConPreci produ = null;
 		
 		try {
 			
-			pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionConsultarPrecio);
-            pre.setInt(1, codigoProducto);
-            pre.setInt(2, idMarca);
+			pre= coneCone.connect().prepareStatement(instruccionesSQL.instruccionConsultarPrecio
+														+"'"+codigoProducto+"' AND idMarca =" + idMarca +" AND producto.idCat = "
+														+ codCat);
             pre.execute();
             resu = pre.executeQuery();
             
@@ -41,8 +37,6 @@ public class DBConsultaPrecio {
             coneCone.connect().close();
             
 		} catch (Exception e) {
-			// TODO: handle exception
-			System.out.println("NOOOO " + e.getMessage());
 			avisos.errorConsulta(ventanasAvisos.ERROR_CONSULTA, e.getMessage());
 		}
 

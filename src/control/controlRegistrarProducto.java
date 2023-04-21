@@ -1,18 +1,10 @@
 package control;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.swing.table.DefaultTableModel;
-
 import conexionBD.DBColor;
+import conexionBD.DBGestionCategorias;
 import conexionBD.DBGestionProductos;
 import conexionBD.DBMarca;
 import conexionBD.dbGestionPrecios;
@@ -24,10 +16,11 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 	
 	private pnlRegistrarProducto pnl;
 	private int cantidad = 0;
-	private String codigoMarca ="",codigoProducto ="";
-	public marca mar;
+	private String codigoMarca ="",codigoProducto ="", categoriaSeleccionada="";
+	private marca mar;
 	private DBMarca BDmarca;
 	private DBColor BDcolor;
+	private DBGestionCategorias DBCategorias;
 	private DBGestionProductos DBGProdu;
 	private ArrayList<color> coloresMarca;
 	private List<preciosDocumento> prepre;
@@ -35,76 +28,113 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
     private producto proTemp;
     private ventanasAvisos avisos;
     private produCloud produCloud;
-
+    private ArrayList<categorias> categorias;
+	private categorias indiceCatSelec;
 
 	public controlRegistrarProducto(pnlRegistrarProducto pnl) {
-		// TODO Auto-generated constructor stub
 		
 		this.pnl=pnl;
 		DBGP = new dbGestionPrecios();
 		BDmarca = new DBMarca();
 		BDcolor = new DBColor();
+		DBCategorias = new DBGestionCategorias();
 		proTemp = new producto();
 		produCloud = new produCloud();
 		DBGProdu = new DBGestionProductos();
 		pnl.getTxtCodMarca().addKeyListener(this);
 		pnl.getTxtBusquedPrecio().addKeyListener(this);
 		pnl.getVisorDatosPrecios().addMouseListener(this);
+		pnl.getcmbCategorias().addActionListener(this);	
 		prepre = new ArrayList<preciosDocumento>();
 		avisos = new ventanasAvisos(pnl);
-		
+		cargarCategorias();
 	}
 	
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
 		
-		if(pnl.getTxtCodMarca().getText().isEmpty() ||
-				pnl.getTxtCodMarca().getText().isEmpty() ||
-				pnl.getTxtDescripcionProducto().getText().isEmpty()) {
+		if(e.getSource().equals(pnl.getBtnRegistrarProd())) {
 			
-			avisos.faltanDatos(ventanasAvisos.FALTAN_DATOS);
-			pnl.resetearComponentes();
+			if(pnl.getTxtCodMarca().getText().isEmpty() ||
+					pnl.getTxtCodMarca().getText().isEmpty() ||
+					pnl.getTxtDescripcionProducto().getText().isEmpty()) {
+				
+				avisos.faltanDatos(ventanasAvisos.FALTAN_DATOS);
+				pnl.resetearComponentes();
+				
+			}else {
+				
+				proTemp.setMarca(mar.getIdMarca());
+				
+				produCloud.setCodMarc(mar.getCodBarMarca());
+				
+				if(pnl.getJcbColor().getSelectedIndex()==0) {
+					proTemp.setColor(0);
+				}else { proTemp.setColor(coloresMarca.get(pnl.getJcbColor().getSelectedIndex()-1).getIdColor());}
+				
+				coloresMarca.clear();
+				
+				proTemp.setUnidadDeVenta(Integer.valueOf(pnl.getTxtUVenta().getText()));
+				
+				produCloud.setUnidadDeVenta(proTemp.getUnidadDeVenta());
+				
+				proTemp.setDtosExtras(pnl.getTxtDescripcionProducto().getText().toString());
+				
+				produCloud.setDtosExtras(proTemp.getDtosExtras());
+				
+				proTemp.setCodBarr(pnl.getTxtCodProducto().getText());
+				
+				produCloud.setCodProd(proTemp.getCodBarr());
+				
+				produCloud.setIdCategoria(indiceCatSelec.getIdCategoria());
+				
+				proTemp.setIdCategoria(indiceCatSelec.getIdCategoria());
+				
+				DBGProdu.registrarProducto(proTemp);
+				
+				DBGProdu.registrarCloud(produCloud,indiceCatSelec.getNomCat());
+				
+				pnl.resetearComponentes();
+			}	
+		}
+		
+		if(e.getSource().equals(pnl.getcmbCategorias())) {
 			
-		}else {
+			categoriaSeleccionada=pnl.getcmbCategorias().getSelectedItem().toString();
 			
-			proTemp.setMarca(mar.getIdMarca());
+			if(!categoriaSeleccionada.equals(constantes.VALOR_DEFECTO_CATEGORIAS)) {
+				indiceCatSelec = categorias.get(pnl.getcmbCategorias().getSelectedIndex()-1);
+				mostrarTodosPreciosPorCategorias();
+				
+			}else {
+				
+				if(pnl.getVisorDatosPrecios().getRowCount()>0){
+					pnl.limpiarTabla();
+					pnl.resetearComponentes();
+				}
+			}
+		}
+	}
+		
+	private void mostrarTodosPreciosPorCategorias() {
+		
+		prepre = DBGP.obtenerListadoProductosPrecios(indiceCatSelec.getIdCategoria());
+		
+		if (!prepre.isEmpty()) {
 			
-			produCloud.setCodMarc(mar.getCodBarMarca());
-			
-			if(pnl.getJcbColor().getSelectedIndex()==0) {
-				proTemp.setColor(0);
-			}else { proTemp.setColor(coloresMarca.get(pnl.getJcbColor().getSelectedIndex()-1).getIdColor());}
-			
-			coloresMarca.clear();
-			
-			proTemp.setUnidadDeVenta(Integer.valueOf(pnl.getTxtUVenta().getText()));
-			
-			produCloud.setUnidadDeVenta(proTemp.getUnidadDeVenta());
-			
-			proTemp.setDtosExtras(pnl.getTxtDescripcionProducto().getText().toString());
-			
-			produCloud.setDtosExtras(proTemp.getDtosExtras());
-			
-			proTemp.setCodBarr(Integer.valueOf(pnl.getTxtCodProducto().getText()));
-			
-			produCloud.setCodProd(proTemp.getCodBarr());
-			
-			DBGProdu.registrarProducto(proTemp);
-			
-			DBGProdu.registrarCloud(produCloud);
-			
-			pnl.resetearComponentes();
-		}	
+			if(pnl.getVisorDatosPrecios().getRowCount()>0) {
+				pnl.limpiarTabla();
+			}
+			pnl.modeloTabla(prepre);
+		}
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 		if (e.getSource().equals(pnl.getTxtCodMarca())) {   
 			
-			codigoMarca = String.valueOf(pnl.getTxtCodMarca().getText());
+			codigoMarca = pnl.getTxtCodMarca().getText();
 			cantidad++;
 			
 			if (cantidad==14) {
@@ -115,7 +145,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 				
 				pnl.getTxtCodProducto().setText(codigoProducto);
 				
-				mar = obtenerMarca(Integer.valueOf(pnl.getTxtCodMarca().getText()));
+				mar = obtenerMarca(pnl.getTxtCodMarca().getText());
 						
 				if(mar!=null) {
 
@@ -137,7 +167,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		
 		if (e.getSource().equals(pnl.getTxtBusquedPrecio())) {
 			
-			prepre = DBGP.obtenerListadoProductosPreciosFiltrados(pnl.getTxtBusquedPrecio().getText());
+			prepre = DBGP.obtenerListadoProductosPreciosFiltrados(pnl.getTxtBusquedPrecio().getText(),indiceCatSelec.getIdCategoria());
 			
 			if (!prepre.isEmpty()) {
 				pnl.limpiarTabla();
@@ -148,9 +178,7 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 		}
 	}
 
-
 	private void cargarColoresDisponibles() {
-		// TODO Auto-generated method stub
 		
 		pnl.getJcbColor().removeAllItems();
 		
@@ -167,53 +195,65 @@ public class  controlRegistrarProducto implements KeyListener, ActionListener, M
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
-	marca obtenerMarca(int codigo){
+	marca obtenerMarca(String codigo){
 		return BDmarca.obtenerMarca(codigo);
-		}
-
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
-		pnl.getTxtDescripcionProducto().setText(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getProd());
+		if(e.getSource().equals(pnl.getVisorDatosPrecios())) {
+			
+			pnl.getTxtDescripcionProducto().setText(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getProd());
+			
+			proTemp.setIdPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getIdPrecio());
+			
+			produCloud.setPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getCodigo());
+			
+		}
+	}
+
+	private void cargarCategorias() {
+		categorias = DBCategorias.obtenerCategorias();
 		
-		proTemp.setIdPrecio(prepre.get(pnl.getVisorDatosPrecios().getSelectedRow()).getIdPrecio());
+		if(pnl.getcmbCategorias().getItemCount()>0) {
+			pnl.getcmbCategorias().removeAllItems();
+		}
 		
-		produCloud.setPrecio(proTemp.getIdPrecio());
+		pnl.getcmbCategorias().addItem(constantes.VALOR_DEFECTO_CATEGORIAS);
+		if (!categorias.isEmpty()) {
+			
+			for (categorias ca : categorias) {
+				pnl.getcmbCategorias().addItem(ca.getNomCat());
+			}
+		}
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
-
 }

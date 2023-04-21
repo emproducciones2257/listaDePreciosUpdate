@@ -13,8 +13,7 @@ public class controlConsultaPrecios implements ActionListener, KeyListener, Mous
 	private pnlConsultaPrecios pnlPrecios;
 	private String codBarras="";
 	private int cantidad=0;
-	private int codigoMarca=0;
-	private int codigoProducto=0;
+	private String codigoMarca="", codigoProducto="";
 	private DBMarca DBMar;
 	private DBConsultaPrecio DBCPreio;
 	private ventanasAvisos avisos;
@@ -26,6 +25,7 @@ public class controlConsultaPrecios implements ActionListener, KeyListener, Mous
 		DBMar = new DBMarca();
 		DBCPreio = new DBConsultaPrecio();
 		pnlPrecios.getTxtBuscarCB().addKeyListener(this);
+		pnlPrecios.getTxtBuscarCBPerfumeria().addKeyListener(this);
 		avisos= new ventanasAvisos(null);
 		total = 0;
 		art = new ArrayList<produConPreci>();
@@ -35,68 +35,91 @@ public class controlConsultaPrecios implements ActionListener, KeyListener, Mous
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
+		
 		art = new ArrayList<produConPreci>();
 		pnlPrecios.limpiarTabla();
 		pnlPrecios.limpiarComponenetes();
 		id=0;
 		total=0;
+		pnlPrecios.getLblTotalParcial().setText("Total: $ 0");
 	}
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
 		
-		codBarras = String.valueOf(pnlPrecios.getTxtBuscarCB().getText());
+		if(arg0.getSource().equals(pnlPrecios.getTxtBuscarCB())) {
+			
+			codBarras = pnlPrecios.getTxtBuscarCB().getText();
+			
+			cantidad++;
+			
+			if(cantidad==14) {
+				obtenerPrecioProducto(1);
+				pnlPrecios.getTxtBuscarCB().setFocusable(true);
+				pnlPrecios.getTxtBuscarCB().setText("");
+			}				
+		}
+
+		if(arg0.getSource().equals(pnlPrecios.getTxtBuscarCBPerfumeria())) {
+			
+			codBarras = pnlPrecios.getTxtBuscarCBPerfumeria().getText();
+			
+			cantidad++;
+			
+			if(cantidad==14) {
+				obtenerPrecioProducto(2);
+				pnlPrecios.getTxtBuscarCBPerfumeria().setFocusable(true);
+				pnlPrecios.getTxtBuscarCBPerfumeria().setText("");
+			}
+		}		
+	}
+
+	private void obtenerPrecioProducto(int codCat) {
+
+		codigoMarca = codBarras.substring(3,8);
 		
-		cantidad++;
+		codigoProducto = codBarras.substring(8,12);
 		
-		if(cantidad==14) {
+		marca marTemp = DBMar.obtenerMarca(codigoMarca);
+		
+		if(marTemp!=null) {
 			
-			codigoMarca = Integer.valueOf(codBarras.substring(3,8));
+			produConPreci produ;
 			
-			codigoProducto = Integer.valueOf(codBarras.substring(8,12));
-			
-			marca marTemp = DBMar.obtenerMarca(codigoMarca);
-			
-			if (marTemp!=null) {
+			produ = DBCPreio.obtenerPrecio(marTemp.getIdMarca(),codigoProducto,codCat);
+						
+			if(produ!=null) {
+				id++;
 				
-				produConPreci produ;
-				
-				produ = DBCPreio.obtenerPrecio(marTemp.getIdMarca(),codigoProducto);
-				
-				if (produ!=null) {
-					id++;
-					
-					if(produ.getUniVta()!=0) {
-						double temp = (double)(produ.getPrecio()/produ.getUniVta());
-						precio = retornarValorPorcentaje(temp);
-					}else {
-						precio = retornarValorPorcentaje(produ.getPrecio());
-					}
-					pnlPrecios.getLblDescripcion().setText(produ.getDescri());
-					pnlPrecios.getLblPrecio().setText("$ "+precio);
-					pnlPrecios.getTxtBuscarCB().setText("");
-					pnlPrecios.getTxtBuscarCB().setFocusable(true);
-					resetearContadores();
-					produConPreci temp = new produConPreci();
-					temp.setId(id);
-					temp.setDescri(produ.getDescri());
-					temp.setCantidad(1);
-					temp.setPrecio(precio);
-					art.add(temp);
-					total += precio;
-					pnlPrecios.modeloTabla(art);
-					pnlPrecios.getLblTotalParcial().setText("Total: $" + total);
+				if(produ.getUniVta()!=0) {
+					double temp = (double)(produ.getPrecio()/produ.getUniVta());
+					precio = retornarValorPorcentaje(temp);
 				}else {
-					avisos.ProductoNoReg(ventanasAvisos.PRODUCTO_N_REG);
-					pnlPrecios.limpiarComponenetes();
-					resetearContadores();
+					precio = retornarValorPorcentaje(produ.getPrecio());
 				}
-			}else {		
-				avisos.ProductoNoReg(ventanasAvisos.REGISTRAR_MARCA);
-				pnlPrecios.limpiarComponenetes();;
+				
+				pnlPrecios.getLblDescripcion().setText(produ.getDescri());
+				pnlPrecios.getLblPrecio().setText("$ "+precio);
+				resetearContadores();
+				
+				produConPreci temp = new produConPreci();
+				temp.setId(id);
+				temp.setDescri(produ.getDescri());
+				temp.setCantidad(1);
+				temp.setPrecio(precio);
+				art.add(temp);
+				total += precio;
+				pnlPrecios.modeloTabla(art);
+				pnlPrecios.getLblTotalParcial().setText("Total: $" + total);
+			}else {
+				avisos.ProductoNoReg(ventanasAvisos.PRODUCTO_N_REG);
+				pnlPrecios.limpiarComponenetes();
 				resetearContadores();
 			}
+		}else {
+			avisos.ProductoNoReg(ventanasAvisos.REGISTRAR_MARCA);
+			pnlPrecios.limpiarComponenetes();;
+			resetearContadores();
 		}
 	}
 
@@ -128,14 +151,11 @@ public class controlConsultaPrecios implements ActionListener, KeyListener, Mous
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void keyTyped(KeyEvent arg0) {		
 	}
 
 	@Override
@@ -172,25 +192,19 @@ public class controlConsultaPrecios implements ActionListener, KeyListener, Mous
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+	public void mousePressed(MouseEvent e) {		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
 		
 	}
 }

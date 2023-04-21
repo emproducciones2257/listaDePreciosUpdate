@@ -1,0 +1,34 @@
+1591797333046	Rename package 'views'
+1591797454593	Rename package 'vistas.views'
+1591797920228	Rename package 'views'
+1591798044038	Rename package 'Vistas.views'
+1591798696784	Rename package 'modelo'
+1591798769360	Rename package 'views'
+1591798806808	Rename package 'conexionBD'
+1591798828838	Rename package 'control'
+1591798961568	Rename package 'res'
+1591799008511	Rename package 'icons'
+1591806770996	Move file
+1591806845462	Move file
+1591807234329	Move file
+1591807247290	Move compilation unit
+1591808015451	Move file
+1591808668058	Move file
+1591820296980	Rename package 'resourse.res'
+1591820454742	Rename package 'mod.modelo'
+1591820470267	Rename package 'cont.control'
+1591820493592	Rename package 'cone.conexionBD'
+1591820516197	Move compilation unit
+1591820524656	Delete element
+1591820540690	Rename package 'reso.icons'
+1591820693293	Rename package 'vista.views'
+1591820874202	Move file
+1591821395720	Move file
+1591821428764	Move compilation unit
+1591822226131	Delete element
+1591824823450	Rename package 'views'
+1591824866324	Rename package 'modelo'
+1591824882426	Rename package 'conexionBD'
+1591825179046	Rename package 'vi.views'
+1591825192050	Rename package 'co.conexionBD'
+1591825205944	Rename package 'mo.modelo'
